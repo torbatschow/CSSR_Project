@@ -6,6 +6,8 @@ output:
   pdf_document:
     toc: true
     number_sections: true
+bibliography:
+    - bibliography.bib
 ---
 
 ```{r setup, include = FALSE}
@@ -39,4 +41,8 @@ source("getData.R")
 
 # Introduction
 
-This is the second assignment.
+This is the second assignment.[^KEY]
+
+# References
+
+[^KEY]: This is a footnote, referring to @Acemoglu2000.
