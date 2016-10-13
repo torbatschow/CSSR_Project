@@ -5,7 +5,7 @@ This is the repository for the final project and the assignment leading to it in
 
 ## Idea
 
-Our aim is to research the impact of alcohol regulation on health and crime in Germany. We will in particular look at the effects of the night sale prohibition in the state of Baden-Wuerttenberg which was implemented in 2010 and the prohibition to drink alcohol in the Public in Berlin which lasted from 1999 to 2006. For the first effect has already been researched by [Marcus and Siedler (2014)](http://www.sciencedirect.com/science/article/pii/S0047272714002564). Our analysis will reproduce their approach, however in less depth. The second effect ... [check].
+Our aim is to research the impact of alcohol regulation on health and crime in Germany. We will in particular look at the effects of the night sale prohibition in the state of Baden-Wuerttenberg which was implemented in 2010 and the prohibition to drink alcohol in the Public in Berlin which lasted from 1999 to 2006. For the first effect has already been researched by [Marcus and Siedler (2014)](http://www.sciencedirect.com/science/article/pii/S0047272714002564). The freely available working paper can be found [here](https://www.diw.de/documents/publikationen/73/diw_01.c.494858.de/dp1443.pdf).Our analysis will reproduce their approach, however in less depth. The second effect ... [check].
 
 ## Data
 
