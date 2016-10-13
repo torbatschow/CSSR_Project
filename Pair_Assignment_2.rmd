@@ -1,5 +1,5 @@
 ---
-title: "Assignment 2"
+title: "CSSR Research Proposal"
 author: "Alex Sacharow & Torben Klausa"
 date: "October 07, 2016"
 output: 
