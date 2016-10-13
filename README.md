@@ -1,4 +1,4 @@
-# Pair Assignment 2
+# CSSR Assignment
 This is the second Assignment.
 
 # Task from Syllabus
