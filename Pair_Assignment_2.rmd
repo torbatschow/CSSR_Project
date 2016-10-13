@@ -7,7 +7,7 @@ output:
     toc: true
     number_sections: true
 bibliography:
-    - bibliography.bib
+    -  Literature_Citavi-Export.bib
 ---
 
 ```{r setup, include = FALSE}
@@ -41,8 +41,14 @@ source("getData.R")
 
 # Introduction
 
+In Western Europe alcohol is the most commonly used drug for exhilaration. However, it is also known for its negative consequences. In this paper we want to investigate the impact of alcohol regulation on health and crime levels. We will focus on a small subfield of alcohol policy: Alcohol night sales and drinking in public prohibtion.    
+
 This is the second assignment.[^KEY]
+
+# Data
+
+
 
 # References
 
-[^KEY]: This is a footnote, referring to @Acemoglu2000.
+[^KEY]: This is a footnote, referring to @Marcus.2015.
