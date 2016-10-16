@@ -14,8 +14,7 @@ rm(list=ls())
 
 ## Setting Working directory
 try(setwd("/home/torben/GIT/Pair_Assignment_2"), silent = TRUE)
-try(setwd("D:/Eigene Datein/Dokumente/Uni/Hertie/Materials/
-  Collaborative Social Science Data Analysis/Pair_Assignment_2"), silent = TRUE)
+try(setwd("D:/Eigene Datein/Dokumente/Uni/Hertie/Materials/Collaborative Social Science Data Analysis/Pair_Assignment_2"), silent = TRUE)
 
 # Collect packages/libraries we need:
 packages <- c("readxl")
@@ -192,6 +191,10 @@ diag.r.n <- do.call(rbind,lapply(ls(pattern='diag.r.n..*'),
 # select alcohol related diagnoses
 diag.alc.g.s <- diag.g.n[diag.g.n$`ICD-10-4` %in% alc.icd10.4.s,]
 diag.alc.r <- diag.r.n[diag.r.n$`ICD-10-3` %in% alc.icd10.3,]
+
+# export data in csv file
+write.csv(diag.alc.g.s, file = "health/diag.alc.g.s.csv", row.names=FALSE)
+write.csv(diag.alc.r, file = "health/diag.alc.r.csv", row.names=FALSE)
 
 # for illustration - time line F10.0 diagnosis among men 2000-2013
 plot(subset(diag.g.n$year, diag.g.n[, 1] == "F100" & diag.g.n[,2] == "m"),
