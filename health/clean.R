@@ -1,13 +1,16 @@
 #############################################
 ## file for converting, cleaning and merging health data
-## by: Alex
+## by: Alex&Torben
 ##################################################
+
+# 0. Preparations
+# 1. Classifications
+# 2. Load excel sheets
+# 3. Merge to time series
 
 ####################################################
 # 0. Preparations
 ###################################################
-
-
 
 # Clear Global environment
 rm(list=ls())
