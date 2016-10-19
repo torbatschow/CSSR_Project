@@ -43,13 +43,15 @@ rm(p, packages)
 
 [//]: # (What, Why, How, Basic question, Basic answer)
 
-In Western Europe alcohol is a commonly used drug for exhilaration. However, the fact that it is also known to be a, if not _the_ most harmful drug [@Nutt.2010], be it by direct or indirect consequences, make it a public policy issue. Especially young people are prone to the extensive (miss-) misuse ?????????????????? In this paper we want to investigate the impact of alcohol regulation on health and crime levels for young people. We will focus on Germany and a small subfield of alcohol policy: The ban of alcohol night sales and drinking in public. The two cases we are going to examine are [1] the 2010 introduced ban on alcohol night sales in the state of Baden-Wuerttenberg and [2] the prohibition of alcohol consumption in public in the state of Berlin from 1999 to 2006. We will examine these measures for their effects on hospital health records and on criminal offensives. For this research we utilize health data on diagnosis in hospitals and the criminal statistics from 2000 to 2014. Our empirical strategy relies on the difference in difference approach where other regions of Germany will be used as control group.
+In Western Europe alcohol is a commonly used drug for exhilaration. However, it is also known to be a (if not _the_) most harmful drug [@Nutt.2010], be it by its toxic nature or the behaviour caused by it. As @Stolle.2009 have shown for Germany and Europe, especially young people are prone to the extensive (ab)use of alcoholic beverages, also referred to as binge drinking. Consequently, policy measures have been developed to tackle this problem. But to what success?
 
-[//]: # (Required work: update the correct years plus add second question )
+In this paper we want to investigate the impact of alcohol regulation on health and crime levels for young people. We will focus on Germany and a small subfield of alcohol policy: The ban of alcohol night sales and drinking in public. The two cases we are going to examine are [1] the ban on alcohol night sales introduced in 2010 in the state of Baden-Wuerttenberg and [2] the prohibition of alcohol consumption in public in the state of Berlin from 1999 to 2006. We will examine these measures for their effects on hospital health records and on criminal offensives. Our research health data on diagnosis in hospitals and the criminal statistics from 2000 to 2014. Our empirical strategy relies on the difference in difference approach where other regions of Germany will be used as control group.
+
+[//]: # (Required work: )
 
 # Related literature
 
-Our research proposal is inspired by the work of @Marcus.2015. We will try to replicate their work, but due to open data availablity in ledd depth. The estimated the short-term impact of the night alcohol sale ban in Baden-Wuerttenberg on binge drinking. Their research found a decrease in ... percent for ..., but did not find any significant effect on ...
+Our research proposal is inspired by the work of @Marcus.2015. We will try to replicate their work, but due to open data availablity in less depth. The estimated the short-term impact of the night alcohol sale ban in Baden-Wuerttenberg on binge drinking. Their research found a decrease in ... percent for ..., but did not find any significant effect on ...
 
 
 # Background
