@@ -39,32 +39,31 @@ rm(p, packages)
 # source("getData.R") # left-over
 ```
 
+[//]: # (Required work:
+1. We should clean up the readme files. Do we really need one per folder?
+)
+
+
+
 # Introduction
 
 [//]: # (What, Why, How, Basic question, Basic answer)
 
-In Western Europe alcohol is a commonly used drug for exhilaration. However, it is also known to be a (if not _the_) most harmful drug [@Nutt.2010], be it by its toxic nature or the behaviour caused by it. As @Stolle.2009 have shown for Germany and Europe, especially young people are prone to the extensive (ab)use of alcoholic beverages, also referred to as binge drinking. Consequently, policy measures have been developed to tackle this problem. But to what success?
+In Western Europe alcohol is a commonly used medium for exhilaration. However, it is also known as a (if not *the most harmful*) drug [@Nutt.2010], be it because of its toxic nature itself or the indirect consequences: The consumption of alcoholic beverages may lead to behavioural changes and violent acts in many different age and cultural groups, as has been indicated by numerous studies [see e.g. @Parker.1993; @Nielsen.2003; @Stolle.2009; @Sonderlund.2014] Consequently, different policy measures have been developed to tackle this problem. But to what success?
 
-In this paper we want to investigate the impact of alcohol regulation on health and crime levels for young people. We will focus on Germany and a small subfield of alcohol policy: The ban of alcohol night sales and drinking in public. The two cases we are going to examine are [1] the ban on alcohol night sales introduced in 2010 in the state of Baden-Wuerttenberg and [2] the prohibition of alcohol consumption in public in the state of Berlin from 1999 to 2006. We will examine these measures for their effects on hospital health records and on criminal offensives. Our research health data on diagnosis in hospitals and the criminal statistics from 2000 to 2014. Our empirical strategy relies on the difference in difference approach where other regions of Germany will be used as control group.
-
-[//]: # (Required work: )
+In this paper we want to investigate the impact of two types of alcohol regulation on health and crime levels. We will focus on Germany and a small subfield of alcohol policy: The ban of alcohol night sales and drinking in public transport. The two cases we are going to examine are [1] the ban on alcohol night sales introduced in 2010 in the state of Baden-Wuerttemberg and [2] the prohibition of alcohol consumption in vehicles and stations of public transport in the city of Hamburg, introduced in 2011. We will examine these measures for their effects on [a] hospital records of admissions under the influence of alcohol and [b] on cases of reported violent crime.
 
 # Related literature
 
-Our research proposal is inspired by the work of @Marcus.2015. We will try to replicate their work, but due to open data availablity in less depth. The estimated the short-term impact of the night alcohol sale ban in Baden-Wuerttenberg on binge drinking. Their research found a decrease in ... percent for ..., but did not find any significant effect on ...
+Our research proposal is inspired by the work of @Marcus.2015 who analysed *"The Effect of a Ban on Late-Night Off-premise Alcohol Sales on Alcohol-Related Hospital Stays in Germany"*. They find that the introduction of the alcohol night sales ban reduces alcohol-related hospitalizations among adolescents and young adults by about seven percent. In our analysis, we will not only try to replicate their work with the publicly available data sets. We are also going to build upon it -- by adding the effect on crime statistic to the analysis. Further, we are going to compare the sale ban to another type of policy aimed at reducing the negative effects of alcohol consumption. 
 
+# Data Sources and Methodology
 
-# Background
+Our research health data stems from German [hospital diagnosis statistics](https://www.destatis.de/DE/Publikationen/Thematisch/Gesundheit/Krankenhaeuser/DiagnosedatenKrankenhaus.html) from 2004 to 2013, obtained via the Federal Office of Statistics *Destatis*. They are archived and available for download at the [Statistische Bibliothek](https://www.destatis.de/GPStatistik/receive/DESerie_serie_00000950?list=all). The data covers the number of fully inpatient hospital patients with mental and behavioural disorders due to acute alcohol intoxination per German state and year. 
 
-The legal / policy background
+The crime data is obtained from [criminal statistics published by the German Federal Criminal Police Office](https://www.bka.de/DE/AktuelleInformationen/StatistikenLagebilder/PolizeilicheKriminalstatistik/pks_node.html;jsessionid=5DFB83E1B040E5C0CCF7F9DF99203DA1.live0612) and covers the corresponding time period from 2004 to 2013. It captures the number of reported violent crimes under the influence of alcohol per German state and year.
 
-# Data
-
-Some more detailed information on the data we are using
-
-# Empirical strategy
-
-What we think we are doing empirically
+Our empirical strategy relies on the difference in difference approach. For the Baden-Wuerttemberg case of night alcohol sale ban, other German states will be used as control group. In the Hamburg case of prohibited alcohol consumption in vehicles and stations of public transport, the state of Berlin will serve as a control group, as it is sensible to chose a city state of similar size and characteristics instead of a rural state.
 
 # References
 
