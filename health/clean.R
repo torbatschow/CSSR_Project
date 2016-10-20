@@ -17,7 +17,7 @@ rm(list=ls())
 
 ## Setting Working directory
 try(setwd("/home/torben/GIT/Pair_Assignment_2"), silent = TRUE)
-try(setwd("D:/Eigene Datein/Dokumente/Uni/Hertie/Materials/Collaborative Social Science Data Analysis/Pair_Assignment_2"), silent = TRUE)
+try(setwd("D:/Eigene Datein/Dokumente/Uni/Hertie/Materials/Collaborative Social Science Data Analysis/CSSR_Project"), silent = TRUE)
 
 # Collect packages/libraries we need:
 packages <- c("readxl")
