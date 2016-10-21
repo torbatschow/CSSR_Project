@@ -39,15 +39,21 @@ rm(p, packages)
 # source("getData.R") # left-over
 ```
 
-[//]: # (Required work:
+<!--
+**************************
+***** REQUIRED WORK: *****
+**************************
 1. We should clean up the readme files. Do we really need one per folder?
-)
+
+-->
 
 
 
 # Introduction
 
-[//]: # (What, Why, How, Basic question, Basic answer)
+<!--
+What, Why, How, Basic question, Basic answer
+-->
 
 In Western Europe alcohol is a commonly used medium for exhilaration. However, it is also known as a (if not *the most harmful*) drug [@Nutt.2010], be it because of its toxic nature itself or the indirect consequences: The consumption of alcoholic beverages may lead to behavioural changes and violent acts in many different age and cultural groups, as has been indicated by numerous studies [see e.g. @Parker.1993; @Nielsen.2003; @Stolle.2009; @Sonderlund.2014] Consequently, different policy measures have been developed to tackle this problem. But to what success?
 
