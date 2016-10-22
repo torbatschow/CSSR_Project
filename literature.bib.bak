@@ -2,6 +2,18 @@
 % Encoding: UTF-8
 
 
+@Article{Ettner.1997,
+  Title                    = {Measuring the human cost of a weak economy: does unemployment lead to alcohol abuse?},
+  Author                   = {Ettner, Susan L},
+  Journal                  = {Social science \& medicine},
+  Year                     = {1997},
+  Number                   = {2},
+  Pages                    = {251--260},
+  Volume                   = {44},
+
+  Publisher                = {Elsevier}
+}
+
 @Misc{Green.2015,
   Title                    = {Longer Opening Hours, Alcohol Consumption and Health},
 
@@ -85,6 +97,18 @@
   Volume                   = {17},
 
   Publisher                = {Public Health Service, National Institutes of Health}
+}
+
+@Article{Popovici.2013,
+  Title                    = {Does unemployment lead to greater alcohol consumption?},
+  Author                   = {Popovici, Ioana and French, Michael T},
+  Journal                  = {Industrial Relations: A Journal of Economy and Society},
+  Year                     = {2013},
+  Number                   = {2},
+  Pages                    = {444--466},
+  Volume                   = {52},
+
+  Publisher                = {Wiley Online Library}
 }
 
 @Article{Sonderlund.2014,

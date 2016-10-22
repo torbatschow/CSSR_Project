@@ -7,7 +7,7 @@ output:
     toc: true
     number_sections: true
 bibliography:
-    -  Literature_Citavi-Export.bib
+    -  literature.bib
 ---
 
 ```{r setup, include = FALSE}
@@ -45,28 +45,42 @@ rm(p, packages)
 **************************
 1. We should clean up the readme files. Do we really need one per folder?
 
-What is our data?
--- Alcohol intoxication - GBE-Bund
+
+
+**************************
+*****   OVERVIEW:    *****
+**************************
+What is our data and where do we get it from?
+-- Acute alcohol intoxication - ICD10 Code: F10.0 - GBE-Bund
+-- Alcoholic liver disease - ICD10 Code: K70 - GBE-Bund
 
 What are we controlling for?
 +- population density - Destatis: "Bevölkerungsdichte: Bundesländer, Stichtag"
 -- unemployment rate - Destatis: "Arbeitslose, Arbeitslosenquoten, Gemeldete Arbeitsstellen: Bundesländer, Jahre"
 -- youth unemployment - Regionaldatenbank?
-+- state gdp - Destatus: "VGR der Länder - Bruttoinlandsprodukt"
++- state gdp - Destatis: "VGR der Länder - Bruttoinlandsprodukt"
+-- Bildungsniveau
 -->
-
-
 
 # Introduction
 
 <!--
 What, Why, How, Basic question, Basic answer
 !!!TORBEN TAKES CARE!!!
+K70 - Alkoholische Leberkrankheit
+
 -->
 
-In Western Europe alcohol is a commonly used medium for exhilaration. However, it is also known as a (if not *the most harmful*) drug [@Nutt.2010], be it because of its toxic nature itself or the indirect consequences: The consumption of alcoholic beverages may lead to behavioural changes and violent acts in many different age and cultural groups, as has been indicated by numerous studies [see e.g. @Parker.1993; @Nielsen.2003; @Stolle.2009; @Sonderlund.2014] Consequently, different policy measures have been developed to tackle this problem. But to what success?
+In Western Europe alcohol is a commonly used medium for exhilaration. However, it is also known as a (if not *the most harmful*) drug [@Nutt.2010], be it because of its toxic nature itself or the indirect consequences: The consumption of alcoholic beverages may on the one hand lead to behavioural changes and violent acts, as has been indicated by numerous studies [see e.g. @Parker.1993; @Nielsen.2003; @Stolle.2009; @Sonderlund.2014]. On the other hand alcohol, if consumend regularly and over a longer period of time, does severe damage to individuals' health. It is therefore a policy concern not only to identify reasons and motivation for excessive alcohol consumption but also to develop measures to tackle this problem.
 
+It is the aim of this paper to analyse both mentioned dimensions of the *challenge alcohol*. Using the example of all German federal states and time series data for different age groups from 2000 to 2014, we will [1] analyse the possible connection between medical diagnoses of alcohol misuse and possibly explanatory socioeconomic factors like gender, age, unemployment rate, education level, and regional economic performance. For this, we will take both short-term and long-term medical consequences of alcohol misuse into account by examining hospital health records on acute alcohol intoxication as well as on alcoholic liver disease. Besides the socio-economic factors mentioned above, we will [2] test the effect of recent policy measures on the German state level on alcohol consumption. The two cases we are going to examine are [a] the ban on alcohol night sales introduced in 2010 in the state of Baden-Wuerttemberg and [b] the prohibition of alcohol consumption in vehicles and stations of public transport in the federal city state of Hamburg, introduced in 2011.
+
+With this approach, we aim to present an analysis that offers insights into both possible causes for alcohol misuse as well as the efficiency of policy measures designed to counter excessive drinking.
+
+<!--
+***** OLD *****
 In this paper we want to investigate the impact of two types of alcohol regulation on health and crime levels. We will focus on Germany and a small subfield of alcohol policy: The ban of alcohol night sales and drinking in public transport. The two cases we are going to examine are [1] the ban on alcohol night sales introduced in 2010 in the state of Baden-Wuerttemberg and [2] the prohibition of alcohol consumption in vehicles and stations of public transport in the city of Hamburg, introduced in 2011. We will examine these measures for their effects on [a] hospital records of admissions under the influence of alcohol and [b] on cases of reported violent crime.
+-->
 
 # Data Sources and Methodology
 
@@ -86,7 +100,7 @@ Our empirical strategy relies on the difference in difference approach. For the 
 !!!TORBEN TAKES CARE!!!
 -->
 
-Our research proposal is inspired by the work of @Marcus.2015 who analysed *"The Effect of a Ban on Late-Night Off-premise Alcohol Sales on Alcohol-Related Hospital Stays in Germany"*. They find that the introduction of the alcohol night sales ban reduces alcohol-related hospitalizations among adolescents and young adults by about seven percent. In our analysis, we will not only try to replicate their work with the publicly available data sets. We are also going to build upon it -- by adding the effect on crime statistic to the analysis. Further, we are going to compare the sale ban to another type of policy aimed at reducing the negative effects of alcohol consumption. 
+Our research proposal is inspired by the work of @Marcus.2015 who analysed *"The Effect of a Ban on Late-Night Off-premise Alcohol Sales on Alcohol-Related Hospital Stays in Germany"*. They find that the introduction of the alcohol night sales ban reduces alcohol-related hospitalizations among adolescents and young adults by about seven percent. In our analysis, we will not only try to replicate their work with the publicly available data sets. We are also going to build upon it -- by differenciate between short-term and longer-term effects. The focus on socio-economic explanatory factors like economic performance for the alcohol abuse as such is based upon research done by e.g. @Popovici.2013 and @Ettner.1997. Focusing on the United States, the two studies found inconsistent results: While one sees "a positive and significant effect of unemployment on drinking behaviors and the findings are robust to numerous sensitivity tests" [@Popovici.2013] the other argues that "non-employment significantly reduces both alcohol consumption and dependence symptoms, probably due to an income effect." [@Ettner.1997] For the German case, @Henkel.2000 finds a negative correlation between economic situation and alcohol and nicotine consumption.
 
 # References
 
