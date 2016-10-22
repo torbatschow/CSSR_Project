@@ -45,6 +45,14 @@ rm(p, packages)
 **************************
 1. We should clean up the readme files. Do we really need one per folder?
 
+What is our data?
+-- Alcohol intoxication - GBE-Bund
+
+What are we controlling for?
++- population density - Destatis: "Bevölkerungsdichte: Bundesländer, Stichtag"
+-- unemployment rate - Destatis: "Arbeitslose, Arbeitslosenquoten, Gemeldete Arbeitsstellen: Bundesländer, Jahre"
+-- youth unemployment - Regionaldatenbank?
++- state gdp - Destatus: "VGR der Länder - Bruttoinlandsprodukt"
 -->
 
 
@@ -53,6 +61,7 @@ rm(p, packages)
 
 <!--
 What, Why, How, Basic question, Basic answer
+!!!TORBEN TAKES CARE!!!
 -->
 
 In Western Europe alcohol is a commonly used medium for exhilaration. However, it is also known as a (if not *the most harmful*) drug [@Nutt.2010], be it because of its toxic nature itself or the indirect consequences: The consumption of alcoholic beverages may lead to behavioural changes and violent acts in many different age and cultural groups, as has been indicated by numerous studies [see e.g. @Parker.1993; @Nielsen.2003; @Stolle.2009; @Sonderlund.2014] Consequently, different policy measures have been developed to tackle this problem. But to what success?
@@ -61,6 +70,10 @@ In this paper we want to investigate the impact of two types of alcohol regulati
 
 # Data Sources and Methodology
 
+<!--
+!!!ALEX TAKES CARE!!!
+-->
+
 Our research health data stems from German [hospital diagnosis statistics](https://www.destatis.de/DE/Publikationen/Thematisch/Gesundheit/Krankenhaeuser/DiagnosedatenKrankenhaus.html) from 2004 to 2013, obtained via the Federal Office of Statistics *Destatis*. They are archived and available for download at the [Statistische Bibliothek](https://www.destatis.de/GPStatistik/receive/DESerie_serie_00000950?list=all). The data covers the number of fully inpatient hospital patients with mental and behavioural disorders due to acute alcohol intoxination per German state and year. 
 
 The crime data is obtained from [criminal statistics published by the German Federal Criminal Police Office](https://www.bka.de/DE/AktuelleInformationen/StatistikenLagebilder/PolizeilicheKriminalstatistik/pks_node.html;jsessionid=5DFB83E1B040E5C0CCF7F9DF99203DA1.live0612) and covers the corresponding time period from 2004 to 2013. It captures the number of reported violent crimes under the influence of alcohol per German state and year.
@@ -68,6 +81,10 @@ The crime data is obtained from [criminal statistics published by the German Fed
 Our empirical strategy relies on the difference in difference approach. For the Baden-Wuerttemberg case of night alcohol sale ban, other German states will be used as control group. In the Hamburg case of prohibited alcohol consumption in vehicles and stations of public transport, the state of Berlin will serve as a control group, as it is sensible to chose a city state of similar size and characteristics instead of a rural state.
 
 # Related Literature
+
+<!--
+!!!TORBEN TAKES CARE!!!
+-->
 
 Our research proposal is inspired by the work of @Marcus.2015 who analysed *"The Effect of a Ban on Late-Night Off-premise Alcohol Sales on Alcohol-Related Hospital Stays in Germany"*. They find that the introduction of the alcohol night sales ban reduces alcohol-related hospitalizations among adolescents and young adults by about seven percent. In our analysis, we will not only try to replicate their work with the publicly available data sets. We are also going to build upon it -- by adding the effect on crime statistic to the analysis. Further, we are going to compare the sale ban to another type of policy aimed at reducing the negative effects of alcohol consumption. 
 
