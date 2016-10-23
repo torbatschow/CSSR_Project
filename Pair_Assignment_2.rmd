@@ -1,7 +1,7 @@
 ---
 title: "CSSR Research Proposal"
 author: "Alex Sacharow & Torben Klausa"
-date: "October 07, 2016"
+date: "October 28, 2016"
 output: 
   pdf_document:
     toc: true
@@ -43,8 +43,9 @@ rm(p, packages)
 **************************
 ***** REQUIRED WORK: *****
 **************************
-1. We should clean up the readme files. Do we really need one per folder?
-
+1. We should clean up the readme files. Do we really need one per folder? 
+Alex: Seize it down to detailed information (links, date, syntax of filenames)
+2. Work count as off 23.10.2016: 1377 (with references 1601)
 
 
 **************************
@@ -60,6 +61,8 @@ What are we controlling for?
 -- youth unemployment - Regionaldatenbank?
 +- state gdp - Destatis: "VGR der Länder - Bruttoinlandsprodukt"
 -- Bildungsniveau
+   Alcohol sales / Beer sales https://www.destatis.de/GPStatistik/receive/DEHeft_heft_00014241
+   https://www.destatis.de/GPStatistik/receive/DESerie_serie_00000146?list=all
 -->
 
 # Introduction
@@ -82,26 +85,76 @@ With this approach, we aim to present an analysis that offers insights into both
 In this paper we want to investigate the impact of two types of alcohol regulation on health and crime levels. We will focus on Germany and a small subfield of alcohol policy: The ban of alcohol night sales and drinking in public transport. The two cases we are going to examine are [1] the ban on alcohol night sales introduced in 2010 in the state of Baden-Wuerttemberg and [2] the prohibition of alcohol consumption in vehicles and stations of public transport in the city of Hamburg, introduced in 2011. We will examine these measures for their effects on [a] hospital records of admissions under the influence of alcohol and [b] on cases of reported violent crime.
 -->
 
-# Data Sources and Methodology
-
-<!--
-!!!ALEX TAKES CARE!!!
--->
-
-Our research health data stems from German [hospital diagnosis statistics](https://www.destatis.de/DE/Publikationen/Thematisch/Gesundheit/Krankenhaeuser/DiagnosedatenKrankenhaus.html) from 2004 to 2013, obtained via the Federal Office of Statistics *Destatis*. They are archived and available for download at the [Statistische Bibliothek](https://www.destatis.de/GPStatistik/receive/DESerie_serie_00000950?list=all). The data covers the number of fully inpatient hospital patients with mental and behavioural disorders due to acute alcohol intoxination per German state and year. 
-
-The crime data is obtained from [criminal statistics published by the German Federal Criminal Police Office](https://www.bka.de/DE/AktuelleInformationen/StatistikenLagebilder/PolizeilicheKriminalstatistik/pks_node.html;jsessionid=5DFB83E1B040E5C0CCF7F9DF99203DA1.live0612) and covers the corresponding time period from 2004 to 2013. It captures the number of reported violent crimes under the influence of alcohol per German state and year.
-
-Our empirical strategy relies on the difference in difference approach. For the Baden-Wuerttemberg case of night alcohol sale ban, other German states will be used as control group. In the Hamburg case of prohibited alcohol consumption in vehicles and stations of public transport, the state of Berlin will serve as a control group, as it is sensible to chose a city state of similar size and characteristics instead of a rural state.
-
 # Related Literature
 
 <!--
 !!!TORBEN TAKES CARE!!!
+Alex: Ich glaub es sollte vor den Daten teil kommen weil sich das Teile drauf beziehen
 -->
 
 Our research proposal is inspired by the work of @Marcus.2015 who analysed *"The Effect of a Ban on Late-Night Off-premise Alcohol Sales on Alcohol-Related Hospital Stays in Germany"*. They find that the introduction of the alcohol night sales ban reduces alcohol-related hospitalizations among adolescents and young adults by about seven percent. In our analysis, we will not only try to replicate their work with the publicly available data sets. We are also going to build upon it -- by differenciate between short-term and longer-term effects. The focus on socio-economic explanatory factors like economic performance for the alcohol abuse as such is based upon research done by e.g. @Popovici.2013 and @Ettner.1997. Focusing on the United States, the two studies found inconsistent results: While one sees "a positive and significant effect of unemployment on drinking behaviors and the findings are robust to numerous sensitivity tests" [@Popovici.2013] the other argues that "non-employment significantly reduces both alcohol consumption and dependence symptoms, probably due to an income effect." [@Ettner.1997] For the German case, @Henkel.2000 finds a negative correlation between economic situation and alcohol and nicotine consumption.
 
+
+# Data
+
+<!--
+!!!ALEX TAKES CARE!!!
+Structure:
+DATA
+1. Data Source
+1.1. Data gathering
+2. Data Advantages
+3. Data Disadvantages
+4. Our Data Manipulation
+Empirical Strategy
+1. Basic correlation analysis / linear regression
+2. Diff-in-Diff / Time -Series approach
+-->
+
+
+Our research health data origins from the German [hospital diagnosis statistics](https://www.destatis.de/DE/Publikationen/Thematisch/Gesundheit/Krankenhaeuser/DiagnosedatenKrankenhaus.html) from 2000 to 2014, obtained via the [The Information System of the Federal Health Monitoring (GBE)](http://www.gbe-bund.de/). The data is reported by hospitals to the state statistical bureaus and then aggregated by the [Statitische Bundesamt Destatis](https://www.destatis.de/). The data contains the aggregated numbers of hospital diagnoses for each German state by age group, gender and year. The diagnoses are published according to the WHO International Statistical Classification of Diseases and Related Health Problems (ICD-10). 
+
+The data is gathered via the online-interface of the [GBE](http://www.gbe-bund.de/). Unfortunately the data provider neigher provides and API nor a web-scrappable interface. Therefore we download the base tables manually by searching for the respective ICD-10 code, using the malleable tables to gather as much information in a single table as the data provider allows and export them.
+
+The identify alcohol-related health problems we use the diagnose F10 (Mental and behavioural disorders due to use of alcohol), its subdivision F10.0 (Acute intoxication) and F10.2 (Dependence syndrome), and K70 (Alcoholic liver disease). The diagnoses category F10.0 covers cases of drunkness and the like. It essentially captures short term effects of excessive drinking, and can be used as an indicator for binge drinking.[^ICD] The categories F10.2 and K70 capture long-term effects of drinking.
+
+The advantages of this data is that they reflect a complete survey of all civil hospitals in Germany for the time-frame of your investigation. Furthermore, the data is not self-reported by patients but gathered by a third party (the statistical bureau) there are no problems of self-reporting biases. For the case study of the Baden-Wuerttemberg night sale prohibition we do also benefit from the availability of a longer time series as  prior work on the issue (@Marcus.2015). Finally, the state-year aggregation level does allows us to supplement our analysis with a wide variety of other freely available data, e.g. the level of alcohol sales, unemployment rates etc. 
+
+However, there are several serious limitations to the data we are using. First of all, the data set we are using can only be exploited with strong limitations with sophisticated methods like panel data analysis as we only have access to data which is reported annually and by state.[^FDZ] Hence, for the panel data analysis we can only use 14 years and 16 states, which makes a total of 224 data point for each combination of diagnoses, age group and gender. We still think it is meaning full to work with the data as we will also use simpler but still insightful methods like multiple linear regression and because our approach can be easily extended to more fine-grained data if it becomes available in the future. A second short coming is the lack of further patient information beyond their age and gender, e.g. socio-economic characteristics.
+
+As already mentioned our analysis will be supplemented by data from other sources. We are in particular using indicators for the state level. They include the populations, the population density, unemployment rates of different age groups, the state gdp and beer sales by state. We are collecting this data from different statistics provided by *Destatis*.
+
+#  Empirical strategy
+
+We want to make a two stage analysis of alcohol-related hospitalizations (ARH). First, a multiple regression for a better understanding of factors correlated to high rates of hospital accessions. This analysis will show us how characteristics of the state and the individual are correlated to the number ARH. The simple multiple regression model for one year t looks like this:
+\begin{equation}
+    ARH_S = \alpha_0 + \alpha_1 \cdot GDP_S + \alpha_2 \cdot UR_S + \alpha_3 \cdot B_S + \alpha_4 \cdot PD_S + \epsilon
+\end{equation}
+Where GDP stands for the states GDP level, UR for the states unemployment rate, B for the beer consumption in the state and DP for the population density.
+
+To identify the effect of the night sales ban in Baden-Wuerttemberg we are using the Difference-in-Difference approach. Baden-Wuerttemberg is the treatment group, where as all other states are in the control group. The treatment begann in 2010, which is captured by the treatment dummy. Before spelling out the model, I will just make a few assumptions. We will look at specific age group, in particular young individuals. From @Marcus.2015 work we would expect to find a minor decrease of alcohol related hospitalizations for young individuals. The formal model looks like this:
+\begin{equation}
+   ARH_{S,T} = \beta_0 + \beta_1 \cdot BAN_{S,T} + \beta_2 \cdot POST_T + \beta_3 \cdot BW_S + e_{S,T}
+\end{equation}
+where BAN is a dummy variable for the night-sale-prohibition, post a dummy for the time after the treatment began and BW a dummy to indicate the treatment group. This model still works without controll variables, which we include in th next model:
+<!--
+WORK in PROGRESS
+-->
+\begin{equation}
+  ARH_{S,T} = \beta_0 + \beta_1 \cdot BAN_{S,T} + X\beta_2 + c_S + \eta{S,T}
+\end{equation}
+
+
+
+<!-- old
+The crime data is obtained from [criminal statistics published by the German Federal Criminal Police Office](https://www.bka.de/DE/AktuelleInformationen/StatistikenLagebilder/PolizeilicheKriminalstatistik/pks_node.html;jsessionid=5DFB83E1B040E5C0CCF7F9DF99203DA1.live0612) and covers the corresponding time period from 2004 to 2013. It captures the number of reported violent crimes under the influence of alcohol per German state and year.
+
+Our empirical strategy relies on the difference in difference approach. For the Baden-Wuerttemberg case of night alcohol sale ban, other German states will be used as control group. In the Hamburg case of prohibited alcohol consumption in vehicles and stations of public transport, the state of Berlin will serve as a control group, as it is sensible to chose a city state of similar size and characteristics instead of a rural state.
+-->
+
+
 # References
 
 [^KEY]: This is a footnote, referring to @Marcus.2015.
+[^ICD]: In contrast to @Marcus.2015 and @Wicki.2011 we do not include T51 (Intoxination due to alcohol) as its covers the consumption of pure ethanol and its number are relatively small. 
+[^FDZ]: In principle there is more fine-grained data available, even down to the individual level. But to get access to the data we would have to use the paid services of the [Forschungsdatenzentrum](http://www.forschungsdatenzentrum.de/).
