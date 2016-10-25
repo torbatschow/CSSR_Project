@@ -58,7 +58,7 @@ What is our data and where do we get it from?
 What are we controlling for?
 +- population density - Destatis: "Bevölkerungsdichte: Bundesländer, Stichtag"
 -- unemployment rate - Destatis: "Arbeitslose, Arbeitslosenquoten, Gemeldete Arbeitsstellen: Bundesländer, Jahre"
--- youth unemployment - Regionaldatenbank?
+-- youth unemployment - Regionaldatenbank? https://www.statistik.sachsen-anhalt.de/apps/StrukturKompass/indikator/zeitreihe/90
 +- state gdp - Destatis: "VGR der Länder - Bruttoinlandsprodukt"
 -- Bildungsniveau
    Alcohol sales / Beer sales https://www.destatis.de/GPStatistik/receive/DEHeft_heft_00014241
