@@ -45,7 +45,7 @@ rm(p, packages)
 **************************
 1. We should clean up the readme files. Do we really need one per folder? 
 Alex: Seize it down to detailed information (links, date, syntax of filenames)
-2. Work count as off 23.10.2016: 1377 (with references 1601)
+2. Work count as off 25.10.2016: 1852 (with references 2036)
 
 
 **************************
