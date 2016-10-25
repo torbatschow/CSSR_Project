@@ -112,21 +112,21 @@ Empirical Strategy
 -->
 
 
-Our research health data origins from the German [hospital diagnosis statistics](https://www.destatis.de/DE/Publikationen/Thematisch/Gesundheit/Krankenhaeuser/DiagnosedatenKrankenhaus.html) from 2000 to 2014, obtained via the [The Information System of the Federal Health Monitoring (GBE)](http://www.gbe-bund.de/). The data is reported by hospitals to the state statistical bureaus and then aggregated by the [Statitische Bundesamt Destatis](https://www.destatis.de/). The data contains the aggregated numbers of hospital diagnoses for each German state by age group, gender and year. The diagnoses are published according to the WHO International Statistical Classification of Diseases and Related Health Problems (ICD-10). 
+Our research health data origins from the German [hospital diagnosis statistics](https://www.destatis.de/DE/Publikationen/Thematisch/Gesundheit/Krankenhaeuser/DiagnosedatenKrankenhaus.html) from 2000 to 2014, obtained via the [The Information System of the Federal Health Monitoring (GBE)](http://www.gbe-bund.de/). The data is reported by hospitals to the state statistical bureaus and then aggregated by the [Statistische Bundesamt Destatis](https://www.destatis.de/). The data contains the aggregated numbers of hospital diagnoses for each German state by age group, gender and year. The diagnoses are published according to the WHO International Statistical Classification of Diseases and Related Health Problems (ICD-10). 
 
-The data is gathered via the online-interface of the [GBE](http://www.gbe-bund.de/). Unfortunately the data provider neigher provides and API nor a web-scrappable interface. Therefore we download the base tables manually by searching for the respective ICD-10 code, using the malleable tables to gather as much information in a single table as the data provider allows and export them.
+The data is gathered via the online-interface of the [GBE](http://www.gbe-bund.de/). Unfortunately the data provider neither provides an API nor a web-scrappable interface. Therefore we download the base tables manually by searching for the respective ICD-10 code, using the malleable tables to gather as much information in a single table and export them.
 
-The identify alcohol-related health problems we use the diagnose F10 (Mental and behavioural disorders due to use of alcohol), its subdivision F10.0 (Acute intoxication) and F10.2 (Dependence syndrome), and K70 (Alcoholic liver disease). The diagnoses category F10.0 covers cases of drunkness and the like. It essentially captures short term effects of excessive drinking, and can be used as an indicator for binge drinking.[^ICD] The categories F10.2 and K70 capture long-term effects of drinking.
+The identify alcohol-related health problems we use the diagnose F10 (Mental and behavioural disorders due to use of alcohol), its subdivision F10.0 (Acute intoxication) and F10.2 (Dependence syndrome), and K70 (Alcoholic liver disease). The diagnoses category F10.0 essentially captures short term effects of excessive drinking, and can be used as an indicator for binge drinking.[^ICD] The categories F10.2 and K70 capture long-term effects of drinking as these diagnoses are consequences of regular drinking.
 
-The advantages of this data is that they reflect a complete survey of all civil hospitals in Germany for the time-frame of your investigation. Furthermore, the data is not self-reported by patients but gathered by a third party (the statistical bureau) there are no problems of self-reporting biases. For the case study of the Baden-Wuerttemberg night sale prohibition we do also benefit from the availability of a longer time series as  prior work on the issue (@Marcus.2015). Finally, the state-year aggregation level does allows us to supplement our analysis with a wide variety of other freely available data, e.g. the level of alcohol sales, unemployment rates etc. 
+The advantages of this data is that they reflect a complete survey of all civilian hospitals in Germany for the time-frame of your investigation. Furthermore, the data is not self-reported by patients but gathered by a third party (the statistical bureau) there are no problems of self-reporting biases. For the case study of the Baden-Wuerttemberg's night sale prohibition we do also benefit from the availability of a longer time series as  prior work on the issue (@Marcus.2015). Finally, the state-year aggregation level does allows us to supplement to our analysis a wide variety of other freely available data, e.g. the level of alcohol sales, unemployment rates etc.
 
-However, there are several serious limitations to the data we are using. First of all, the data set we are using can only be exploited with strong limitations with sophisticated methods like panel data analysis as we only have access to data which is reported annually and by state.[^FDZ] Hence, for the panel data analysis we can only use 14 years and 16 states, which makes a total of 224 data point for each combination of diagnoses, age group and gender. We still think it is meaning full to work with the data as we will also use simpler but still insightful methods like multiple linear regression and because our approach can be easily extended to more fine-grained data if it becomes available in the future. A second short coming is the lack of further patient information beyond their age and gender, e.g. socio-economic characteristics.
+However, there are several serious limitations to the data we are using. First of all, the data set can only be exploited with strong limitations with sophisticated methods like panel data analysis. We only have access to data which is reported annually and by state.[^FDZ] Hence, for a panel data analysis we can only use 14 years and 16 states, which makes a total of 224 data point for each combination of diagnoses, age group and gender. We still think it is meaning full to work with the data as we will also use simpler but still insightful methods like multiple linear regression. Furthermore, our approach can easily be extended to more fine-grained data if it becomes available in the future. A second short coming is the lack of further patient information beyond their age and gender, e.g. socio-economic characteristics.
 
-As already mentioned our analysis will be supplemented by data from other sources. We are in particular using indicators for the state level. They include the populations, the population density, unemployment rates of different age groups, the state gdp and beer sales by state. We are collecting this data from different statistics provided by *Destatis*.
+As already mentioned, our analysis will be supplemented by data from other sources. We are in particular using indicators for the state level. They include the populations, the population density, unemployment rates of different age groups, the state gdp and beer sales by state. We are collecting this data from different statistics provided by *Destatis*.
 
 #  Empirical strategy
 
-We want to make a two stage analysis of short and long-term alcohol-related hospitalizations (ARH)[^ARH]. First, a multiple regression for a better understanding of factors correlated to high rates of hospital accessions. This analysis will show how characteristics of the state and the individual are correlated to the number ARH. The simple multiple regression model for one year t looks like this:
+We want to make a two stage analysis of short and long-term alcohol-related hospitalizations (ARH)[^ARH]. First, a multiple regression for a better understanding of factors correlated to high rates of hospitalizatons. This analysis will show how characteristics of states and individuals are correlated to the number of ARH. The simple multiple regression model for one year t looks like this:
 <!--
 Question: Should we make the regression for one year, for the average of the whole period, or for each time-state pair?
 Selecting one year has the advantage that the data will be purely cross-sectional and there are no time-effects.
@@ -135,34 +135,40 @@ If we make the regression on each time-state pair we have a much larger number o
 \begin{equation}
     ARH_s = \alpha_0 + \alpha_1 \cdot GDP_s + \alpha_2 \cdot UR_s + \alpha_3 \cdot B_s + \alpha_4 \cdot PD_s + \epsilon_s
 \end{equation}
-Where GDP stands for the states GDP level, UR for the states unemployment rate, B for the beer consumption in the state and DP for the population density. The regression will be conducted for the aggregated number for all age groups and than for specific age-groups making use of the age-group specific unemployment rate.
+Where *GDP* stands for the states GDP level, *UR* for the states unemployment rate, *B* for the beer consumption in the state and *PD* for the population density. The regression will be conducted for the aggregated number for all age groups and than for specific age-groups making use of the age-group specific unemployment rate.
 Based on the idea that individuals adapt to their circumstances and are more reactive to changes than to actual levels we will analysis ARH difference:
 \begin{equation}
-   \Delta ARH_{s,t} = \delta_1 \cdot \Delta GDP_{s, t} + \delta_2 \cdot UR_{s, t} + \delta_3 \cdot \Delta B_{s, t}  + \epsilon_{s,t}
+   \Delta ARH_{s,t} = \beta_1 \cdot \Delta GDP_{s, t} + \beta_2 \cdot UR_{s, t} + \beta_3 \cdot \Delta B_{s, t}  + \epsilon_{s,t}
 \end{equation}
 The populations density drops out of the equation as their levels can be assumed to be stable over the short time period of 14 years. In contrast to the multiple regression on levels, the difference approach highlights how changes in hospitalizations are correlated to changes in state indicators.
 
-In the second step of our analysis we are looking at the effect of the night sales ban on alcohol in Baden-Wuerttemberg. To measure the effect of the ban we use the difference-in-difference approach. As the ban was only introduced in Baden-Wuerttemberg, this state will be the treatment group. All other states are in the control group. This distinction can be justified by the fact that most alcohol regulation is done on the federal level with the exception of sales hour regulation and campaigns.[^TCG] The ban was introduced in 2010, which is captured by the treatment dummy. We further assume there are no dynamic effects, which is reasonable as patients are registered when their treatment begins.[^REG] 
+In the second step of our analysis we are looking at the effect of the night sales ban on alcohol in Baden-Wuerttemberg. To measure the effect of the ban we use the difference-in-difference (DD) approach. As the ban was only introduced in Baden-Wuerttemberg, this state will be the treatment group. All other states are in the control group. This distinction can be justified by the fact that most alcohol regulation is done on the federal level with the exception of sales hour regulation and campaigns.[^TCG] The ban was introduced in 2010, which is captured by the treatment dummy. We further assume there are no dynamic effects, which is reasonable as patients are registered when their treatment begins:[^REG] 
 
-Before spelling out the model, I will just make a few assumptions. We will look at specific age group, in particular young individuals. From @Marcus.2015 work we would expect to find a minor decrease of alcohol related hospitalizations for young individuals. The formal model looks like this:
-\begin{equation}
-   ARH_{S,T} = \beta_0 + \beta_1 \cdot BAN_{S,T} + \beta_2 \cdot POST_T + \beta_3 \cdot BW_S + \epsilon_{S,T}
-\end{equation}
-where BAN is a dummy variable for the night-sale-prohibition, post a dummy for the time after the treatment began and BW a dummy to indicate the treatment group. This model still works without controll variables, which we include in th next model:
 <!--
-WORK in PROGRESS
+A: I am not sure whether to include coefficients before POST and BW because this seems to be common practice when using DD. But this seems only to be the case of DD is applied to the 2 period case. Since we do have many cases we need to conclude a coefficient as we are using multiple regression in the end. 
+
+On having multiple periods in DD: 
+http://stats.stackexchange.com/questions/76058/specifying-a-difference-in-differences-model-with-multiple-time-periods
+
+On adding covariantes (4th equastion) see http://stats.stackexchange.com/questions/110874/control-variables-difference-in-difference
 -->
 \begin{equation}
-  ARH_{S,T} = \beta_0 + \beta_1 \cdot BAN_{S,T} + X\beta_2 + c_S + \epsilon{S,T}
+   ARH_{s,t} = \gamma_0 + \gamma_1 \cdot BAN_{s,t} + \gamma_2 \cdot POST_t + \gamma_4 \cdot BW_s + \epsilon_{s,t}
 \end{equation}
 
+where *BAN* is a dummy variable for the night-sale-prohibition, *POST* a dummy for the time after the treatment began and *BW* a dummy to indicate the treatment group. Since were are reengenieering @Marcus.2015 here, we will limit the DD application to ARH by young people (15-25). Furthermore, to check for further robustness of the result we are comparing short-term ARH (F10.0), which should show an effect according to @Marcus.2015, and long-term ARH (K70/F10.2) which should not be affected in the short term by the treatment. 
 
+As the DD approach crucially depends on the common-trend assumption, we can incorporate control variables which capture different trends. Due to the small sample size we are limited on the number of control variables we can add and decided only to control for youth unemployment (*YUR*): 
+\begin{equation}
+  ARH_{s,t} = \delta_0 + \delta_1 \cdot BAN_{s,t} + \delta_2 \cdot POST_{t} + \delta_3 \cdot BW_s + \delta_4 \cdot YUR_s + \epsilon_{s,t}
+\end{equation}
 
-<!-- old
-The crime data is obtained from [criminal statistics published by the German Federal Criminal Police Office](https://www.bka.de/DE/AktuelleInformationen/StatistikenLagebilder/PolizeilicheKriminalstatistik/pks_node.html;jsessionid=5DFB83E1B040E5C0CCF7F9DF99203DA1.live0612) and covers the corresponding time period from 2004 to 2013. It captures the number of reported violent crimes under the influence of alcohol per German state and year.
+Finally, we are refining our DD approach further by turning it into a panel:
 
-Our empirical strategy relies on the difference in difference approach. For the Baden-Wuerttemberg case of night alcohol sale ban, other German states will be used as control group. In the Hamburg case of prohibited alcohol consumption in vehicles and stations of public transport, the state of Berlin will serve as a control group, as it is sensible to chose a city state of similar size and characteristics instead of a rural state.
--->
+\begin{equation}
+  ARH_{s,t} = \theta_0 + \theta_1 \cdot BAN_{s,t} + FED_{t} +  c_s + \theta_2 \cdot YUR_s + \epsilon_{s,t}
+\end{equation}
+This model includes time-invariant heterogeneity of states *c* and time-specific shocks *FED* affecting all states, e.g. a change in a federal law. This model can be estimated by using dummies for the time-periods and first-differencing or fixed-effects to address the unobserved heterogeneity of states. 
 
 
 # References
