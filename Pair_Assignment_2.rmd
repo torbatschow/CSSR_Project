@@ -126,22 +126,33 @@ As already mentioned our analysis will be supplemented by data from other source
 
 #  Empirical strategy
 
-We want to make a two stage analysis of alcohol-related hospitalizations (ARH). First, a multiple regression for a better understanding of factors correlated to high rates of hospital accessions. This analysis will show us how characteristics of the state and the individual are correlated to the number ARH. The simple multiple regression model for one year t looks like this:
+We want to make a two stage analysis of short and long-term alcohol-related hospitalizations (ARH)[^ARH]. First, a multiple regression for a better understanding of factors correlated to high rates of hospital accessions. This analysis will show how characteristics of the state and the individual are correlated to the number ARH. The simple multiple regression model for one year t looks like this:
+<!--
+Question: Should we make the regression for one year, for the average of the whole period, or for each time-state pair?
+Selecting one year has the advantage that the data will be purely cross-sectional and there are no time-effects.
+If we make the regression on each time-state pair we have a much larger number of observations, but we might have time-effects which cause problems.
+-->
 \begin{equation}
     ARH_S = \alpha_0 + \alpha_1 \cdot GDP_S + \alpha_2 \cdot UR_S + \alpha_3 \cdot B_S + \alpha_4 \cdot PD_S + \epsilon
 \end{equation}
-Where GDP stands for the states GDP level, UR for the states unemployment rate, B for the beer consumption in the state and DP for the population density.
+Where GDP stands for the states GDP level, UR for the states unemployment rate, B for the beer consumption in the state and DP for the population density. The regression will be conducted for the aggregated number for all age groups and than for specific age-groups making use of the age-group specific unemployment rate.
+Based on the idea that individuals adapt to their circumstances and are more reactive to changes than to actual levels we will analysis ARH difference:
+\begin{equation}
+   ARH_{S,T} = \alpha_0 \cdot ARH_{S,T-1} + \alpha_1 \cdot GDP_S + \alpha_2 \cdot UR_S + \alpha_3 \cdot B_S + \alpha_4 \cdot PD_S  + \epsilon_{S,T}
+\end{equation}
+
+
 
 To identify the effect of the night sales ban in Baden-Wuerttemberg we are using the Difference-in-Difference approach. Baden-Wuerttemberg is the treatment group, where as all other states are in the control group. The treatment begann in 2010, which is captured by the treatment dummy. Before spelling out the model, I will just make a few assumptions. We will look at specific age group, in particular young individuals. From @Marcus.2015 work we would expect to find a minor decrease of alcohol related hospitalizations for young individuals. The formal model looks like this:
 \begin{equation}
-   ARH_{S,T} = \beta_0 + \beta_1 \cdot BAN_{S,T} + \beta_2 \cdot POST_T + \beta_3 \cdot BW_S + e_{S,T}
+   ARH_{S,T} = \beta_0 + \beta_1 \cdot BAN_{S,T} + \beta_2 \cdot POST_T + \beta_3 \cdot BW_S + \epsilon_{S,T}
 \end{equation}
 where BAN is a dummy variable for the night-sale-prohibition, post a dummy for the time after the treatment began and BW a dummy to indicate the treatment group. This model still works without controll variables, which we include in th next model:
 <!--
 WORK in PROGRESS
 -->
 \begin{equation}
-  ARH_{S,T} = \beta_0 + \beta_1 \cdot BAN_{S,T} + X\beta_2 + c_S + \eta{S,T}
+  ARH_{S,T} = \beta_0 + \beta_1 \cdot BAN_{S,T} + X\beta_2 + c_S + \epsilon{S,T}
 \end{equation}
 
 
@@ -158,3 +169,4 @@ Our empirical strategy relies on the difference in difference approach. For the 
 [^KEY]: This is a footnote, referring to @Marcus.2015.
 [^ICD]: In contrast to @Marcus.2015 and @Wicki.2011 we do not include T51 (Intoxination due to alcohol) as its covers the consumption of pure ethanol and its number are relatively small. 
 [^FDZ]: In principle there is more fine-grained data available, even down to the individual level. But to get access to the data we would have to use the paid services of the [Forschungsdatenzentrum](http://www.forschungsdatenzentrum.de/).
+[^ARH]: ARH is normalized by the state population and denoted in hospitalizations per 100.000 inhablitants.
