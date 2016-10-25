@@ -133,17 +133,18 @@ Selecting one year has the advantage that the data will be purely cross-sectiona
 If we make the regression on each time-state pair we have a much larger number of observations, but we might have time-effects which cause problems.
 -->
 \begin{equation}
-    ARH_S = \alpha_0 + \alpha_1 \cdot GDP_S + \alpha_2 \cdot UR_S + \alpha_3 \cdot B_S + \alpha_4 \cdot PD_S + \epsilon
+    ARH_s = \alpha_0 + \alpha_1 \cdot GDP_s + \alpha_2 \cdot UR_s + \alpha_3 \cdot B_s + \alpha_4 \cdot PD_s + \epsilon_s
 \end{equation}
 Where GDP stands for the states GDP level, UR for the states unemployment rate, B for the beer consumption in the state and DP for the population density. The regression will be conducted for the aggregated number for all age groups and than for specific age-groups making use of the age-group specific unemployment rate.
 Based on the idea that individuals adapt to their circumstances and are more reactive to changes than to actual levels we will analysis ARH difference:
 \begin{equation}
-   ARH_{S,T} = \alpha_0 \cdot ARH_{S,T-1} + \alpha_1 \cdot GDP_S + \alpha_2 \cdot UR_S + \alpha_3 \cdot B_S + \alpha_4 \cdot PD_S  + \epsilon_{S,T}
+   \Delta ARH_{s,t} = \delta_1 \cdot \Delta GDP_{s, t} + \delta_2 \cdot UR_{s, t} + \delta_3 \cdot \Delta B_{s, t}  + \epsilon_{s,t}
 \end{equation}
+The populations density drops out of the equation as their levels can be assumed to be stable over the short time period of 14 years. In contrast to the multiple regression on levels, the difference approach highlights how changes in hospitalizations are correlated to changes in state indicators.
 
+In the second step of our analysis we are looking at the effect of the night sales ban on alcohol in Baden-Wuerttemberg. To measure the effect of the ban we use the difference-in-difference approach. As the ban was only introduced in Baden-Wuerttemberg, this state will be the treatment group. All other states are in the control group. This distinction can be justified by the fact that most alcohol regulation is done on the federal level with the exception of sales hour regulation and campaigns.[^TCG] The ban was introduced in 2010, which is captured by the treatment dummy. We further assume there are no dynamic effects, which is reasonable as patients are registered when their treatment begins.[^REG] 
 
-
-To identify the effect of the night sales ban in Baden-Wuerttemberg we are using the Difference-in-Difference approach. Baden-Wuerttemberg is the treatment group, where as all other states are in the control group. The treatment begann in 2010, which is captured by the treatment dummy. Before spelling out the model, I will just make a few assumptions. We will look at specific age group, in particular young individuals. From @Marcus.2015 work we would expect to find a minor decrease of alcohol related hospitalizations for young individuals. The formal model looks like this:
+Before spelling out the model, I will just make a few assumptions. We will look at specific age group, in particular young individuals. From @Marcus.2015 work we would expect to find a minor decrease of alcohol related hospitalizations for young individuals. The formal model looks like this:
 \begin{equation}
    ARH_{S,T} = \beta_0 + \beta_1 \cdot BAN_{S,T} + \beta_2 \cdot POST_T + \beta_3 \cdot BW_S + \epsilon_{S,T}
 \end{equation}
@@ -170,3 +171,5 @@ Our empirical strategy relies on the difference in difference approach. For the 
 [^ICD]: In contrast to @Marcus.2015 and @Wicki.2011 we do not include T51 (Intoxination due to alcohol) as its covers the consumption of pure ethanol and its number are relatively small. 
 [^FDZ]: In principle there is more fine-grained data available, even down to the individual level. But to get access to the data we would have to use the paid services of the [Forschungsdatenzentrum](http://www.forschungsdatenzentrum.de/).
 [^ARH]: ARH is normalized by the state population and denoted in hospitalizations per 100.000 inhablitants.
+[^TCG]: The night-sale ban in Baden-Wuerttenberg has been the most prominent alcohol policy in 2010. There have also been general changes to opening hours as during this time the competency was transfered to the states and media campaigns. As we only have annual data we are not fully able to distnguish between these treatments, but we assume that they are outweigthed by the night-sales ban.
+[^REG]: Even if they would be registered in consecutive reporting periods, the stay of patients for short-term ARH (F10.0) is in average 2,1 days and for long-term ARH 10,7 days (K70) and 11,4 days (F10.2) in 2014 making the dynamic effect insignificantly small.
