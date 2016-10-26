@@ -6,7 +6,7 @@
 
 # 0. Preparation
 # 1. Import Data
-# 3. Clean data
+# 2. Clean data
 
 ###########################
 # 0. Preparations
@@ -20,7 +20,7 @@ try(setwd("/home/torben/GIT/Pair_Assignment_2"), silent = TRUE)
 try(setwd("D:/Eigene Datein/Dokumente/Uni/Hertie/Materials/Collaborative Social Science Data Analysis/CSSR_Project"), silent = TRUE)
 
 # Collect packages/libraries we need:
-packages <- c("readxl", "RCurl", "ckanr")
+packages <- c("readxl", "RCurl", "ckanr", "plyr")
 
 # install packages if not installed before
 for (p in packages) {
@@ -39,20 +39,18 @@ rm(p, packages)
 ###########################
 
 # Download population density if not in directory
-PD <- try(read.csv("control/PD.csv"))
-if(class(PD)=="try-error") {
+if(class(try(read.csv("control/PD.csv")))=="try-error") {
 url.PD <- "https://www-genesis.destatis.de/genesis/online?sequenz=tabelleDownload&selectionname=12411-0050&regionalschluessel=&format=csv"
-write.csv(read.csv(url.PD, header = FALSE, sep=";", row.names=NULL,), "control/PD.csv")
-PD <- read.csv("control/PD.csv")
+write.csv(read.csv(url.PD, header = FALSE, sep=";", row.names=NULL), "control/PD.csv")
 }
+PD <- read.csv("control/PD.csv")
 
 # Download unemployment rate for states (if not in directory)
-UR <- try(read.csv("control/UR.csv"))
-if(class(UR)=="try-error") {
+if(class(try(read.csv("control/UR.csv")))=="try-error") {
   url.UR <- "https://www-genesis.destatis.de/genesis/online?sequenz=tabelleDownload&selectionname=13211-0007&regionalschluessel=&format=csv"
-  write.csv(read.csv(url.UR, header = FALSE, sep=";", row.names=NULL,), "control/UR.csv")
-  UR <- read.csv("control/UR.csv")
+  write.csv(read.csv(url.UR, header = FALSE, sep=";", row.names=NULL), "control/UR.csv")
 }
+UR <- read.csv("control/UR.csv")
 
 # youth unemployment rates
 #difficult to find, but exists:
@@ -73,3 +71,23 @@ if(class(UR)=="try-error") {
 ###########################
 # 2. Clean data
 ###########################
+
+#Cleaning and Renaming PD
+#ISO 3166-2:DE
+PD <- PD[-c(1:6, 27:31),-c(1)]
+colnames(PD) <- c("year", "DE-BW", "DE-BY", "DE-BE", "DE-BB", "DE-HB", "DE-HH", "DE-HE", "DE-MV", 
+             "DE-NI", "DE-NW", "DE-RP", "DE-SL", "DE-SN", "DE-ST", "DE-SH", "DE-TH")
+rownames(PD) <- c(1995:2014)
+PD[,1] <- c(1995:2014)
+
+
+
+
+
+
+
+
+
+
+
+
