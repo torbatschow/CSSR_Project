@@ -2,16 +2,28 @@
 % Encoding: UTF-8
 
 
+@Article{AmieL.Nielsen.2003,
+  Title                    = {Reassessing the alcohol-violence linkage: Results from a multiethnic city},
+  Author                   = {{Amie L. Nielsen} and {Ramiro Martinez Jr.}},
+  Journal                  = {Justice Quarterly},
+  Year                     = {2003},
+  Number                   = {3},
+  Pages                    = {445--469},
+  Volume                   = {20},
+
+  Abstract                 = {This article examines the relationship between alcohol availability and nonlethal violence at the census-tract level in Miami, a multiethnic city with high levels of disadvantage and immigration. The effects of alcohol (total outlet rate) are considered from the perspectives of social disorganization and routine activities theories. Nonlethal violence is the average annual rates of robbery, aggravated assault, and total violence (combined aggravated assault and robbery). The analyses include corrections for spatial autocorrelation. The results show that alcohol availability has strong positive effects on rates of nonlethal violence and that the percentage of recent immigrants is also a significant positive predictor.},
+  Doi                      = {10.1080/07418820300095581},
+  Url                      = {http://dx.doi.org/10.1080/07418820300095581}
+}
+
 @Article{Ettner.1997,
   Title                    = {Measuring the human cost of a weak economy: does unemployment lead to alcohol abuse?},
-  Author                   = {Ettner, Susan L},
-  Journal                  = {Social science \& medicine},
+  Author                   = {Ettner, Susan L.},
+  Journal                  = {Social science {\&} medicine},
   Year                     = {1997},
   Number                   = {2},
   Pages                    = {251--260},
-  Volume                   = {44},
-
-  Publisher                = {Elsevier}
+  Volume                   = {44}
 }
 
 @Misc{Green.2015,
@@ -23,6 +35,15 @@
   Number                   = {29},
   Series                   = {Economics Working Paper Series},
   Urldate                  = {13.10.2016}
+}
+
+@Article{Henkel.2000,
+  Title                    = {Zum Konsum von Alkohol, Tabak und psychoaktiven Medikamenten bei Arbeitslosen und Einkommensarmen},
+  Author                   = {Henkel, Dieter},
+  Journal                  = {Abh{\"a}ngigkeiten},
+  Year                     = {2000},
+  Pages                    = {26--43},
+  Volume                   = {6}
 }
 
 @Article{Hinnosaar.2016,
@@ -55,21 +76,18 @@
   Urldate                  = {13.10.2016}
 }
 
-@Article{Nielsen.2003,
-  Title                    = {Reassessing the alcohol-violence linkage: Results from a multiethnic city},
-  Author                   = { Amie L. Nielsen and Ramiro Martinez Jr. },
-  Journal                  = {Justice Quarterly},
-  Year                     = {2003},
-  Number                   = {3},
-  Pages                    = {445-469},
-  Volume                   = {20},
+@Article{Miller.2007,
+  Title                    = {Binge drinking and associated health risk behaviors among high school students},
+  Author                   = {Miller, Jacqueline W and Naimi, Timothy S and Brewer, Robert D and Jones, Sherry Everett},
+  Journal                  = {Pediatrics},
+  Year                     = {2007},
+  Number                   = {1},
+  Pages                    = {76--85},
+  Volume                   = {119},
 
-  Abstract                 = {This article examines the relationship between alcohol availability and nonlethal violence at the census-tract level in Miami, a multiethnic city with high levels of disadvantage and immigration. The effects of alcohol (total outlet rate) are considered from the perspectives of social disorganization and routine activities theories. Nonlethal violence is the average annual rates of robbery, aggravated assault, and total violence (combined aggravated assault and robbery). The analyses include corrections for spatial autocorrelation. The results show that alcohol availability has strong positive effects on rates of nonlethal violence and that the percentage of recent immigrants is also a significant positive predictor.},
-  Doi                      = {10.1080/07418820300095581},
-  Eprint                   = { http://dx.doi.org/10.1080/07418820300095581 
-},
-  Url                      = { http://dx.doi.org/10.1080/07418820300095581 
-}
+  Owner                    = {torben},
+  Publisher                = {Am Acad Pediatrics},
+  Timestamp                = {2016.10.26}
 }
 
 @Article{Nutt.2010,
@@ -87,6 +105,16 @@
   Urldate                  = {18.10.2016}
 }
 
+@Book{WHO.2014,
+  Title                    = {Global status report on alcohol and health},
+  Author                   = {World~Health~Organization},
+  Publisher                = {World~Health~Organization},
+  Year                     = {2014},
+
+  Owner                    = {torben},
+  Timestamp                = {2016.10.26}
+}
+
 @Article{Parker.1993,
   Title                    = {The effects of context on alcohol and violence},
   Author                   = {Parker, Robert Nash},
@@ -94,43 +122,51 @@
   Year                     = {1993},
   Number                   = {2},
   Pages                    = {117},
-  Volume                   = {17},
-
-  Publisher                = {Public Health Service, National Institutes of Health}
+  Volume                   = {17}
 }
 
 @Article{Popovici.2013,
   Title                    = {Does unemployment lead to greater alcohol consumption?},
-  Author                   = {Popovici, Ioana and French, Michael T},
+  Author                   = {Popovici, Ioana and French, Michael T.},
   Journal                  = {Industrial Relations: A Journal of Economy and Society},
   Year                     = {2013},
   Number                   = {2},
   Pages                    = {444--466},
-  Volume                   = {52},
-
-  Publisher                = {Wiley Online Library}
+  Volume                   = {52}
 }
 
 @Article{Sonderlund.2014,
   Title                    = {The association between sports participation, alcohol use and aggression and violence: A systematic review},
-  Author                   = {S{\o}nderlund, Anders L and O’Brien, Kerry and Kremer, Peter and Rowland, Bosco and De Groot, Florentine and Staiger, Petra and Zinkiewicz, Lucy and Miller, Peter G},
+  Author                   = {S{\o}nderlund, Anders L. and O'Brien, Kerry and Kremer, Peter and Rowland, Bosco and de Groot, Florentine and Staiger, Petra and Zinkiewicz, Lucy and Miller, Peter G.},
   Journal                  = {Journal of science and medicine in sport},
   Year                     = {2014},
   Number                   = {1},
   Pages                    = {2--7},
-  Volume                   = {17},
-
-  Publisher                = {Elsevier}
+  Volume                   = {17}
 }
 
 @Article{Stolle.2009,
   Title                    = {Binge drinking in childhood and adolescence},
-  Author                   = {Stolle, M and Sack, Peter-Michael and Thomasius, Rainer},
-  Journal                  = {Deutsches Ärzteblatt International},
+  Author                   = {Stolle, M. and Sack, Peter-Michael and Thomasius, Rainer},
+  Journal                  = {Deutsches {\"A}rzteblatt International},
   Year                     = {2009},
   Number                   = {19},
   Pages                    = {323--328},
   Volume                   = {106}
+}
+
+@Article{Wicki.2011,
+  Title                    = {Hospital admission rates for alcoholic intoxication after policy changes in the canton of Geneva, Switzerland},
+  Author                   = {Wicki, Matthias and Gmel, Gerhard},
+  Journal                  = {Drug and alcohol dependence},
+  Year                     = {2011},
+  Number                   = {2-3},
+  Pages                    = {209--215},
+  Volume                   = {118},
+
+  Abstract                 = {BACKGROUND: In February, 2005, the canton of Geneva in Switzerland prohibited the off-premise sale of alcoholic beverages between 9 pm and 7 am, and banned their sale in gas stations and video stores. The aim of this study is to assess the impact of this policy change on hospital admission rates for alcoholic intoxication. METHODS: An interrupted time series analysis of this natural experiment was performed with data on hospitalisations for acute alcoholic intoxication during the 2002-2007 period. The canton of Geneva was treated as the experimental group, while all other Swiss cantons were used as the control group. RESULTS: In the experimental site, the policy change was found to have a significant effect on admission rates among adolescents and young adults. Depending on the age group, hospitalisation rates for alcoholic intoxication fell by an estimated 25-40{\%} as the result of restricted alcohol availability. CONCLUSIONS: Modest restrictions on opening hours and the density of off-premise outlets were found to be of relevance for public health in the canton of Geneva. In light of this finding, policy makers should consider such action as a promising approach to alcohol prevention.},
+  Doi                      = {10.1016/j.drugalcdep.2011.03.020},
+  ISSN                     = {0376-8716}
 }
 
 @Article{Wilkinson.2016,
