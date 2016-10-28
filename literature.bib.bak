@@ -61,6 +61,17 @@
   Urldate                  = {13.10.2016}
 }
 
+@Misc{Klausa.2016,
+  Title                    = {Torben's Website},
+
+  Author                   = {Torben Klausa},
+  Year                     = {2016},
+
+  Owner                    = {torben},
+  Timestamp                = {2016.10.26},
+  Url                      = {http://www.hertie-school.org}
+}
+
 @Article{Marcus.2015,
   Title                    = {Reducing binge drinking? The effect of a ban on late-night off-premise alcohol sales on alcohol-related hospital stays in Germany},
   Author                   = {Marcus, Jan and Siedler, Thomas},
@@ -103,16 +114,6 @@
   Doi                      = {10.1016/S0140-6736(10)61462-6},
   ISSN                     = {01406736},
   Urldate                  = {18.10.2016}
-}
-
-@Book{WHO.2014,
-  Title                    = {Global status report on alcohol and health},
-  Author                   = {World~Health~Organization},
-  Publisher                = {World~Health~Organization},
-  Year                     = {2014},
-
-  Owner                    = {torben},
-  Timestamp                = {2016.10.26}
 }
 
 @Article{Parker.1993,
@@ -182,5 +183,15 @@
   ISSN                     = {2204-2091},
   Keywords                 = {Biotext},
   Urldate                  = {13.10.2016}
+}
+
+@Book{WHO.2014,
+  Title                    = {Global status report on alcohol and health},
+  Author                   = {World{\ }Health{\ }Organization},
+  Publisher                = {World~Health~Organization},
+  Year                     = {2014},
+
+  Owner                    = {torben},
+  Timestamp                = {2016.10.26}
 }
 
