@@ -3,6 +3,8 @@
 
 This is the repository for the final project and the assignment leading to it in the [MPP-E1180: Introduction to Collaborative Social Science Data Analysis](https://github.com/HertieDataScience) course of the fall semester 2016. It is authored by [Alex](https://github.com/corrod3) and [Torben](https://github.com/torbatschow). Any feedback, comments, and ideas are highly appreciated. Please send them to <a href="mailto:t.klausa@mpp.hertie-school.org">Torben</a> or <a href="mailto:a.sacharow@mpp.hertie-school.org">Alex</a> or submit a pull request.
 
+The second assignment can be found [here](Pair_Assignment_2.rmd).
+
 ## Idea
 
 Our aim is to research the correlation between alcohol consumption and socio-economic factors as well as regulatory measures in Germany. We will in particular look at the effects of the night sale prohibition in the state of Baden-Wuerttenberg which was implemented in 2010. 
@@ -22,7 +24,7 @@ Third, the data on socio-economic factors includes the respective state's popula
 
 ## Assignment Tasks
 
-### Second Assignment
+### [Second Assignment](Pair_Assignment_2.rmd)
 The second pair assignment is a proposal for your Collaborative Research Project. It is an opportunity for you to layout your collaborative research paper question, justify why it is interesting, provide basic literature review (properly cited using BibTeX), and identify data sources/methodologies that you can access to help answer your question. You will also demonstrate your understanding of literate programming technologies. Deadline 28 October, 2,000 words maximum, 10% of final grade.
 
 ### Third Assignment
