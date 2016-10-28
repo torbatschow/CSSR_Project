@@ -5,13 +5,20 @@ This is the repository for the final project and the assignment leading to it in
 
 ## Idea
 
-Our aim is to research the impact of alcohol regulation on health and crime in Germany. We will in particular look at the effects of the night sale prohibition in the state of Baden-Wuerttenberg which was implemented in 2010 and the prohibition to drink alcohol in the Public in Berlin which lasted from 1999 to 2006. 
+Our aim is to research the correlation between alcohol consumption and socio-economic factors as well as regulatory measures in Germany. We will in particular look at the effects of the night sale prohibition in the state of Baden-Wuerttenberg which was implemented in 2010. 
 
-The first effect of night sale ban on alcohol-related hospitalization has already been researched by [Marcus and Siedler (2014)](http://www.sciencedirect.com/science/article/pii/S0047272714002564). The freely available working paper can be found [here](https://www.diw.de/documents/publikationen/73/diw_01.c.494858.de/dp1443.pdf). Our analysis will reproduce their approach. The second effect ... [check].
+The first effect of night sale ban on alcohol-related hospitalization has already been researched by [Marcus and Siedler (2014)](http://www.sciencedirect.com/science/article/pii/S0047272714002564). The freely available working paper can be found [here](https://www.diw.de/documents/publikationen/73/diw_01.c.494858.de/dp1443.pdf). Our analysis will reproduce their approach.
 
 ## Data
 
-For the implementation of the project we need three different sorts of data: First, the data on alcohol regulation. To our knowledge there is no processed database of alcohol regulation in Germany. Hence, we gather the data from different publically available sources, e.g. news. Second, to estimate the effects on health we use [hospital diagnosis statistics](https://www.destatis.de/DE/Publikationen/Thematisch/Gesundheit/Krankenhaeuser/DiagnosedatenKrankenhaus.html) from the Statistische Bundesamt Destatis. The diagnosis statistics are archived by the [Statistische Bibliothek](https://www.destatis.de/GPStatistik/receive/DESerie_serie_00000950?list=all). Like Marcus and Siedler (2014) and [Wicki and Gmel (2011)](refhub.elsevier.com/S0047-2727(14)00256-4/rf0235) we use the  codes F10 ("Mental and behavioral disorders due to alcohol use") and T51 ("Toxic effect of alcohol") of the 3-digital ICD-10 classification ("International Statistical Classification of Diseases and Related Health Problems") to define alcohol related hospitalizations. Third, for the effects on crime we use the [Polizeiliche Kriminalstatistik (PKS)](https://www.bka.de/DE/AktuelleInformationen/StatistikenLagebilder/PolizeilicheKriminalstatistik/pks_node.html;jsessionid=5DFB83E1B040E5C0CCF7F9DF99203DA1.live0612) by the BKA.
+For the implementation of the project we need three different sorts of data: 
+
+First, the data on alcohol regulation in Baden-Wuerttemberg, which is gathered from publically available news sources. 
+
+Second, to estimate the effects on health we use [hospital diagnosis statistics](https://www.destatis.de/DE/Publikationen/Thematisch/Gesundheit/Krankenhaeuser/DiagnosedatenKrankenhaus.html) from the Statistische Bundesamt Destatis. The diagnosis statistics are archived by the [Statistische Bibliothek](https://www.destatis.de/GPStatistik/receive/DESerie_serie_00000950?list=all). Building upon Marcus and Siedler (2014) and [Wicki and Gmel (2011)](refhub.elsevier.com/S0047-2727(14)00256-4/rf0235) we use the codes *F10.0* (Acute intoxication) and *F10.2* (Dependence syndrome), and *K70* (Alcoholic liver disease) of the 3-digital ICD-10 classification ("International Statistical Classification of Diseases and Related Health Problems") to define alcohol related hospitalizations. 
+
+Third, the data on socio-economic factors includes the respective state's population, population density, unemployment rates of different age groups, the state GDP and beer sales by state. We are aware of the fact that other alcoholic beverages besides beer probably play a role in the cases under scrutiny. However, with these numbers not available, the beer consumption serves as a proxy for general alcohol consumption in the state. We are collecting the supplementary data from different statistics provided by *Destatis*.
+
 
 ## Assignment Tasks
 
