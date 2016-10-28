@@ -56,14 +56,7 @@ What are we controlling for?
 
 # Introduction
 
-*********************
-*Alternative*
-
-Alcohol has a history of causing both joy and pain. In our research we want to focus on the latter: When pain is so severe that hospital becomes ones destination. As this moment it turns alcohol consumption into a policy concern making a better understanding of underlying socio-economic factors and policy reactions crucial. Even more so, as alcohol can be considered as the most harmful drug when taking negative effects for others into account [@Nutt.2010].
-
-*********************
-
-In Western Europe alcohol is a commonly used medium for exhilaration. However, it is also known as a harmful (if not *the most harmful*) drug [@Nutt.2010]. This is because of its toxic nature: Alcohol, if consumend in high amounts and/or regularly over a longer period of time, does severe damage to individuals' health [see e.g. @WHO.2014; @Miller.2007]. It is therefore a policy concern not only to identify reasons and motivation for excessive alcohol consumption but also to develop measures to tackle this problem.
+Alcohol has a history of causing both joy and pain. In our research we want to focus on the latter: Alcohol, if consumend in high amounts and/or regularly over a longer period of time, does severe damage to individuals' health [see e.g. @WHO.2014; @Miller.2007]. It is therefore a policy concern not only to identify reasons and motivation for excessive alcohol consumption but also to develop measures to tackle this problem.
 
 It is the aim of this paper is to identify factors interacting with alcohol related health problems and to assess alcohol policy interventions against it. Using the example of all German federal states and time series data for different age groups from 2000 to 2014, we will [1] analyse the possible connection between medical diagnoses of alcohol misuse and possibly explanatory socioeconomic factors like gender, age, unemployment rate, education level, and regional economic performance. For this, we will take both short-term and long-term medical consequences of alcohol misuse into account by examining hospital health records on acute alcohol intoxication as well as on alcoholic liver disease. Besides the socio-economic factors mentioned above, we will [2] test the effect of recent policy measures on the German state level on alcohol consumption, namely the ban on alcohol night sales introduced in 2010 in the state of Baden-Wuerttemberg.
 
