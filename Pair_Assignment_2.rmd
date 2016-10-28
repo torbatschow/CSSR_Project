@@ -38,14 +38,6 @@ rm(p, packages)
 
 <!--
 **************************
-***** REQUIRED WORK: *****
-**************************
-1. We should clean up the readme files. Do we really need one per folder? 
-Alex: Seize it down to detailed information (links, date, syntax of filenames)
-2. Work count as off 25.10.2016: 1852 (with references 2036)
-
-
-**************************
 *****   OVERVIEW:    *****
 **************************
 What is our data and where do we get it from?
@@ -64,47 +56,20 @@ What are we controlling for?
 
 # Introduction
 
-<<<<<<< HEAD
-<!--
-What, Why, How, Basic question, Basic answer
-!!!TORBEN TAKES CARE!!!
-
-Structure idea: 
-1. why important?! 
-2. Basic idea
-3. Structure of proposal
-
-A: I did some basic cleaning up, but still needs work.
-
- 
--->
-
-In Western Europe alcohol is a commonly used medium for exhilaration. However, it is also known as a (if not *the most harmful*) drug [@Nutt.2010], be it because of its toxic nature itself or the indirect consequences: The consumption of alcoholic beverages may on the one hand lead to behavioural changes and violent acts, as has been indicated by numerous studies [see e.g. @Parker.1993; @Stolle.2009]. On the other hand alcohol, if consumend regularly and over a longer period of time, does severe damage to individuals' health [see e.g. @WHO.2014; Miller.2007]. It is therefore a policy concern not only to identify reasons and motivation for excessive alcohol consumption but also to develop measures to tackle this problem.
-
 *********************
 *Alternative*
 
 Alcohol has a history of causing both joy and pain. In our research we want to focus on the latter: When pain is so severe that hospital becomes ones destination. As this moment it turns alcohol consumption into a policy concern making a better understanding of underlying socio-economic factors and policy reactions crucial. Even more so, as alcohol can be considered as the most harmful drug when taking negative effects for others into account [@Nutt.2010].
-=======
-In Western Europe alcohol is a commonly used medium for exhilaration. However, it is also known as a harmful (if not *the most harmful*) drug [@Nutt.2010]. This is because of its toxic nature: Alcohol, if consumend in high amounts and/or regularly over a longer period of time, does severe damage to individuals' health [see e.g. @WHO.2014; @Miller.2007]. It is therefore a policy concern not only to identify reasons and motivation for excessive alcohol consumption but also to develop measures to tackle this problem.
-
-It is the aim of this paper to analyse both mentioned dimensions of the *challenge alcohol*. Using the example of all German federal states and time series data for different age groups from 2000 to 2014, we will [1] analyse the possible connection between medical diagnoses of alcohol misuse and possibly explanatory socioeconomic factors like gender, age, unemployment rate, education level, and regional economic performance. For this, we will take both short-term and long-term medical consequences of alcohol misuse into account by examining hospital health records on acute alcohol intoxication as well as on alcoholic liver disease. Besides the socio-economic factors mentioned above, we will [2] test the effect of recent policy measures on the German state level on alcohol consumption, namely the ban on alcohol night sales introduced in 2010 in the state of Baden-Wuerttemberg.
->>>>>>> origin/master
 
 *********************
 
-It is the aim of this paper is to identify factors interacting with alcohol related health problems and to assess alcohol policy interventions against it. Using the data of all German federal states from 2000 to 2014, we will [1] analyse the possible connection between medical diagnoses of alcohol misuse and possibly explanatory socioeconomic factors like age, unemployment rate, regional economic performance and alcohol sales. For this, we will take both short-term and long-term medical consequences of alcohol misuse into account. We will then [2] focus on alcohol policy. We are interested in testing the effect of recent policy measures on alcohol-related health concerns. The case we are looking at is the ban on alcohol night sales which was introduced in 2010 in the state of Baden-Wuerttemberg as a counter-measure to binge-drinking.
+In Western Europe alcohol is a commonly used medium for exhilaration. However, it is also known as a harmful (if not *the most harmful*) drug [@Nutt.2010]. This is because of its toxic nature: Alcohol, if consumend in high amounts and/or regularly over a longer period of time, does severe damage to individuals' health [see e.g. @WHO.2014; @Miller.2007]. It is therefore a policy concern not only to identify reasons and motivation for excessive alcohol consumption but also to develop measures to tackle this problem.
+
+It is the aim of this paper is to identify factors interacting with alcohol related health problems and to assess alcohol policy interventions against it. Using the example of all German federal states and time series data for different age groups from 2000 to 2014, we will [1] analyse the possible connection between medical diagnoses of alcohol misuse and possibly explanatory socioeconomic factors like gender, age, unemployment rate, education level, and regional economic performance. For this, we will take both short-term and long-term medical consequences of alcohol misuse into account by examining hospital health records on acute alcohol intoxication as well as on alcoholic liver disease. Besides the socio-economic factors mentioned above, we will [2] test the effect of recent policy measures on the German state level on alcohol consumption, namely the ban on alcohol night sales introduced in 2010 in the state of Baden-Wuerttemberg.
 
 # Related Literature
 
-<<<<<<< HEAD
-<!--
-!!!TORBEN TAKES CARE!!!
--->
-
-=======
->>>>>>> origin/master
-Our research proposal is inspired by the work of @Marcus.2015 who analysed *"The Effect of a Ban on Late-Night Off-premise Alcohol Sales on Alcohol-Related Hospital Stays in Germany."* They find that the introduction of the alcohol night sales ban reduces alcohol-related hospitalizations among adolescents and young adults by about seven percent. In our analysis, we will not only try to replicate their work with the publicly available data sets. We are also going to build upon it -- by differenciate between short-term and longer-term effects. The focus on socio-economic explanatory factors like economic performance for the alcohol abuse as such is based upon research done by e.g. @Popovici.2013 and @Ettner.1997. Focusing on the United States, the two studies found inconsistent results: While one sees "a positive and significant effect of unemployment on drinking behaviors and the findings are robust to numerous sensitivity tests" [@Popovici.2013] the other argues that "non-employment significantly reduces both alcohol consumption and dependence symptoms, probably due to an income effect." [@Ettner.1997] For the German case, @Henkel.2000 finds a negative correlation between economic situation and alcohol and nicotine consumption.
+Our research proposal is inspired by the work of @Marcus.2015 who analysed *"The Effect of a Ban on Late-Night Off-premise Alcohol Sales on Alcohol-Related Hospital Stays in Germany."* They find that the introduction of the alcohol night sales ban reduces alcohol-related hospitalizations among adolescents and young adults by about seven percent. In our analysis, we will not only try to replicate their work with publicly available data sets. We are also going to build upon it -- by differenciate between short-term and longer-term effects. The focus on socio-economic explanatory factors like economic performance for the alcohol abuse as such is based upon research done by e.g. @Popovici.2013 and @Ettner.1997. Focusing on the United States, the two studies found inconsistent results: While one sees "a positive and significant effect of unemployment on drinking behaviors and the findings are robust to numerous sensitivity tests" [@Popovici.2013] the other argues that "non-employment significantly reduces both alcohol consumption and dependence symptoms, probably due to an income effect." [@Ettner.1997] For the German case, @Henkel.2000 finds a negative correlation between economic situation and alcohol and nicotine consumption.
 
 
 # Data
@@ -134,26 +99,17 @@ However, there are several serious limitations to the data we are using. First o
 
 As already mentioned, our analysis will be supplemented by data from other sources. We are using indicators for the state level. They include the respecitve population, population density, unemployment rates of different age groups, the state GDP and beer sales by state. We are aware of the fact that other alcoholic beverages besides beer probably play a role in the cases under scrutiny. However, with these numbers not available, the beer consumption serves as a proxy for general alcohol consumption in the state. We are collecting the supplementary data from different statistics provided by *Destatis*.
 
-#  Empirical Strategy
+# Empirical Strategy
 
-<<<<<<< HEAD
 We want to make a two stage analysis of short and long-term alcohol-related hospitalizations (ARH)[^ARH]. We will start with a multiple regression for a better understanding of factors correlated to high rates of hospitalizaton for alcohol-related reasons. This analysis shall show how socio-economic characteristics of states are correlated to the number of ARH. To keep it simple, the multiple regression model only includes observations of one year:
-=======
-We want to make a two stage analysis of short and long-term alcohol-related hospitalizations (ARH)[^ARH]. We will start with a multiple regression for a better understanding of factors correlated to high rates of hospitalizaton for alcohol-related reasons. This analysis shall show how socio-economic characteristics of states are correlated to the number of ARH. The simple multiple regression model for one year t looks like this:
->>>>>>> origin/master
 
 \begin{equation}
     ARH_s = \alpha_0 + \alpha_1 \cdot GDP_s + \alpha_2 \cdot UR_s + \alpha_3 \cdot B_s + \alpha_4 \cdot PD_s + \epsilon_s
 \end{equation}
 
-<<<<<<< HEAD
-where $GDP$ stands for the GDP level, $UR$ for the unemployment rate, $B$ for the beer consumption and $PD$ for the population density. All variables are recorded on the state level as indicated by the indices. The regression will be conducted for the aggregated number for all age groups and than specifically for young people (15-25) which are often of particular interest for policy makers.
+where $GDP$ stands for the GDP level, $UR$ for the unemployment rate, $B$ for the beer consumption and $PD$ for the population density. All variables are recorded on the state level as indicated by the indices. The regression will be conducted for the aggregated number for all age groups and than only for young people (15-25) which are often of particular interest for policy makers. We will run this first regression separately for the years 2000, 2007, and 2014.
 
 Based on the idea that individuals adapt to their circumstances and are more reactive to changes than to actual levels we will then analysis ARH difference over time:
-=======
-where $GDP$ stands for the states GDP level, $UR$ for the states unemployment rate, $B$ for the beer consumption in the state and $PD$ for the population density. The regression will be conducted for the aggregated number for all age groups and than for specific age-groups making use of the age-group specific unemployment rate. We will run this first regression as a test model for the years 2000, 2007, and 2014.
-Based on the idea that individuals adapt to their circumstances and are more reactive to changes than to actual levels we will analysis ARH difference:
->>>>>>> origin/master
 
 \begin{equation}
    \Delta ARH_{s,t} = \beta_1 \cdot \Delta GDP_{s, t} + \beta_2 \cdot UR_{s, t} + \beta_3 \cdot \Delta B_{s, t} + \alpha_4 \cdot \Delta PD_s + \epsilon_{s,t}
@@ -167,11 +123,7 @@ In the second step of our analysis, we are looking at the effect of the night sa
    ARH_{s,t} = \gamma_0 + \gamma_1 \cdot dBW_{s} + \gamma_2 \cdot dPOST_t + \gamma_4 \cdot dBAN_{s,t} + \epsilon_{s,t}
 \end{equation}
 
-<<<<<<< HEAD
-where $dBW$ is a dummy variable to indicate the treatmeant group (here the state of Baden-Württemberg), $dPOST$ a dummy indicating the time after the treatment and $dBAN$ a dummy for the night-sale-prohibition ($= 1$ for Baden-Wuerttemberg from 2010 on). Since were are re-engineering @Marcus.2015 here, we will limit the DD application to ARH by young people (15-25). To check for further robustness of the results, we are comparing short-term ARH (F10.0), which should show an effect according to @Marcus.2015, and long-term ARH (K70/F10.2), which should not be affected in the short term by the treatment.
-=======
-where $dBW$ is a dummy variable to indicate the treatmeant group (i.e. the state of Baden-Württemberg), $dPOST$ a time dummy indicating the post-treatment period and $dBAN$ a dummy for the night-sale-prohibition ($= 1$ for Baden-Württemberg from 2010 on). Since were are re-engineering @Marcus.2015 here, we will limit the DD application to ARH by young people (15-25). To check for further robustness of the results, we are comparing short-term ARH (F10.0), which should show an effect according to @Marcus.2015, and long-term ARH (K70/F10.2), which should not be affected in the short term by the treatment.
->>>>>>> origin/master
+where $dBW$ is a dummy variable to indicate the treatmeant group (here the state of Baden-Württemberg), $dPOST$ a time dummy indicating the post-treatment period and $dBAN$ a dummy for the night-sale-prohibition ($= 1$ for Baden-Wuerttemberg from 2010 on). Since were are re-engineering @Marcus.2015 here, we will limit the DD application to ARH by young people (15-25). To check for further robustness of the results, we are comparing short-term ARH (F10.0), which should show an effect according to @Marcus.2015, and long-term ARH (K70/F10.2), which should not be affected in the short term by the treatment.
 
 As the DD approach crucially depends on the common trend assumption, it is advisable to include control variables to capture possible trends affecting treatment and control group differently. We control for youth unemployment ($YUR$) as an economic factor and $B$ as a proxy variable for the general alcohol consumption.
 
@@ -182,18 +134,11 @@ As the DD approach crucially depends on the common trend assumption, it is advis
 Finally, we are refining our DD approach further by turning it into a panel and splitting up the control group. This is the final version of the model, but we expect it to generate less insightful results as we (with all states seperately) have comparably few data points (due to comparably little money to invest in data...).
 
 \begin{equation}
-  ARH_{s,t} = \theta_0 + c_s + z_t + \theta_1 \cdot dBAN_{s,t} + \theta_2 \cdot YUR_{s,t} + \theta_3 \cdot B_{s,t} + \epsilon_{s,t}
+  ARH_{s,t} = \theta_0 + \theta_1 \cdot dBAN_{s,t} + \theta_2 \cdot YUR_{s,t} + \theta_3 \cdot B_{s,t} + c_s + z_t + \epsilon_{s,t}
 \end{equation}
 
-<<<<<<< HEAD
-where $c_s$ now is capturing unobservable and time-invariant heterogeneity of states and $z_t$ time fixed effects affecting all states equally, e.g. a change in a federal law. 
-<!-- T: What do you mean by the following sentence? "This model can be estimated by using dummies for the time-periods and first-differencing or fixed-effects to address the unobserved heterogeneity of states."
-A: This is the estimation strategy for the model. One reason to spell it out was to make it subject to Christophers review (if it is false he would comment on it...)
---> 
+where $c_s$ now is capturing unobservable and time-invariant heterogeneity of states. In addition, we are replacing $dPOST$ with $z_t$ to capture time fixed effects affecting all states, e.g. a change in a federal law. This model can be estimated by using dummies for the time-periods and first-differencing or fixed-effects to address the unobserved heterogeneity of states.
 
-=======
-where $dSTATES$ now is a dummy variable not only separating Baden-Württemberg (treatment group) from the other 15 states (non-treatment group) but a dummy for all states to also include time-invariant state fixed effects. In addition, we are replacing $dPOST$ with $dYEAR$ to capture time fixed effects affecting all states, e.g. a change in a federal law.
->>>>>>> origin/master
 
 # References
 
