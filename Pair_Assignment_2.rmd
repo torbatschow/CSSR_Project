@@ -41,7 +41,8 @@ rm(p, packages)
 *****   OVERVIEW:    *****
 **************************
 What is our data and where do we get it from?
--- Acute alcohol intoxication - ICD10 Code: F10.0 - GBE-Bund
+-- Acute alcohol intoxication - ICD10 Code: F10.0 - GBE-Bund 
+---- Tabelle (gestaltbar): Diagnosedaten der Krankenhäuser nach Wohnsitz (ICD10-4-Steller, ab 2000) 
 -- Alcoholic liver disease - ICD10 Code: K70 - GBE-Bund
 
 What are we controlling for?
@@ -85,6 +86,9 @@ Our research health data origins from the German [hospital diagnosis statistics]
 The data is gathered via the online-interface of the [GBE](http://www.gbe-bund.de/). Unfortunately, the data provider neither provides an API nor a web-scrappable interface. Therefore we download the base tables manually by searching for the respective ICD-10 code, using the malleable tables to gather as much information in a single table as possible and then export them.
 
 To identify alcohol-related health problems we use the diagnose category *F10* (Mental and behavioural disorders due to use of alcohol), more specificly: its subdivision *F10.0* (Acute intoxication) and *F10.2* (Dependence syndrome), and *K70* (Alcoholic liver disease). The diagnoses category *F10.0* essentially captures short term effects of excessive drinking, and can be used as an indicator for binge drinking.[^ICD] The categories *F10.2* and *K70* capture long-term effects of drinking as these diagnoses are consequences of regular drinking.
+The used data has been downloaded on 01 November 2016 and, due to the data platform's table size limitations, consists of three csv files, one for each diagnose category, containing
+the German states, the former area of Western Germany as well as Eastern Germany as columns and
+years (2000-2014), gender (male/female/unknown), and age groups (less than 1 year; 1 to less than 100 years in 5-year groups; older than 100 years).
 
 The advantages of this data is that they reflect a complete survey of all civilian hospitals in Germany for the time-frame of our investigation. Furthermore, the data is not self-reported by patients in interviews but instead consists of the professional diagnoses by a third party, i.e. doctors, which eliminates any problems of possible self-reporting biases. For the case study of Baden-Wuerttemberg's night sale prohibition we do also benefit from the availability of a longer time series as compared to the prior work on the issue by @Marcus.2015. Finally, the state-year aggregation level does allows us to supplement to our analysis a wide variety of other freely available data, e.g. the level of alcohol sales, unemployment rates etc..
 
