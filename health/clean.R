@@ -6,7 +6,7 @@
 # 0. Preparations
 # 1. Classifications
 # 2. Load csv sheets
-# 3. Merge to time series
+# 3. Clean Health Data
 
 ####################################################
 # 0. Preparations
@@ -20,7 +20,7 @@ try(setwd("/home/torben/GIT/Pair_Assignment_2"), silent = TRUE)
 try(setwd("D:/Eigene Datein/Dokumente/Uni/Hertie/Materials/Collaborative Social Science Data Analysis/CSSR_Project"), silent = TRUE)
 
 # Collect packages/libraries we need:
-packages <- c("readxl", "readr")
+packages <- c("readxl", "readr", "plyr", "zoo")
 
 # install packages if not installed before
 for (p in packages) {
@@ -42,33 +42,38 @@ substrRight <- function(x, n){
 }
 
 ################################################
-# 1. classifications
+# 1. Classifications
 ################################################
 
-# Alcohol related diagnoses
-# legend: alc = alcohol, icd10 = classification, 4 = four digit, 3 = three digit
-# s = short
-alc.icd10.4.s <- c("F100", "F101", "F102", "F103", "F104", "F105", "F106", "F107",
-                   "F108", "F109", "T510", "T519")
-# ex = extended
-alc.icd10.4.ex  <- c("K700", "K701", "K702", "K703", "k704", "K709", "G312", 
-                     "K292", "K860", "I426", "G405")
-
-# 3 digit code like Marcus and Siedler (2014)
-alc.icd10.3 <- c("F10", "T51")
 
 #################################################
-# 2. load csv sheets 
+# 2. Load csv Sheets 
 #################################################
 # If there are encoding issues, this one is really helpful: guess_encoding("health/ICD-10_F10-0.csv", n_max = 3)
 
-F100 <- read.csv2("health/ICD-10_F10-0.csv", skip = 15, header = F, sep= ";", fileEncoding ="ISO-8859-1")
-F102 <- read.csv2("health/ICD-10_F10-2.csv", skip = 15, header = F, sep= ";", fileEncoding = "ISO-8859-1")
-K70 <- read.csv2("health/ICD-10_K70.csv", skip = 15, header = F, sep= ";", fileEncoding = "ISO-8859-1")
+F100 <- as.data.frame(read.csv2("health/ICD-10_F10-0.csv", skip = 15, header = F, fileEncoding ="ISO-8859-1", stringsAsFactors = FALSE))
+F102 <- as.data.frame(read.csv2("health/ICD-10_F10-2.csv", skip = 15, header = F, sep= ";", fileEncoding = "ISO-8859-1", stringsAsFactors = FALSE))
+K70 <- as.data.frame(read.csv2("health/ICD-10_K70.csv", skip = 15, header = F, sep= ";", fileEncoding = "ISO-8859-1", stringsAsFactors = FALSE))
 
 ###########################################
-# 3. merge to time series
+# 3. Clean Health Data
 #############################################
+
+F100 <- as.data.frame(lapply(F100, function(x) trimws(x)), stringsAsFactors = FALSE)
+F100[F100 == ""] <- NA
+F100$V1 <- na.locf(F100$V1, na.rm = FALSE)
+F100$V2 <- na.locf(F100$V2, na.rm = FALSE)
+F100$V3 <- mapvalues(F100$V3, c("Unter 1 Jahr", "1 Jahr bis unter 5 Jahre", "5 bis unter 10 Jahre", "10 bis unter 15 Jahre", "15 bis unter 20 Jahre", "20 bis unter 25 Jahre", "25 bis unter 30 Jahre", "30 bis unter 35 Jahre", "35 bis unter 40 Jahre", "40 bis unter 45 Jahre", "45 bis unter 50 Jahre", "50 bis unter 55 Jahre", "55 bis unter 60 Jahre", "60 bis unter 65 Jahre", "65 bis unter 70 Jahre", "70 bis unter 75 Jahre", "75 bis unter 80 Jahre", "80 bis unter 85 Jahre", "85 bis unter 90 Jahre", "90 bis unter 95 Jahre", "95 bis unter 100 Jahre", "100 Jahre und älter"), c("<1y", "1-4y", "5-9y", "10-14y", "15-19y", "20-24y", "25-29y", "30-34y", "35-39y", "40-44y", "45-49y", "50-54y", "55-59y", "60-64y", "65-69y", "70-74y", "75-79y", "80-84y", "85-89y", "90-94y", "95-99y", ">=100y"))
+F100 <- F100[-c(992:1001),]
+
+
+
+levels(F100$V3) <- c("", ">100y", "10-14y", "15-19y", "1-4y", "20-24y", "24-29y", "30-34y", "35-39y", "40-44y", "45-49y", "50-54y", "55-59y", "5-9y", "60-64y", "65-69y", "70-74y", "75-79y", "80-84y", "85-89y", "90-94y", "95-99y", "<1y")
+
+
+
+
+
 
 #merged data frame with 4 digit ICD-10 code by gender and age
 diag.g.n <- do.call(rbind,lapply(ls(pattern='diag.g.n..*'),
