@@ -5,7 +5,7 @@
 
 # 0. Preparations
 # 1. Classifications
-# 2. Load excel sheets
+# 2. Load csv sheets
 # 3. Merge to time series
 
 ####################################################
@@ -20,7 +20,7 @@ try(setwd("/home/torben/GIT/Pair_Assignment_2"), silent = TRUE)
 try(setwd("D:/Eigene Datein/Dokumente/Uni/Hertie/Materials/Collaborative Social Science Data Analysis/CSSR_Project"), silent = TRUE)
 
 # Collect packages/libraries we need:
-packages <- c("readxl")
+packages <- c("readxl", "readr")
 
 # install packages if not installed before
 for (p in packages) {
@@ -58,118 +58,13 @@ alc.icd10.4.ex  <- c("K700", "K701", "K702", "K703", "k704", "K709", "G312",
 alc.icd10.3 <- c("F10", "T51")
 
 #################################################
-# 2. load excel sheets 
+# 2. load csv sheets 
 #################################################
-# legend: diag = diagnoses, g = gender, n = number, r = region/state
-# reason for choice of package: http://stackoverflow.com/questions/7049272/importing-xlsx-file-into-r
-# they are slightly different -> each one individually loaded
+# If there are encoding issues, this one is really helpful: guess_encoding("health/ICD-10_F10-0.csv", n_max = 3)
 
-# ICD-10 4-digit gender&number by year
-diag.g.n.2000 <- read_excel("health/5231301007015.xls", sheet = 5)
-
-diag.g.n.2001 <- read_excel("health/5231301017015.xls", sheet = 5)
-
-diag.g.n.2002 <- read_excel("health/5231301027015.xls", sheet = 5)
-diag.g.n.2002[is.na(diag.g.n.2002)] <- 0
-
-diag.g.n.2003 <- read_excel("health/5231301037015.xls", sheet = 5)
-
-diag.g.n.2004 <- read_excel("health/5231301047015.xls", sheet = 5)
-
-diag.g.n.2005 <- read_excel("health/5231301057015.xls", sheet = 6)
-
-diag.g.n.2006 <- read_excel("health/5231301067015.xls", sheet = 6)
-diag.g.n.2006[is.na(diag.g.n.2006)] <- 0
-
-diag.g.n.2007 <- read_excel("health/5231301077015.xls", sheet = 6)
-diag.g.n.2007[is.na(diag.g.n.2007)] <- 0
-
-diag.g.n.2008 <- read_excel("health/5231301087015.xls", sheet = 6)
-diag.g.n.2008[is.na(diag.g.n.2008)] <- 0
-
-diag.g.n.2009 <- read_excel("health/5231301097015.xls", sheet = 6)
-colnames(diag.g.n.2009) <- diag.g.n.2009[1,]
-diag.g.n.2009 <- diag.g.n.2009[-1,]
-diag.g.n.2009[, -(1:2)] <- sapply(diag.g.n.2009[, -(1:2)], as.numeric)
-diag.g.n.2009[is.na(diag.g.n.2009)] <- 0
-
-diag.g.n.2010 <- read_excel("health/5231301107015.xls", sheet = 5)
-colnames(diag.g.n.2010) <- diag.g.n.2010[1,]
-diag.g.n.2010 <- diag.g.n.2010[-1,]
-diag.g.n.2010[, -(1:2)] <- sapply(diag.g.n.2010[, -(1:2)], as.numeric)
-diag.g.n.2010[is.na(diag.g.n.2010)] <- 0
-
-diag.g.n.2011 <- read_excel("health/5231301117015.xls", sheet = 5)
-colnames(diag.g.n.2011) <- diag.g.n.2011[1,]
-diag.g.n.2011 <- diag.g.n.2011[-1,]
-diag.g.n.2011[, -(1:2)] <- sapply(diag.g.n.2011[, -(1:2)], as.numeric)
-diag.g.n.2011[is.na(diag.g.n.2011)] <- 0
-
-diag.g.n.2012 <- read_excel("health/5231301127015.xlsx", sheet = 5)
-colnames(diag.g.n.2012) <- diag.g.n.2012[1,]
-diag.g.n.2012 <- diag.g.n.2012[-1,]
-diag.g.n.2012[is.na(diag.g.n.2012)] <- 0
-
-diag.g.n.2013 <- read_excel("health/5231301137015.xlsx", sheet = 5)
-colnames(diag.g.n.2013) <- diag.g.n.2013[1,]
-diag.g.n.2013 <- diag.g.n.2013[-1,]
-diag.g.n.2013[is.na(diag.g.n.2013)] <- 0
-
-# ICD-10 3 digit by region&number
-diag.r.n.2000 <- read_excel("health/5231301007015.xls", sheet = 9)
-
-diag.r.n.2001 <- read_excel("health/5231301017015.xls", sheet = 9)
-
-diag.r.n.2002 <- read_excel("health/5231301027015.xls", sheet = 9)
-diag.r.n.2002[is.na(diag.r.n.2002)] <- 0
-
-diag.r.n.2003 <- read_excel("health/5231301037015.xls", sheet = 9)
-
-diag.r.n.2004 <- read_excel("health/5231301047015.xls", sheet = 9)
-
-diag.r.n.2000 <- read_excel("health/5231301007015.xls", sheet = 9)
-
-diag.r.n.2001 <- read_excel("health/5231301017015.xls", sheet = 9)
-
-diag.r.n.2005 <- read_excel("health/5231301057015.xls", sheet = 10)
-
-diag.r.n.2006 <- read_excel("health/5231301067015.xls", sheet = 10)
-diag.r.n.2006[is.na(diag.r.n.2006)] <- 0
-
-diag.r.n.2007 <- read_excel("health/5231301077015.xls", sheet = 10)
-diag.r.n.2007[is.na(diag.r.n.2007)] <- 0
-
-diag.r.n.2008 <- read_excel("health/5231301087015.xls", sheet = 10)
-diag.r.n.2008[is.na(diag.r.n.2008)] <- 0
-
-diag.r.n.2009 <- read_excel("health/5231301097015.xls", sheet = 10)
-colnames(diag.r.n.2009) <- diag.r.n.2009[1,]
-diag.r.n.2009 <- diag.r.n.2009[-1,]
-diag.r.n.2009[, -(1:2)] <- sapply(diag.r.n.2009[, -(1:2)], as.numeric)
-diag.r.n.2009[is.na(diag.r.n.2009)] <- 0
-
-diag.r.n.2010 <- read_excel("health/5231301107015.xls", sheet = 9)
-colnames(diag.r.n.2010) <- diag.r.n.2010[1,]
-diag.r.n.2010 <- diag.r.n.2010[-1,]
-diag.r.n.2010[, -(1:2)] <- sapply(diag.r.n.2010[, -(1:2)], as.numeric)
-diag.r.n.2010[is.na(diag.r.n.2010)] <- 0
-
-diag.r.n.2011 <- read_excel("health/5231301117015.xls", sheet = 9)
-colnames(diag.r.n.2011) <- diag.r.n.2011[1,]
-diag.r.n.2011 <- diag.r.n.2011[-1,]
-diag.r.n.2011[, -(1:2)] <- sapply(diag.r.n.2011[, -(1:2)], as.numeric)
-diag.r.n.2011[is.na(diag.r.n.2011)] <- 0
-
-diag.r.n.2012 <- read_excel("health/5231301127015.xlsx", sheet = 9)
-colnames(diag.r.n.2012) <- diag.r.n.2012[1,]
-diag.r.n.2012 <- diag.r.n.2012[-1,]
-diag.r.n.2012[is.na(diag.r.n.2012)] <- 0
-
-diag.r.n.2013 <- read_excel("health/5231301137015.xlsx", sheet = 9)
-colnames(diag.r.n.2013) <- diag.r.n.2013[1,]
-diag.r.n.2013 <- diag.r.n.2013[-1,]
-diag.r.n.2013[is.na(diag.r.n.2013)] <- 0
-
+F100 <- read.csv2("health/ICD-10_F10-0.csv", skip = 15, header = F, sep= ";", fileEncoding ="ISO-8859-1")
+F102 <- read.csv2("health/ICD-10_F10-2.csv", skip = 15, header = F, sep= ";", fileEncoding = "ISO-8859-1")
+K70 <- read.csv2("health/ICD-10_K70.csv", skip = 15, header = F, sep= ";", fileEncoding = "ISO-8859-1")
 
 ###########################################
 # 3. merge to time series
