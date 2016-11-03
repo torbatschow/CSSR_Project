@@ -31,10 +31,12 @@ rm(list=ls())
 
 ## Setting Working directory
 try(setwd("/home/torben/GIT/Pair_Assignment_2"), silent = TRUE)
-try(setwd("D:/Eigene Datein/Dokumente/Uni/Hertie/Materials/Collaborative Social Science Data Analysis/CSSR_Project"), silent = TRUE)
+try(setwd("D:/Eigene Datein/Dokumente/Uni/Hertie/Materials/Collaborative 
+          Social Science Data Analysis/CSSR_Project"), silent = TRUE)
 
 # Collect packages/libraries we need:
-packages <- c("readxl", "readr", "plyr", "zoo","reshape", "spatstat", "lattice")
+packages <- c("readxl", "readr", "plyr", "zoo","reshape", "spatstat", 
+              "lattice")
 
 # install packages if not installed before
 for (p in packages) {
@@ -63,7 +65,8 @@ rm(p, packages)
 #################################################
 # 2. Load csv Sheets 
 #################################################
-# If there are encoding issues, this one is really helpful: guess_encoding("health/ICD-10_F10-0.csv", n_max = 3)
+# If there are encoding issues, this one is really helpful: 
+# guess_encoding("health/ICD-10_F10-0.csv", n_max = 3)
 
 F100 <- as.data.frame(read.csv2("health/ICD-10_F10-0.csv", skip = 15, 
                                 header = F, fileEncoding ="ISO-8859-1", 
@@ -110,7 +113,9 @@ F100$GENDER <- na.locf(F100$GENDER, na.rm = FALSE)
 
 # Recode GENDER and make it factor
 F100$GENDER <- as.factor(F100$GENDER)
-F100$GENDER <- mapvalues(F100$GENDER, from = c("Männlich", "Weiblich", "Unbekannt"), to = c("M", "F", "U"))
+F100$GENDER <- mapvalues(F100$GENDER, from = c("Männlich", "Weiblich", 
+                                               "Unbekannt"), to = c("M", "F", 
+                                                                    "U"))
 F100$GENDER <- factor(F100$GENDER, levels = c("M", "F", "U"))
 
 # Recode AGE and make it factor
@@ -127,11 +132,10 @@ F100$AGE <- mapvalues(F100$AGE,
                         "85 bis unter 90 Jahre", "90 bis unter 95 Jahre", 
                         "95 bis unter 100 Jahre", "100 Jahre und älter"), 
                      c("<1y", "1-4y", "5-9y", "10-14y",
-                       "15-19y", "20-24y", "25-29y", "30-34y",
-                       "35-39y", "40-44y", "45-49y", "50-54y", 
-                       "55-59y", "60-64y", "65-69y", "70-74y", 
-                       "75-79y", "80-84y", "85-89y", "90-94y", 
-                       "95-99y", "100y +"))
+                       "15-19y", "20-24y", "25-29y", "30-34y", "35-39y", 
+                       "40-44y", "45-49y", "50-54y", "55-59y", "60-64y", 
+                       "65-69y", "70-74y", "75-79y", "80-84y", "85-89y", 
+                       "90-94y", "95-99y", "100y +"))
 F100$AGE <- as.factor(F100$AGE)
 F100$AGE <- factor(F100$AGE, levels = c("<1y", "1-4y", "5-9y", "10-14y",
                                         "15-19y", "20-24y", "25-29y", "30-34y",
@@ -155,13 +159,17 @@ F100$STATE <- mapvalues(as.matrix(F100$STATE),
                         "DE-SN", "DE-ST", "DE-SH", "DE-TH", "DE-West", 
                         "DE-East", "Foreign_NA"))
 F100$STATE <- as.factor(F100$STATE)
-F100$STATE <- factor(F100$STATE, levels = c("DE-BW", "DE-BY", "DE-BE", "DE-BB", "DE-HB", "DE-HH", 
-                                            "DE-HE", "DE-MV", "DE-NI", "DE-NW", "DE-RP", "DE-SL", 
-                                            "DE-SN", "DE-ST", "DE-SH", "DE-TH", "DE-West", 
-                                            "DE-East", "Foreign_NA"))
+F100$STATE <- factor(F100$STATE, levels = c("DE-BW", "DE-BY", "DE-BE",
+                                            "DE-BB", "DE-HB", "DE-HH", 
+                                            "DE-HE", "DE-MV", "DE-NI", 
+                                            "DE-NW", "DE-RP", "DE-SL", 
+                                            "DE-SN", "DE-ST", "DE-SH", 
+                                            "DE-TH", "DE-West", "DE-East", 
+                                            "Foreign_NA"))
 
 # Make F100_CASES numeric
-F100$F100_CASES <- as.numeric(sub(".", "", as.character(F100$F100_CASES), fixed = TRUE))
+F100$F100_CASES <- as.numeric(sub(".", "", as.character(F100$F100_CASES), 
+                                  fixed = TRUE))
 
 # Fill "NA" in F100_CASES with 0, as "no cases" was coded by an empty cell
 F100$F100_CASES[is.na(F100$F100_CASES)] <- 0
@@ -201,7 +209,9 @@ F102$GENDER <- na.locf(F102$GENDER, na.rm = FALSE)
 
 # Recode GENDER and make it factor
 F102$GENDER <- as.factor(F102$GENDER)
-F102$GENDER <- mapvalues(F102$GENDER, from = c("Männlich", "Weiblich", "Unbekannt"), to = c("M", "F", "U"))
+F102$GENDER <- mapvalues(F102$GENDER, from = c("Männlich", "Weiblich", 
+                                               "Unbekannt"), to = c("M", "F", 
+                                                                    "U"))
 F102$GENDER <- factor(F102$GENDER, levels = c("M", "F", "U"))
 
 # Recode AGE and make it factor
@@ -218,11 +228,10 @@ F102$AGE <- mapvalues(F102$AGE,
                         "85 bis unter 90 Jahre", "90 bis unter 95 Jahre", 
                         "95 bis unter 100 Jahre", "100 Jahre und älter"), 
                       c("<1y", "1-4y", "5-9y", "10-14y",
-                        "15-19y", "20-24y", "25-29y", "30-34y",
-                        "35-39y", "40-44y", "45-49y", "50-54y", 
-                        "55-59y", "60-64y", "65-69y", "70-74y", 
-                        "75-79y", "80-84y", "85-89y", "90-94y", 
-                        "95-99y", "100y +"))
+                        "15-19y", "20-24y", "25-29y", "30-34y", "35-39y", 
+                        "40-44y", "45-49y", "50-54y", "55-59y", "60-64y", 
+                        "65-69y", "70-74y", "75-79y", "80-84y", "85-89y", 
+                        "90-94y", "95-99y", "100y +"))
 F102$AGE <- as.factor(F102$AGE)
 F102$AGE <- factor(F102$AGE, levels = c("<1y", "1-4y", "5-9y", "10-14y",
                                         "15-19y", "20-24y", "25-29y", "30-34y",
@@ -233,8 +242,8 @@ F102$AGE <- factor(F102$AGE, levels = c("<1y", "1-4y", "5-9y", "10-14y",
 
 # Recode STATE and make it factor
 F102$STATE <- mapvalues(as.matrix(F102$STATE), 
-                        c("Baden-Württemberg", "Bayern", "Berlin", "Brandenburg", 
-                          "Bremen", "Hamburg", "Hessen", 
+                        c("Baden-Württemberg", "Bayern", "Berlin", 
+                          "Brandenburg", "Bremen", "Hamburg", "Hessen", 
                           "Mecklenburg-Vorpommern", "Niedersachsen", 
                           "Nordrhein-Westfalen", "Rheinland-Pfalz", "Saarland", 
                           "Sachsen", "Sachsen-Anhalt", "Schleswig-Holstein", 
@@ -246,13 +255,17 @@ F102$STATE <- mapvalues(as.matrix(F102$STATE),
                           "DE-SN", "DE-ST", "DE-SH", "DE-TH", "DE-West", 
                           "DE-East", "Foreign_NA"))
 F102$STATE <- as.factor(F102$STATE)
-F102$STATE <- factor(F102$STATE, levels = c("DE-BW", "DE-BY", "DE-BE", "DE-BB", "DE-HB", "DE-HH", 
-                                            "DE-HE", "DE-MV", "DE-NI", "DE-NW", "DE-RP", "DE-SL", 
-                                            "DE-SN", "DE-ST", "DE-SH", "DE-TH", "DE-West", 
-                                            "DE-East", "Foreign_NA"))
+F102$STATE <- factor(F102$STATE, levels = c("DE-BW", "DE-BY", "DE-BE", 
+                                            "DE-BB", "DE-HB", "DE-HH", 
+                                            "DE-HE", "DE-MV", "DE-NI", 
+                                            "DE-NW", "DE-RP", "DE-SL", 
+                                            "DE-SN", "DE-ST", "DE-SH", 
+                                            "DE-TH", "DE-West", "DE-East", 
+                                            "Foreign_NA"))
 
 # Make F102_CASES numeric
-F102$F102_CASES <- as.numeric(sub(".", "", as.character(F102$F102_CASES), fixed = TRUE))
+F102$F102_CASES <- as.numeric(sub(".", "", as.character(F102$F102_CASES), 
+                                  fixed = TRUE))
 
 # Fill "NA" in F102_CASES with 0, as "no cases" was coded by an empty cell
 F102$F102_CASES[is.na(F102$F102_CASES)] <- 0
