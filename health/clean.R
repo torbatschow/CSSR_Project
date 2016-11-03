@@ -3,6 +3,20 @@
 ## by: Alex&Torben
 ##################################################
 
+##################################################
+## REMARKS
+##################################################
+# At the end of this script, we have a dataframe named HEALTH containing all
+# cases of F10.0, F10.2, and K70 for:
+# YEAR (2000 - 2014)
+# GENDER (M = male, F = female, U = unknown)
+# AGE (5-year age groups)
+# STATE (Patients residents in 16 German States, plus Western Germany, 
+#        Eastern Germany, and Foreign)
+
+##################################################
+## CONTENT
+##################################################
 # 0. Preparations
 # 1. Classifications
 # 2. Load csv sheets
@@ -20,7 +34,7 @@ try(setwd("/home/torben/GIT/Pair_Assignment_2"), silent = TRUE)
 try(setwd("D:/Eigene Datein/Dokumente/Uni/Hertie/Materials/Collaborative Social Science Data Analysis/CSSR_Project"), silent = TRUE)
 
 # Collect packages/libraries we need:
-packages <- c("readxl", "readr", "plyr", "zoo","reshape", "spatstat")
+packages <- c("readxl", "readr", "plyr", "zoo","reshape", "spatstat", "lattice")
 
 # install packages if not installed before
 for (p in packages) {
@@ -37,9 +51,9 @@ rm(p, packages)
 # functions
 
 # identify last characters
-substrRight <- function(x, n){
-  substr(x, nchar(x)-n+1, nchar(x))
-}
+#substrRight <- function(x, n){
+#  substr(x, nchar(x)-n+1, nchar(x))
+#}
 
 ################################################
 # 1. Classifications
@@ -53,17 +67,21 @@ substrRight <- function(x, n){
 
 F100 <- as.data.frame(read.csv2("health/ICD-10_F10-0.csv", skip = 15, 
                                 header = F, fileEncoding ="ISO-8859-1", 
-                                stringsAsFactors = FALSE))
+                                stringsAsFactors = FALSE, dec = ","))
 F102 <- as.data.frame(read.csv2("health/ICD-10_F10-2.csv", skip = 15, 
                                 header = F, fileEncoding = "ISO-8859-1", 
-                                stringsAsFactors = FALSE))
+                                stringsAsFactors = FALSE, dec = ","))
 K70 <- as.data.frame(read.csv2("health/ICD-10_K70.csv", skip = 15, 
                                header = F, fileEncoding = "ISO-8859-1", 
-                               stringsAsFactors = FALSE))
+                               stringsAsFactors = FALSE, dec = ","))
 
 ###########################################
 # 3. Clean Health Data
-#############################################
+###########################################
+
+###########################################
+# 3.1 ICD-10 Code F10.0 
+###########################################
 
 # Delete last rows with stats sources etc.
 F100 <- F100[-c(992:1001),]
@@ -78,12 +96,25 @@ F100 <- as.data.frame(lapply(F100, function(x) trimws(x)),
 # Recode empty cells
 F100[F100 == ""] <- NA
 
+# Rename columns
+colnames(F100) <- c("YEAR", "GENDER", "AGE", F100[1,4:22])
+F100 <- F100[-1,]
+
+# Transpose STATES and rename columns
+F100 <- melt(F100, id = 1:3, measured = 4:22)
+colnames(F100) <- c("YEAR", "GENDER", "AGE", "STATE", "F100_CASES")
+
 # Filling the empty cells in YEAR and GENDER column
-F100$V1 <- na.locf(F100$V1, na.rm = FALSE)
-F100$V2 <- na.locf(F100$V2, na.rm = FALSE)
+F100$YEAR <- na.locf(F100$YEAR, na.rm = FALSE)
+F100$GENDER <- na.locf(F100$GENDER, na.rm = FALSE)
+
+# Recode GENDER and make it factor
+F100$GENDER <- as.factor(F100$GENDER)
+F100$GENDER <- mapvalues(F100$GENDER, from = c("Männlich", "Weiblich", "Unbekannt"), to = c("M", "F", "U"))
+F100$GENDER <- factor(F100$GENDER, levels = c("M", "F", "U"))
 
 # Recode AGE and make it factor
-F100$V3 <- mapvalues(F100$V3, 
+F100$AGE <- mapvalues(F100$AGE, 
                      c("Unter 1 Jahr", "1 Jahr bis unter 5 Jahre", 
                         "5 bis unter 10 Jahre", "10 bis unter 15 Jahre", 
                         "15 bis unter 20 Jahre", "20 bis unter 25 Jahre", 
@@ -95,15 +126,22 @@ F100$V3 <- mapvalues(F100$V3,
                         "75 bis unter 80 Jahre", "80 bis unter 85 Jahre", 
                         "85 bis unter 90 Jahre", "90 bis unter 95 Jahre", 
                         "95 bis unter 100 Jahre", "100 Jahre und älter"), 
-                     c("<1y", "1-4y", "5-9y", "10-14y", "15-19y", "20-24y", 
-                       "25-29y", "30-34y", "35-39y", "40-44y", "45-49y", 
-                       "50-54y", "55-59y", "60-64y", "65-69y", "70-74y", 
-                       "75-79y", "80-84y", "85-89y", "90-94y", "95-99y", 
-                       ">=100y"))
+                     c("<1y", "1-4y", "5-9y", "10-14y",
+                       "15-19y", "20-24y", "25-29y", "30-34y",
+                       "35-39y", "40-44y", "45-49y", "50-54y", 
+                       "55-59y", "60-64y", "65-69y", "70-74y", 
+                       "75-79y", "80-84y", "85-89y", "90-94y", 
+                       "95-99y", "100y +"))
 F100$AGE <- as.factor(F100$AGE)
+F100$AGE <- factor(F100$AGE, levels = c("<1y", "1-4y", "5-9y", "10-14y",
+                                        "15-19y", "20-24y", "25-29y", "30-34y",
+                                        "35-39y", "40-44y", "45-49y", "50-54y", 
+                                        "55-59y", "60-64y", "65-69y", "70-74y", 
+                                        "75-79y", "80-84y", "85-89y", "90-94y", 
+                                        "95-99y", "100y +"))
 
 # Recode STATE and make it factor
-F100[1,] <- mapvalues(as.matrix(F100[1,]), 
+F100$STATE <- mapvalues(as.matrix(F100$STATE), 
                       c("Baden-Württemberg", "Bayern", "Berlin", "Brandenburg", 
                         "Bremen", "Hamburg", "Hessen", 
                         "Mecklenburg-Vorpommern", "Niedersachsen", 
@@ -117,49 +155,219 @@ F100[1,] <- mapvalues(as.matrix(F100[1,]),
                         "DE-SN", "DE-ST", "DE-SH", "DE-TH", "DE-West", 
                         "DE-East", "Foreign_NA"))
 F100$STATE <- as.factor(F100$STATE)
+F100$STATE <- factor(F100$STATE, levels = c("DE-BW", "DE-BY", "DE-BE", "DE-BB", "DE-HB", "DE-HH", 
+                                            "DE-HE", "DE-MV", "DE-NI", "DE-NW", "DE-RP", "DE-SL", 
+                                            "DE-SN", "DE-ST", "DE-SH", "DE-TH", "DE-West", 
+                                            "DE-East", "Foreign_NA"))
 
-# Transpose STATES and rename columns
-colnames(F100) <- c("YEAR", "GENDER", "AGE", F100[1,4:22])
-F100 <- F100[-1,]
-F100 <- melt(F100, id = 1:3, measured = 4:22)
-colnames(F100) <- c("YEAR", "GENDER", "AGE", "STATE", "F100_CASES")
-
-# Make F100 numeric
-F100$F100_CASES <- as.numeric(as.character(F100$F100_CASES))
-F100$F100_CASES <- round(F100$F100_CASES, 0)
-
-# Recode GENDER and make it factor
-F100$GENDER <- as.factor(F100$GENDER)
-F100$GENDER <- mapvalues(F100$GENDER, from = c("Männlich", "Weiblich", "Unbekannt"), to = c("M", "F", "U"))
+# Make F100_CASES numeric
+F100$F100_CASES <- as.numeric(sub(".", "", as.character(F100$F100_CASES), fixed = TRUE))
 
 # Fill "NA" in F100_CASES with 0, as "no cases" was coded by an empty cell
-F100$F100_CASES[is.na(F100$F100_CASES)] <- "0"
+F100$F100_CASES[is.na(F100$F100_CASES)] <- 0
+
+# Re-order: STATE -> YEAR -> GENDER -> AGE
+F100 <- F100[order(F100$STATE, F100$YEAR, F100$GENDER, F100$AGE),]
+rownames(F100) <- 1:nrow(F100)
+
+###########################################
+# 3.2 ICD-10 Code F10.2
+###########################################
+
+# Delete last rows with stats sources etc.
+F102 <- F102[-c(992:1001),]
+
+# Delete empty last column
+F102 <- F102[,-23]
+
+# Delete leading and tailing whitespace
+F102 <- as.data.frame(lapply(F102, function(x) trimws(x)), 
+                      stringsAsFactors = FALSE)
+
+# Recode empty cells
+F102[F102 == ""] <- NA
+
+# Rename columns
+colnames(F102) <- c("YEAR", "GENDER", "AGE", F102[1,4:22])
+F102 <- F102[-1,]
+
+# Transpose STATES and rename columns
+F102 <- melt(F102, id = 1:3, measured = 4:22)
+colnames(F102) <- c("YEAR", "GENDER", "AGE", "STATE", "F102_CASES")
+
+# Filling the empty cells in YEAR and GENDER column
+F102$YEAR <- na.locf(F102$YEAR, na.rm = FALSE)
+F102$GENDER <- na.locf(F102$GENDER, na.rm = FALSE)
+
+# Recode GENDER and make it factor
+F102$GENDER <- as.factor(F102$GENDER)
+F102$GENDER <- mapvalues(F102$GENDER, from = c("Männlich", "Weiblich", "Unbekannt"), to = c("M", "F", "U"))
+F102$GENDER <- factor(F102$GENDER, levels = c("M", "F", "U"))
+
+# Recode AGE and make it factor
+F102$AGE <- mapvalues(F102$AGE, 
+                      c("Unter 1 Jahr", "1 Jahr bis unter 5 Jahre", 
+                        "5 bis unter 10 Jahre", "10 bis unter 15 Jahre", 
+                        "15 bis unter 20 Jahre", "20 bis unter 25 Jahre", 
+                        "25 bis unter 30 Jahre", "30 bis unter 35 Jahre", 
+                        "35 bis unter 40 Jahre", "40 bis unter 45 Jahre", 
+                        "45 bis unter 50 Jahre", "50 bis unter 55 Jahre", 
+                        "55 bis unter 60 Jahre", "60 bis unter 65 Jahre", 
+                        "65 bis unter 70 Jahre", "70 bis unter 75 Jahre", 
+                        "75 bis unter 80 Jahre", "80 bis unter 85 Jahre", 
+                        "85 bis unter 90 Jahre", "90 bis unter 95 Jahre", 
+                        "95 bis unter 100 Jahre", "100 Jahre und älter"), 
+                      c("<1y", "1-4y", "5-9y", "10-14y",
+                        "15-19y", "20-24y", "25-29y", "30-34y",
+                        "35-39y", "40-44y", "45-49y", "50-54y", 
+                        "55-59y", "60-64y", "65-69y", "70-74y", 
+                        "75-79y", "80-84y", "85-89y", "90-94y", 
+                        "95-99y", "100y +"))
+F102$AGE <- as.factor(F102$AGE)
+F102$AGE <- factor(F102$AGE, levels = c("<1y", "1-4y", "5-9y", "10-14y",
+                                        "15-19y", "20-24y", "25-29y", "30-34y",
+                                        "35-39y", "40-44y", "45-49y", "50-54y", 
+                                        "55-59y", "60-64y", "65-69y", "70-74y", 
+                                        "75-79y", "80-84y", "85-89y", "90-94y", 
+                                        "95-99y", "100y +"))
+
+# Recode STATE and make it factor
+F102$STATE <- mapvalues(as.matrix(F102$STATE), 
+                        c("Baden-Württemberg", "Bayern", "Berlin", "Brandenburg", 
+                          "Bremen", "Hamburg", "Hessen", 
+                          "Mecklenburg-Vorpommern", "Niedersachsen", 
+                          "Nordrhein-Westfalen", "Rheinland-Pfalz", "Saarland", 
+                          "Sachsen", "Sachsen-Anhalt", "Schleswig-Holstein", 
+                          "Thüringen", "Früheres Bundesgebiet und Berlin-Ost", 
+                          "Neue Länder ohne Berlin-Ost", 
+                          "Ausland oder unbekannt"), 
+                        c("DE-BW", "DE-BY", "DE-BE", "DE-BB", "DE-HB", "DE-HH", 
+                          "DE-HE", "DE-MV", "DE-NI", "DE-NW", "DE-RP", "DE-SL", 
+                          "DE-SN", "DE-ST", "DE-SH", "DE-TH", "DE-West", 
+                          "DE-East", "Foreign_NA"))
+F102$STATE <- as.factor(F102$STATE)
+F102$STATE <- factor(F102$STATE, levels = c("DE-BW", "DE-BY", "DE-BE", "DE-BB", "DE-HB", "DE-HH", 
+                                            "DE-HE", "DE-MV", "DE-NI", "DE-NW", "DE-RP", "DE-SL", 
+                                            "DE-SN", "DE-ST", "DE-SH", "DE-TH", "DE-West", 
+                                            "DE-East", "Foreign_NA"))
+
+# Make F102_CASES numeric
+F102$F102_CASES <- as.numeric(sub(".", "", as.character(F102$F102_CASES), fixed = TRUE))
+
+# Fill "NA" in F102_CASES with 0, as "no cases" was coded by an empty cell
+F102$F102_CASES[is.na(F102$F102_CASES)] <- 0
+
+# Re-order: STATE -> YEAR -> GENDER -> AGE
+F102 <- F102[order(F102$STATE, F102$YEAR, F102$GENDER, F102$AGE),]
+rownames(F102) <- 1:nrow(F102)
+
+###########################################
+# 3.3 ICD-10 Code K70
+###########################################
+
+# Delete last rows with stats sources etc.
+K70 <- K70[-c(992:1001),]
+
+# Delete empty last column
+K70 <- K70[,-23]
+
+# Delete leading and tailing whitespace
+K70 <- as.data.frame(lapply(K70, function(x) trimws(x)), 
+                      stringsAsFactors = FALSE)
+
+# Recode empty cells
+K70[K70 == ""] <- NA
+
+# Rename columns
+colnames(K70) <- c("YEAR", "GENDER", "AGE", K70[1,4:22])
+K70 <- K70[-1,]
+
+# Transpose STATES and rename columns
+K70 <- melt(K70, id = 1:3, measured = 4:22)
+colnames(K70) <- c("YEAR", "GENDER", "AGE", "STATE", "K70_CASES")
+
+# Filling the empty cells in YEAR and GENDER column
+K70$YEAR <- na.locf(K70$YEAR, na.rm = FALSE)
+K70$GENDER <- na.locf(K70$GENDER, na.rm = FALSE)
+
+# Recode GENDER and make it factor
+K70$GENDER <- as.factor(K70$GENDER)
+K70$GENDER <- mapvalues(K70$GENDER, from = c("Männlich", "Weiblich", "Unbekannt"), to = c("M", "F", "U"))
+K70$GENDER <- factor(K70$GENDER, levels = c("M", "F", "U"))
+
+# Recode AGE and make it factor
+K70$AGE <- mapvalues(K70$AGE, 
+                      c("Unter 1 Jahr", "1 Jahr bis unter 5 Jahre", 
+                        "5 bis unter 10 Jahre", "10 bis unter 15 Jahre", 
+                        "15 bis unter 20 Jahre", "20 bis unter 25 Jahre", 
+                        "25 bis unter 30 Jahre", "30 bis unter 35 Jahre", 
+                        "35 bis unter 40 Jahre", "40 bis unter 45 Jahre", 
+                        "45 bis unter 50 Jahre", "50 bis unter 55 Jahre", 
+                        "55 bis unter 60 Jahre", "60 bis unter 65 Jahre", 
+                        "65 bis unter 70 Jahre", "70 bis unter 75 Jahre", 
+                        "75 bis unter 80 Jahre", "80 bis unter 85 Jahre", 
+                        "85 bis unter 90 Jahre", "90 bis unter 95 Jahre", 
+                        "95 bis unter 100 Jahre", "100 Jahre und älter"), 
+                      c("<1y", "1-4y", "5-9y", "10-14y",
+                        "15-19y", "20-24y", "25-29y", "30-34y",
+                        "35-39y", "40-44y", "45-49y", "50-54y", 
+                        "55-59y", "60-64y", "65-69y", "70-74y", 
+                        "75-79y", "80-84y", "85-89y", "90-94y", 
+                        "95-99y", "100y +"))
+K70$AGE <- as.factor(K70$AGE)
+K70$AGE <- factor(K70$AGE, levels = c("<1y", "1-4y", "5-9y", "10-14y",
+                                        "15-19y", "20-24y", "25-29y", "30-34y",
+                                        "35-39y", "40-44y", "45-49y", "50-54y", 
+                                        "55-59y", "60-64y", "65-69y", "70-74y", 
+                                        "75-79y", "80-84y", "85-89y", "90-94y", 
+                                        "95-99y", "100y +"))
+
+# Recode STATE and make it factor
+K70$STATE <- mapvalues(as.matrix(K70$STATE), 
+                        c("Baden-Württemberg", "Bayern", "Berlin", "Brandenburg", 
+                          "Bremen", "Hamburg", "Hessen", 
+                          "Mecklenburg-Vorpommern", "Niedersachsen", 
+                          "Nordrhein-Westfalen", "Rheinland-Pfalz", "Saarland", 
+                          "Sachsen", "Sachsen-Anhalt", "Schleswig-Holstein", 
+                          "Thüringen", "Früheres Bundesgebiet und Berlin-Ost", 
+                          "Neue Länder ohne Berlin-Ost", 
+                          "Ausland oder unbekannt"), 
+                        c("DE-BW", "DE-BY", "DE-BE", "DE-BB", "DE-HB", "DE-HH", 
+                          "DE-HE", "DE-MV", "DE-NI", "DE-NW", "DE-RP", "DE-SL", 
+                          "DE-SN", "DE-ST", "DE-SH", "DE-TH", "DE-West", 
+                          "DE-East", "Foreign_NA"))
+K70$STATE <- as.factor(K70$STATE)
+K70$STATE <- factor(K70$STATE, levels = c("DE-BW", "DE-BY", "DE-BE", "DE-BB", "DE-HB", "DE-HH", 
+                                            "DE-HE", "DE-MV", "DE-NI", "DE-NW", "DE-RP", "DE-SL", 
+                                            "DE-SN", "DE-ST", "DE-SH", "DE-TH", "DE-West", 
+                                            "DE-East", "Foreign_NA"))
+
+# Make K70_CASES numeric
+K70$K70_CASES <- as.numeric(sub(".", "", as.character(K70$K70_CASES), fixed = TRUE))
+
+# Fill "NA" in K70_CASES with 0, as "no cases" was coded by an empty cell
+K70$K70_CASES[is.na(K70$K70_CASES)] <- 0
+
+# Re-order: STATE -> YEAR -> GENDER -> AGE
+K70 <- K70[order(K70$STATE, K70$YEAR, K70$GENDER, K70$AGE),]
+rownames(K70) <- 1:nrow(K70)
+
+# Combine health data
+HEALTH <- cbind(F100, F102[!names(F102) %in% names(F100)], K70[(!names(K70) %in% names(F100)) | (!names(K70) %in% names(F102))])
+
+# Remove leftovers
+rm(F100, F102, K70)
 
 
-#merged data frame with 4 digit ICD-10 code by gender and age
-diag.g.n <- do.call(rbind,lapply(ls(pattern='diag.g.n..*'),
-                     function(x) {
-                       dat=get(x)
-                       dat$year = substrRight(as.character(x), 4)
-                       dat
-                     }))
 
-# merged data with 3 digit ICD-10 code by region
-diag.r.n <- do.call(rbind,lapply(ls(pattern='diag.r.n..*'),
-                                 function(x) {
-                                   dat=get(x)
-                                   dat$year = substrRight(as.character(x), 4)
-                                   dat
-                                 }))
+#################################
+# TESTING
+#################################
 
-# select alcohol related diagnoses
-diag.alc.g.s <- diag.g.n[diag.g.n$`ICD-10-4` %in% alc.icd10.4.s,]
-diag.alc.r <- diag.r.n[diag.r.n$`ICD-10-3` %in% alc.icd10.3,]
+#HEALTH$YEAR <- as.numeric(sub(".", "", as.character(HEALTH$YEAR), fixed = TRUE))
 
-# export data in csv file
-write.csv(diag.alc.g.s, file = "health/diag.alc.g.s.csv", row.names=FALSE)
-write.csv(diag.alc.r, file = "health/diag.alc.r.csv", row.names=FALSE)
+#xyplot(F102_CASES[STATE == "DE-East" & GENDER == "M"] ~ AGE, data = HEALTH)
 
-# for illustration - time line F10.0 diagnosis among men 2000-2013
-plot(subset(diag.g.n$year, diag.g.n[, 1] == "F100" & diag.g.n[,2] == "m"),
-     subset(diag.g.n$Insgesamt, diag.g.n[, 1] == "F100" & diag.g.n[,2] == "m"))
+
+#mod1 = lm(F100_CASES[AGE=="15-19y"] ~ YEAR, data = HEALTH)
+#summary(mod1)
