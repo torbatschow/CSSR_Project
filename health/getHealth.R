@@ -377,6 +377,12 @@ rm(F100, F102, K70)
 # TESTING
 #################################
 
+source("control/getControl.R")
+
+TOTAL <- merge(HEALTH, INDEP, by = c("STATE", "YEAR"))
+
+TOTAL <- TOTAL[order(TOTAL$STATE, TOTAL$YEAR, TOTAL$GENDER, TOTAL$AGE),]
+
 #HEALTH$YEAR <- as.numeric(sub(".", "", as.character(HEALTH$YEAR), fixed = TRUE))
 
 #xyplot(F102_CASES[STATE == "DE-East" & GENDER == "M"] ~ AGE, data = HEALTH)
