@@ -73,7 +73,7 @@ try(setwd("/home/torben/GIT/Pair_Assignment_2"), silent = TRUE)
 try(setwd("D:/Eigene Datein/Dokumente/Uni/Hertie/Materials/Collaborative Social Science Data Analysis/CSSR_Project"), silent = TRUE)
 
 # Collect packages/libraries we need:
-packages <- c("readxl", "RCurl", "ckanr", "plyr","reshape")
+packages <- c("readxl", "RCurl", "ckanr", "plyr", "reshape2")
 
 # install packages if not installed before
 for (p in packages) {
@@ -90,6 +90,14 @@ rm(p, packages)
 ###########################
 # 2. Import data
 ###########################
+
+# Download state area (if not in directory)
+if(class(try(read.csv("control/SA.csv")))=="try-error") {
+  url.UR <- "https://www-genesis.destatis.de/genesis/online?sequenz=tabelleDownload&selectionname=11111-0001&regionalschluessel=&format=csv"
+  write.csv(read.csv(url.UR, header = FALSE, sep=";", row.names=NULL), "control/SA.csv")
+}
+SA <- as.data.frame(read.csv("control/SA.csv", header = T, fileEncoding ="ISO-8859-1", 
+                             stringsAsFactors = FALSE))
 
 # Download population density if not in directory
 if(class(try(read.csv("control/PD.csv")))=="try-error") {
@@ -121,6 +129,40 @@ UR <- as.data.frame(read.csv("control/UR.csv", header = T, fileEncoding ="ISO-88
 ###########################
 # 3. Clean data
 ###########################
+
+###########################
+# 2.0 State Area
+###########################
+
+SA <- SA[-c(1:6, 23:nrow(SA)),-c(1)]
+colnames(SA) <- c("STATE", "SA")
+
+
+# Recode STATE and make it factor
+SA$STATE <- mapvalues(as.matrix(SA$STATE), 
+                      c("Baden-Württemberg", "Bayern", "Berlin", "Brandenburg", 
+                        "Bremen", "Hamburg", "Hessen", 
+                        "Mecklenburg-Vorpommern", "Niedersachsen", 
+                        "Nordrhein-Westfalen", "Rheinland-Pfalz", "Saarland", 
+                        "Sachsen", "Sachsen-Anhalt", "Schleswig-Holstein", 
+                        "Thüringen", "Früheres Bundesgebiet und Berlin-Ost", 
+                        "Neue Länder ohne Berlin-Ost", 
+                        "Ausland oder unbekannt"), 
+                      c("DE-BW", "DE-BY", "DE-BE", "DE-BB", "DE-HB", "DE-HH", 
+                        "DE-HE", "DE-MV", "DE-NI", "DE-NW", "DE-RP", "DE-SL", 
+                        "DE-SN", "DE-ST", "DE-SH", "DE-TH", "DE-West", 
+                        "DE-East", "Foreign_NA"))
+SA$STATE <- factor(SA$STATE, levels = c("DE-BW", "DE-BY", "DE-BE",
+                                        "DE-BB", "DE-HB", "DE-HH", 
+                                        "DE-HE", "DE-MV", "DE-NI", 
+                                        "DE-NW", "DE-RP", "DE-SL", 
+                                        "DE-SN", "DE-ST", "DE-SH", 
+                                        "DE-TH", "DE-West", "DE-East", 
+                                        "Foreign_NA"))
+
+# Make SA numeric
+SA$SA <- as.numeric(sub(",", ".", as.character(SA$SA), 
+                        fixed = TRUE))
 
 ###########################
 # 2.1 Population Density
@@ -179,7 +221,7 @@ colnames(PD) <- c("YEAR", PD[1,2:17])
 PD <- PD[-1,]
 >>>>>>> origin/master
 
-# Rename year rows and make it numeric
+# Rename YEAR rows and make it numeric
 PD[,1] <- c(1995:2014)
 PD$YEAR <- as.numeric(as.character(PD$YEAR))
 rownames(PD) <- 1:nrow(PD)
@@ -213,6 +255,7 @@ PD$STATE <- factor(PD$STATE, levels = c("DE-BW", "DE-BY", "DE-BE",
 # Make PD numeric
 PD$PD <- as.numeric(sub(".", "", as.character(PD$PD), 
                                   fixed = TRUE))
+
 
 
 ###########################
