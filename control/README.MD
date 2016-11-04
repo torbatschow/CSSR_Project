@@ -1,27 +1,23 @@
 # Control Data
 
-## Population Density
 
-Source: Genesis Data Table 12411-0050
+## Sources
+Population Density: Genesis Data Table 12411-0050
+Unemployment Rates: Genesis Data Table 13211-0007
 
-Variable |Name Eng | Name GER
------|-------------------- | --------------------
-`YEAR`|Year | Jahr
-`STATE`| State | Bundesland
-`POD`| Population density | Bevölkerungsdichte
-
-## Unemployment Rate
-
-Source: Genesis Data Table 13211-0007
+## Variables
 
 Variable |Name Eng | Name GER
 -----|-------------------- | --------------------
 `STATE`| State | Bundesland
 `YEAR`|Year | Jahr
+`PD` | Population Density | Bevölkerungsdichte
 `UTOTAL` | Registered unemployed | 
-`UR`|Unemployment as percent. of civilian labour force| Arbeitslosenquote aller zivilen Erwerbspersonen 
-`URD`| Rate of registered unemployed| Arbeitslosenquote der abhängigen zivilen Erwerbspersonen
-`VACTOTAL`| Registered vacancies|
+`UR.LF`|Unemployment as percent. of civilian labour force| Arbeitslosenquote aller zivilen Erwerbspersonen 
+`UR`| Rate of registered unemployed| Arbeitslosenquote der abhängigen zivilen Erwerbspersonen
+`VAC`| Registered vacancies| 
+`SA`| State area | 
+`GDP`| GDP in market values | BIP 
 
 ### Arbeitslosenquote aller zivilen Erwerbspersonen 
 Die Arbeitslosenquote bezogen auf alle zivilen Erwerbspersonen wird von der Bundesagentur für Arbeit seit 1982 errechnet.Die Arbeitslosenquote zeigt die relative Unterauslastung des Arbeitskräfteangebots an, indem sie die registrierten Arbeitslosen (AL) zu den zivilen Erwerbspersonen (EP = zivile Erwerbstätige + registrierte Arbeitslose) in Beziehung setzt (AL/EP*100). Die zivilen Erwerbspersonen ermittelt die BA wie folgt: 

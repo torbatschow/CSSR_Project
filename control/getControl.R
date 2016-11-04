@@ -8,7 +8,7 @@
 # 1. Preparation
 # 2. Import Data
 # 3. Clean data
-# 4. Notes
+
 
 ##########################
 # 0. Notes
@@ -133,7 +133,7 @@ GDP <- as.data.frame(read.csv("control/GDP.csv", header = T, fileEncoding ="ISO-
 ###########################
 
 ###########################
-# 2.0 State Area
+# 3.0 State Area
 ###########################
 
 SA <- SA[-c(1:6, 23:nrow(SA)),-c(1)]
@@ -147,27 +147,23 @@ SA$STATE <- mapvalues(as.matrix(SA$STATE),
                         "Mecklenburg-Vorpommern", "Niedersachsen", 
                         "Nordrhein-Westfalen", "Rheinland-Pfalz", "Saarland", 
                         "Sachsen", "Sachsen-Anhalt", "Schleswig-Holstein", 
-                        "Thüringen", "Früheres Bundesgebiet und Berlin-Ost", 
-                        "Neue Länder ohne Berlin-Ost", 
-                        "Ausland oder unbekannt"), 
+                        "Thüringen"), 
                       c("DE-BW", "DE-BY", "DE-BE", "DE-BB", "DE-HB", "DE-HH", 
                         "DE-HE", "DE-MV", "DE-NI", "DE-NW", "DE-RP", "DE-SL", 
-                        "DE-SN", "DE-ST", "DE-SH", "DE-TH", "DE-West", 
-                        "DE-East", "Foreign_NA"))
+                        "DE-SN", "DE-ST", "DE-SH", "DE-TH"))
 SA$STATE <- factor(SA$STATE, levels = c("DE-BW", "DE-BY", "DE-BE",
                                         "DE-BB", "DE-HB", "DE-HH", 
                                         "DE-HE", "DE-MV", "DE-NI", 
                                         "DE-NW", "DE-RP", "DE-SL", 
                                         "DE-SN", "DE-ST", "DE-SH", 
-                                        "DE-TH", "DE-West", "DE-East", 
-                                        "Foreign_NA"))
+                                        "DE-TH"))
 
 # Make SA numeric
 SA$SA <- as.numeric(sub(",", ".", as.character(SA$SA), 
                         fixed = TRUE))
 
 ###########################
-# 2.1 Population Density
+# 3.1 Population Density
 ###########################
 
 #Cleaning and Renaming PD
@@ -195,20 +191,16 @@ PD$STATE <- mapvalues(as.matrix(PD$STATE),
                           "Mecklenburg-Vorpommern", "Niedersachsen", 
                           "Nordrhein-Westfalen", "Rheinland-Pfalz", "Saarland", 
                           "Sachsen", "Sachsen-Anhalt", "Schleswig-Holstein", 
-                          "Thüringen", "Früheres Bundesgebiet und Berlin-Ost", 
-                          "Neue Länder ohne Berlin-Ost", 
-                          "Ausland oder unbekannt"), 
+                          "Thüringen"), 
                         c("DE-BW", "DE-BY", "DE-BE", "DE-BB", "DE-HB", "DE-HH", 
                           "DE-HE", "DE-MV", "DE-NI", "DE-NW", "DE-RP", "DE-SL", 
-                          "DE-SN", "DE-ST", "DE-SH", "DE-TH", "DE-West", 
-                          "DE-East", "Foreign_NA"))
+                          "DE-SN", "DE-ST", "DE-SH", "DE-TH"))
 PD$STATE <- factor(PD$STATE, levels = c("DE-BW", "DE-BY", "DE-BE",
                                             "DE-BB", "DE-HB", "DE-HH", 
                                             "DE-HE", "DE-MV", "DE-NI", 
                                             "DE-NW", "DE-RP", "DE-SL", 
                                             "DE-SN", "DE-ST", "DE-SH", 
-                                            "DE-TH", "DE-West", "DE-East", 
-                                            "Foreign_NA"))
+                                            "DE-TH"))
 
 # Make PD numeric
 PD$PD <- as.numeric(sub(".", "", as.character(PD$PD), 
@@ -217,13 +209,13 @@ PD$PD <- as.numeric(sub(".", "", as.character(PD$PD),
 
 
 ###########################
-# 2.2 Unemployent Rate
+# 3.2 Unemployent Rate
 ###########################
 
 # Delete leading and tailing rows / columns; re-arrange and rename
 UR <- UR[-c(1:5, 6, 407:421),-c(1)]
 UR <- UR[,c(2, 1, 3:6)]
-colnames(UR) <- c("YEAR", "STATE", "REG_UNEMP", "UNEMP_LF_PERC", "REG_UNEMP_PERC", "REG_VACAN")
+colnames(UR) <- c("YEAR", "STATE", "UTOTAL", "UR.LF", "UR", "VAC")
 rownames(UR) <- 1:nrow(UR)
 
 # Make YEAR numeric
@@ -237,30 +229,26 @@ UR$STATE <- mapvalues(as.matrix(UR$STATE),
                         "Mecklenburg-Vorpommern", "Niedersachsen", 
                         "Nordrhein-Westfalen", "Rheinland-Pfalz", "Saarland", 
                         "Sachsen", "Sachsen-Anhalt", "Schleswig-Holstein", 
-                        "Thüringen", "Früheres Bundesgebiet und Berlin-Ost", 
-                        "Neue Länder ohne Berlin-Ost", 
-                        "Ausland oder unbekannt"), 
+                        "Thüringen"), 
                       c("DE-BW", "DE-BY", "DE-BE", "DE-BB", "DE-HB", "DE-HH", 
                         "DE-HE", "DE-MV", "DE-NI", "DE-NW", "DE-RP", "DE-SL", 
-                        "DE-SN", "DE-ST", "DE-SH", "DE-TH", "DE-West", 
-                        "DE-East", "Foreign_NA"))
+                        "DE-SN", "DE-ST", "DE-SH", "DE-TH"))
 UR$STATE <- factor(UR$STATE, levels = c("DE-BW", "DE-BY", "DE-BE",
                                         "DE-BB", "DE-HB", "DE-HH", 
                                         "DE-HE", "DE-MV", "DE-NI", 
                                         "DE-NW", "DE-RP", "DE-SL", 
                                         "DE-SN", "DE-ST", "DE-SH", 
-                                        "DE-TH", "DE-West", "DE-East", 
-                                        "Foreign_NA"))
+                                        "DE-TH"))
 
 # Make UR columns numeric
-UR$REG_UNEMP <- as.numeric(sub(",", ".", as.character(UR$REG_UNEMP, fixed = TRUE)))
-UR$UNEMP_LF_PERC <- as.numeric(sub(",", ".", as.character(UR$UNEMP_LF_PERC, fixed = TRUE)))
-UR$REG_UNEMP_PERC <- as.numeric(sub(",", ".", as.character(UR$REG_UNEMP_PERC, fixed = TRUE)))
-UR$REG_VACAN <- as.numeric(sub(",", ".", as.character(UR$REG_VACAN, fixed = TRUE)))
+UR$UTOTAL <- as.numeric(sub(",", ".", as.character(UR$UTOTAL, fixed = TRUE)))
+UR$UR.LF <- as.numeric(sub(",", ".", as.character(UR$UR.LF, fixed = TRUE)))
+UR$UR <- as.numeric(sub(",", ".", as.character(UR$UR, fixed = TRUE)))
+UR$VAC <- as.numeric(sub(",", ".", as.character(UR$VAC, fixed = TRUE)))
 
 
 ###########################
-# 2.4 State GDP
+# 3.4 State GDP
 ###########################
 
 # Delete leading and tailing rows / columns; rename them
@@ -284,20 +272,16 @@ GDP$STATE <- mapvalues(as.matrix(GDP$STATE),
                         "Mecklenburg-Vorpommern", "Niedersachsen", 
                         "Nordrhein-Westfalen", "Rheinland-Pfalz", "Saarland", 
                         "Sachsen", "Sachsen-Anhalt", "Schleswig-Holstein", 
-                        "Thüringen", "Früheres Bundesgebiet und Berlin-Ost", 
-                        "Neue Länder ohne Berlin-Ost", 
-                        "Ausland oder unbekannt"), 
+                        "Thüringen"), 
                       c("DE-BW", "DE-BY", "DE-BE", "DE-BB", "DE-HB", "DE-HH", 
                         "DE-HE", "DE-MV", "DE-NI", "DE-NW", "DE-RP", "DE-SL", 
-                        "DE-SN", "DE-ST", "DE-SH", "DE-TH", "DE-West", 
-                        "DE-East", "Foreign_NA"))
+                        "DE-SN", "DE-ST", "DE-SH", "DE-TH"))
 GDP$STATE <- factor(GDP$STATE, levels = c("DE-BW", "DE-BY", "DE-BE",
                                         "DE-BB", "DE-HB", "DE-HH", 
                                         "DE-HE", "DE-MV", "DE-NI", 
                                         "DE-NW", "DE-RP", "DE-SL", 
                                         "DE-SN", "DE-ST", "DE-SH", 
-                                        "DE-TH", "DE-West", "DE-East", 
-                                        "Foreign_NA"))
+                                        "DE-TH"))
 
 # Make GDP numeric
 GDP$GDP <- as.numeric(sub(".", "", as.character(GDP$GDP), 
