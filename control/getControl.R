@@ -4,7 +4,6 @@
 # Torben&Alex
 ###########################
 
-<<<<<<< HEAD
 # 0. Notes
 # 1. Preparation
 # 2. Import Data
@@ -47,19 +46,7 @@
 #     Get Data: 
 #     Clean Data: 
 # 7. Restructure Script: by variable instead of work step    
-=======
 
-
-###########################
-# ATTENTION!!!! UNCOMMENT CLEAR GLOBAL ENVIRONMENT IF NEEDED!!!
-###########################
-
-
-
-# 0. Preparation
-# 1. Import Data
-# 2. Clean data
->>>>>>> origin/master
 
 ###########################
 # 1. Preparations
@@ -170,56 +157,12 @@ SA$SA <- as.numeric(sub(",", ".", as.character(SA$SA),
 
 #Cleaning and Renaming PD
 #ISO 3166-2:DE
-<<<<<<< HEAD
-PD <- PD[-c(1:6, 27:31),-c(1)]
-colnames(PD) <- c("year", "DE-BW", "DE-BY", "DE-BE", "DE-BB", "DE-HB", "DE-HH",
-                  "DE-HE", "DE-MV", "DE-NI", "DE-NW", "DE-RP", "DE-SL", 
-                  "DE-SN", "DE-ST", "DE-SH", "DE-TH")
-rownames(PD) <- c(1995:2014)
-PD[,1] <- c(1995:2014)
-PD <- melt(PD, id.vars = "year")
-colnames(PD) <- c("YEAR", "STATE", "POD")
 
-# Delete last rows with stats sources etc.
-UR <- UR[-c(1:6,407:421),-1]
-
-# Rename columns
-colnames(UR) <- c("STATE","YEAR", "UTOTAL", "UR", "URD" ,"VACTOTAL")
-
-# Delete leading and tailing whitespace
-UR <- as.data.frame(lapply(UR, function(x) trimws(x)), 
-                      stringsAsFactors = FALSE)
-
-# Recode empty cells
-UR[UR == "-"] <- NA
-
-# Recode STATE and make it factor
-UR$STATE <- mapvalues(as.matrix(UR$STATE), 
-                        c("Baden-Württemberg", "Bayern", "Berlin", "Brandenburg", 
-                          "Bremen", "Hamburg", "Hessen", 
-                          "Mecklenburg-Vorpommern", "Niedersachsen", 
-                          "Nordrhein-Westfalen", "Rheinland-Pfalz", "Saarland", 
-                          "Sachsen", "Sachsen-Anhalt", "Schleswig-Holstein", 
-                          "Thüringen"), 
-                        c("DE-BW", "DE-BY", "DE-BE", "DE-BB", "DE-HB", "DE-HH", 
-                          "DE-HE", "DE-MV", "DE-NI", "DE-NW", "DE-RP", "DE-SL", 
-                          "DE-SN", "DE-ST", "DE-SH", "DE-TH"))
-UR$STATE <- as.factor(UR$STATE)
-UR$STATE <- factor(UR$STATE, levels = c("DE-BW", "DE-BY", "DE-BE",
-                                            "DE-BB", "DE-HB", "DE-HH", 
-                                            "DE-HE", "DE-MV", "DE-NI", 
-                                            "DE-NW", "DE-RP", "DE-SL", 
-                                            "DE-SN", "DE-ST", "DE-SH", 
-                                            "DE-TH"))
-
-
-
-=======
 # Delete leading and tailing rows / columns; rename them
 PD <- PD[-c(1:5, 27:31),-c(1)]
 colnames(PD) <- c("YEAR", PD[1,2:17])
 PD <- PD[-1,]
->>>>>>> origin/master
+
 
 # Rename YEAR rows and make it numeric
 PD[,1] <- c(1995:2014)
@@ -302,4 +245,5 @@ UR$REG_VACAN <- as.numeric(sub(",", ".", as.character(UR$REG_VACAN, fixed = TRUE
 
 # Merge and delete PD and UR
 INDEP <- merge(PD, UR, by = c("STATE", "YEAR"))
-remove(PD, UR)
+INDEP <- merge(INDEP, SA, by = c("STATE"))
+remove(PD, UR, SA)
