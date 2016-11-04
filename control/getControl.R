@@ -15,6 +15,10 @@
 ##########################
 
 # ToDO
+# 0. State Area
+#    Source: Destatis: 11111-0001	Gebietsfläche: Bundesländer, Stichtag
+#    Ged Data: Done.
+#    Clean Data: Done.
 # 1. Population density 
 #     Source: Destatis: "Bevölkerungsdichte: Bundesländer, Stichtag"
 #     Get Data: Done
@@ -32,10 +36,10 @@
 #     Get Data: 
 #     Clean Data: 
 # 4. state gdp
-#     Source: Destatis: "VGR der Länder - Bruttoinlandsprodukt"
-#             http://www.vgrdl.de/VGRdL/tbls/tab.jsp?rev=RV2014&tbl=tab01&lang=de-DE
-#     Get Data: 
-#     Clean Data:
+#     Source: Destatis: "VGR der Länder (Entstehungsrechnung) - Bruttoinlandsprodukt"
+#             https://www-genesis.destatis.de/genesis/online?sequenz=tabelleDownload&selectionname=82111-0001&regionalschluessel=&format=csv
+#     Get Data: Done.
+#     Clean Data: Done.
 # 5. Bildungsniveau
 #     Source:
 #     Get Data: 
@@ -46,6 +50,7 @@
 #     Get Data: 
 #     Clean Data: 
 # 7. Restructure Script: by variable instead of work step    
+#    Done.
 
 
 ###########################
@@ -53,7 +58,7 @@
 ###########################
 
 # Clear Global environment
-# rm(list=ls())
+ rm(list=ls())
 
 # Setting Working directory
 try(setwd("/home/torben/GIT/Pair_Assignment_2"), silent = TRUE)
@@ -80,8 +85,8 @@ rm(p, packages)
 
 # Download state area (if not in directory)
 if(class(try(read.csv("control/SA.csv")))=="try-error") {
-  url.UR <- "https://www-genesis.destatis.de/genesis/online?sequenz=tabelleDownload&selectionname=11111-0001&regionalschluessel=&format=csv"
-  write.csv(read.csv(url.UR, header = FALSE, sep=";", row.names=NULL), "control/SA.csv")
+  url.SA <- "https://www-genesis.destatis.de/genesis/online?sequenz=tabelleDownload&selectionname=11111-0001&regionalschluessel=&format=csv"
+  write.csv(read.csv(url.SA, header = FALSE, sep=";", row.names=NULL), "control/SA.csv")
 }
 SA <- as.data.frame(read.csv("control/SA.csv", header = T, fileEncoding ="ISO-8859-1", 
                              stringsAsFactors = FALSE))
@@ -101,6 +106,16 @@ if(class(try(read.csv("control/UR.csv")))=="try-error") {
 }
 UR <- as.data.frame(read.csv("control/UR.csv", header = T, fileEncoding ="ISO-8859-1", 
                              stringsAsFactors = FALSE))
+
+# Download GDP for states (if not in directory)
+if(class(try(read.csv("control/GDP.csv")))=="try-error") {
+  url.GDP <- "https://www-genesis.destatis.de/genesis/online?sequenz=tabelleDownload&selectionname=82111-0001&regionalschluessel=&format=csv"
+  write.csv(read.csv(url.GDP, header = FALSE, sep=";", row.names=NULL), "control/GDP.csv")
+}
+GDP <- as.data.frame(read.csv("control/GDP.csv", header = T, fileEncoding ="ISO-8859-1", 
+                             stringsAsFactors = FALSE))
+
+
 
 # youth unemployment rates
 
@@ -243,7 +258,55 @@ UR$UNEMP_LF_PERC <- as.numeric(sub(",", ".", as.character(UR$UNEMP_LF_PERC, fixe
 UR$REG_UNEMP_PERC <- as.numeric(sub(",", ".", as.character(UR$REG_UNEMP_PERC, fixed = TRUE)))
 UR$REG_VACAN <- as.numeric(sub(",", ".", as.character(UR$REG_VACAN, fixed = TRUE)))
 
-# Merge and delete PD and UR
+
+###########################
+# 2.4 State GDP
+###########################
+
+# Delete leading and tailing rows / columns; rename them
+GDP <- GDP[-c(1:6, 33:nrow(GDP)),-c(1, ncol(GDP))]
+colnames(GDP) <- c("YEAR", GDP[1,2:ncol(GDP)])
+GDP <- GDP[-1,]
+rownames(GDP) <- 1:nrow(GDP)
+
+
+# Rename YEAR rows and make it numeric
+GDP$YEAR <- as.numeric(as.character(GDP$YEAR))
+
+# Transpose GDP and rename columns
+GDP <- melt(GDP, id = 1, measured = 2:17)
+colnames(GDP) <- c("YEAR", "STATE", "GDP")
+
+# Recode STATE and make it factor
+GDP$STATE <- mapvalues(as.matrix(GDP$STATE), 
+                      c("Baden-Württemberg", "Bayern", "Berlin", "Brandenburg", 
+                        "Bremen", "Hamburg", "Hessen", 
+                        "Mecklenburg-Vorpommern", "Niedersachsen", 
+                        "Nordrhein-Westfalen", "Rheinland-Pfalz", "Saarland", 
+                        "Sachsen", "Sachsen-Anhalt", "Schleswig-Holstein", 
+                        "Thüringen", "Früheres Bundesgebiet und Berlin-Ost", 
+                        "Neue Länder ohne Berlin-Ost", 
+                        "Ausland oder unbekannt"), 
+                      c("DE-BW", "DE-BY", "DE-BE", "DE-BB", "DE-HB", "DE-HH", 
+                        "DE-HE", "DE-MV", "DE-NI", "DE-NW", "DE-RP", "DE-SL", 
+                        "DE-SN", "DE-ST", "DE-SH", "DE-TH", "DE-West", 
+                        "DE-East", "Foreign_NA"))
+GDP$STATE <- factor(GDP$STATE, levels = c("DE-BW", "DE-BY", "DE-BE",
+                                        "DE-BB", "DE-HB", "DE-HH", 
+                                        "DE-HE", "DE-MV", "DE-NI", 
+                                        "DE-NW", "DE-RP", "DE-SL", 
+                                        "DE-SN", "DE-ST", "DE-SH", 
+                                        "DE-TH", "DE-West", "DE-East", 
+                                        "Foreign_NA"))
+
+# Make GDP numeric
+GDP$GDP <- as.numeric(sub(".", "", as.character(GDP$GDP), 
+                        fixed = TRUE))
+
+
+
+# Merge and delete PD, UR, SA, and GDP
 INDEP <- merge(PD, UR, by = c("STATE", "YEAR"))
 INDEP <- merge(INDEP, SA, by = c("STATE"))
-remove(PD, UR, SA)
+INDEP <- merge(INDEP, GDP, by = c("STATE", "YEAR"))
+remove(PD, UR, SA, GDP)
