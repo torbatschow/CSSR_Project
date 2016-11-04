@@ -36,7 +36,7 @@
 #     Get Data: 
 #     Clean Data: 
 # 4. state gdp
-#     Source: Destatis: "VGR der Länder (Entstehungsrechnung) - Bruttoinlandsprodukt"
+#     Source: Destatis: "VGR der Länder (Entstehungsrechnung) - Bruttoinlandsprodukt" in market prices (nothing else available)
 #             https://www-genesis.destatis.de/genesis/online?sequenz=tabelleDownload&selectionname=82111-0001&regionalschluessel=&format=csv
 #     Get Data: Done.
 #     Clean Data: Done.
