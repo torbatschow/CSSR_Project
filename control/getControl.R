@@ -40,15 +40,17 @@
 #             https://www-genesis.destatis.de/genesis/online?sequenz=tabelleDownload&selectionname=82111-0001&regionalschluessel=&format=csv
 #     Get Data: Done.
 #     Clean Data: Done.
-# 5. Bildungsniveau
-#     Source:
-#     Get Data: 
-#     Clean Data: 
-# 6. Alcohol sales / Beer sales
-#     Source: https://www.destatis.de/GPStatistik/receive/DEHeft_heft_00014241
+# 5. ***ACHTUNGACHTUNGACHTUNG*** Bildungsniveau - Absolventen/Abgänger nach dem Schulabschluss ***ACHTUNGACHTUNGACHTUNG***
+#     Source: Regionaldatenbank GENESIS: 192-71-4-B	Allgemeinbildende Schulen: Absolventen/Abgänger nach dem Schulabschluss - Schuljahr -  regionale Ebenen
+#             Only the graduates per YEAR, but maybe of use for for youth analysis...
+#     Get Data: DONE.
+#     Clean Data: DONE.
+# 6. Beer Tax
+#     Source: Genesis-online: 71211-0007	Steuereinnahmen: Bundesländer, Quartale, Steuerarten vor der Steuerverteilung
+#             https://www.destatis.de/GPStatistik/receive/DEHeft_heft_00014241
 #             https://www.destatis.de/GPStatistik/receive/DESerie_serie_00000146?list=all
-#     Get Data: 
-#     Clean Data: 
+#     Get Data: Done.
+#     Clean Data: Done.
 # 7. Restructure Script: by variable instead of work step    
 #    Done.
 
@@ -78,6 +80,17 @@ for (p in packages) {
   }
 }
 rm(p, packages)
+
+# Generate list of states
+statelist_name <- c("Baden-Württemberg", "Bayern", "Berlin", "Brandenburg", 
+                    "Bremen", "Hamburg", "Hessen", "Mecklenburg-Vorpommern", 
+                    "Niedersachsen", "Nordrhein-Westfalen", "Rheinland-Pfalz", 
+                    "Saarland", "Sachsen", "Sachsen-Anhalt", 
+                    "Schleswig-Holstein", "Thüringen")
+
+statelist_code <- c("DE-BW", "DE-BY", "DE-BE", "DE-BB", "DE-HB", "DE-HH", 
+                    "DE-HE", "DE-MV", "DE-NI", "DE-NW", "DE-RP", "DE-SL",
+                    "DE-SN", "DE-ST", "DE-SH", "DE-TH")
 
 ###########################
 # 2. Import data
@@ -115,6 +128,13 @@ if(class(try(read.csv("control/GDP.csv")))=="try-error") {
 GDP <- as.data.frame(read.csv("control/GDP.csv", header = T, fileEncoding ="ISO-8859-1", 
                              stringsAsFactors = FALSE))
 
+# Import Beer Tax for states
+BTAX <- as.data.frame(read.csv2("control/BTAX.csv", header = F, fileEncoding ="ISO-8859-1", 
+                              stringsAsFactors = FALSE))
+
+# Import Education for states
+EDU <- as.data.frame(read.csv2("control/EDU.csv", header = F, fileEncoding ="ISO-8859-1", 
+                                stringsAsFactors = FALSE))
 
 
 # youth unemployment rates
@@ -141,22 +161,8 @@ colnames(SA) <- c("STATE", "SA")
 
 
 # Recode STATE and make it factor
-SA$STATE <- mapvalues(as.matrix(SA$STATE), 
-                      c("Baden-Württemberg", "Bayern", "Berlin", "Brandenburg", 
-                        "Bremen", "Hamburg", "Hessen", 
-                        "Mecklenburg-Vorpommern", "Niedersachsen", 
-                        "Nordrhein-Westfalen", "Rheinland-Pfalz", "Saarland", 
-                        "Sachsen", "Sachsen-Anhalt", "Schleswig-Holstein", 
-                        "Thüringen"), 
-                      c("DE-BW", "DE-BY", "DE-BE", "DE-BB", "DE-HB", "DE-HH", 
-                        "DE-HE", "DE-MV", "DE-NI", "DE-NW", "DE-RP", "DE-SL", 
-                        "DE-SN", "DE-ST", "DE-SH", "DE-TH"))
-SA$STATE <- factor(SA$STATE, levels = c("DE-BW", "DE-BY", "DE-BE",
-                                        "DE-BB", "DE-HB", "DE-HH", 
-                                        "DE-HE", "DE-MV", "DE-NI", 
-                                        "DE-NW", "DE-RP", "DE-SL", 
-                                        "DE-SN", "DE-ST", "DE-SH", 
-                                        "DE-TH"))
+SA$STATE <- mapvalues(as.matrix(SA$STATE), statelist_name, statelist_code)
+SA$STATE <- factor(SA$STATE, levels = statelist_code)
 
 # Make SA numeric
 SA$SA <- as.numeric(sub(",", ".", as.character(SA$SA), 
@@ -185,22 +191,8 @@ PD <- melt(PD, id = 1, measured = 2:17)
 colnames(PD) <- c("YEAR", "STATE", "PD")
 
 # Recode STATE and make it factor
-PD$STATE <- mapvalues(as.matrix(PD$STATE), 
-                        c("Baden-Württemberg", "Bayern", "Berlin", "Brandenburg", 
-                          "Bremen", "Hamburg", "Hessen", 
-                          "Mecklenburg-Vorpommern", "Niedersachsen", 
-                          "Nordrhein-Westfalen", "Rheinland-Pfalz", "Saarland", 
-                          "Sachsen", "Sachsen-Anhalt", "Schleswig-Holstein", 
-                          "Thüringen"), 
-                        c("DE-BW", "DE-BY", "DE-BE", "DE-BB", "DE-HB", "DE-HH", 
-                          "DE-HE", "DE-MV", "DE-NI", "DE-NW", "DE-RP", "DE-SL", 
-                          "DE-SN", "DE-ST", "DE-SH", "DE-TH"))
-PD$STATE <- factor(PD$STATE, levels = c("DE-BW", "DE-BY", "DE-BE",
-                                            "DE-BB", "DE-HB", "DE-HH", 
-                                            "DE-HE", "DE-MV", "DE-NI", 
-                                            "DE-NW", "DE-RP", "DE-SL", 
-                                            "DE-SN", "DE-ST", "DE-SH", 
-                                            "DE-TH"))
+PD$STATE <- mapvalues(as.matrix(PD$STATE), statelist_name, statelist_code)
+PD$STATE <- factor(PD$STATE, levels = statelist_code)
 
 # Make PD numeric
 PD$PD <- as.numeric(sub(".", "", as.character(PD$PD), 
@@ -223,22 +215,8 @@ UR$YEAR <- as.numeric(sub(".", "", as.character(UR$YEAR),
                           fixed = TRUE))
 
 # Recode STATE and make it factor
-UR$STATE <- mapvalues(as.matrix(UR$STATE), 
-                      c("Baden-Württemberg", "Bayern", "Berlin", "Brandenburg", 
-                        "Bremen", "Hamburg", "Hessen", 
-                        "Mecklenburg-Vorpommern", "Niedersachsen", 
-                        "Nordrhein-Westfalen", "Rheinland-Pfalz", "Saarland", 
-                        "Sachsen", "Sachsen-Anhalt", "Schleswig-Holstein", 
-                        "Thüringen"), 
-                      c("DE-BW", "DE-BY", "DE-BE", "DE-BB", "DE-HB", "DE-HH", 
-                        "DE-HE", "DE-MV", "DE-NI", "DE-NW", "DE-RP", "DE-SL", 
-                        "DE-SN", "DE-ST", "DE-SH", "DE-TH"))
-UR$STATE <- factor(UR$STATE, levels = c("DE-BW", "DE-BY", "DE-BE",
-                                        "DE-BB", "DE-HB", "DE-HH", 
-                                        "DE-HE", "DE-MV", "DE-NI", 
-                                        "DE-NW", "DE-RP", "DE-SL", 
-                                        "DE-SN", "DE-ST", "DE-SH", 
-                                        "DE-TH"))
+UR$STATE <- mapvalues(as.matrix(UR$STATE), statelist_name, statelist_code)
+UR$STATE <- factor(UR$STATE, levels = statelist_code)
 
 # Make UR columns numeric
 UR$UTOTAL <- as.numeric(sub(",", ".", as.character(UR$UTOTAL, fixed = TRUE)))
@@ -266,31 +244,86 @@ GDP <- melt(GDP, id = 1, measured = 2:17)
 colnames(GDP) <- c("YEAR", "STATE", "GDP")
 
 # Recode STATE and make it factor
-GDP$STATE <- mapvalues(as.matrix(GDP$STATE), 
-                      c("Baden-Württemberg", "Bayern", "Berlin", "Brandenburg", 
-                        "Bremen", "Hamburg", "Hessen", 
-                        "Mecklenburg-Vorpommern", "Niedersachsen", 
-                        "Nordrhein-Westfalen", "Rheinland-Pfalz", "Saarland", 
-                        "Sachsen", "Sachsen-Anhalt", "Schleswig-Holstein", 
-                        "Thüringen"), 
-                      c("DE-BW", "DE-BY", "DE-BE", "DE-BB", "DE-HB", "DE-HH", 
-                        "DE-HE", "DE-MV", "DE-NI", "DE-NW", "DE-RP", "DE-SL", 
-                        "DE-SN", "DE-ST", "DE-SH", "DE-TH"))
-GDP$STATE <- factor(GDP$STATE, levels = c("DE-BW", "DE-BY", "DE-BE",
-                                        "DE-BB", "DE-HB", "DE-HH", 
-                                        "DE-HE", "DE-MV", "DE-NI", 
-                                        "DE-NW", "DE-RP", "DE-SL", 
-                                        "DE-SN", "DE-ST", "DE-SH", 
-                                        "DE-TH"))
+GDP$STATE <- mapvalues(as.matrix(GDP$STATE), statelist_name, statelist_code)
+GDP$STATE <- factor(GDP$STATE, levels = statelist_code)
 
 # Make GDP numeric
 GDP$GDP <- as.numeric(sub(".", "", as.character(GDP$GDP), 
-                        fixed = TRUE))
+                          fixed = TRUE))
+
+###########################
+# 3.5 Beer Tax
+###########################
+
+# Delete leading and tailing rows / columns; rename them
+BTAX <- BTAX[-c(1:7, 1160:nrow(BTAX)),]
+colnames(BTAX) <- c("STATE", "YEAR", "Q", "BTAX")
+rownames(BTAX) <- 1:nrow(BTAX)
+
+# Sum quarterly numbers to yearly
+BTAXSUM <- data.frame("STATE", "YEAR", "BTAX", stringsAsFactors = FALSE)
+for (state in statelist_code){
+  for (year in 1999:2016){
+    BTAXSUM <- rbind(BTAXSUM, c(state, year, NA))
+  }
+}
+colnames(BTAXSUM) <- BTAXSUM[1,]
+BTAXSUM <- BTAXSUM[-1,]
+BTAX$BTAX <- as.numeric(sub(".", "", as.character(BTAX$BTAX), 
+                            fixed = TRUE))
+BTAXSUM$BTAX <- aggregate(BTAX$BTAX, by = list(BTAX$YEAR, BTAX$STATE), FUN = sum)[[3]]
+BTAX <- BTAXSUM
+rm(BTAXSUM)
+
+# Recode STATE and make it factor
+BTAX$STATE <- factor(BTAX$STATE, levels = statelist_code)
+
+# Rename YEAR rows and make it numeric
+BTAX$YEAR <- as.numeric(as.character(BTAX$YEAR))
+
+# Make BTAX numeric
+BTAX$BTAX <- as.numeric(sub(".", "", as.character(BTAX$BTAX), 
+                          fixed = TRUE))
+
+
+###########################
+# 3.6 Education / Graduates per year
+###########################
+
+# Import Education for states
+EDU <- as.data.frame(read.csv2("control/EDU.csv", header = F, fileEncoding ="ISO-8859-1", 
+                               stringsAsFactors = FALSE))
+
+# Delete leading and tailing rows / columns; rename them
+EDU <- EDU[-c(1:7, 9, 331:nrow(EDU)),-c(2)]
+rownames(EDU) <- 1:nrow(EDU)
+EDU <- EDU[,-c(4, 6, 8, 10, 12, 14)]
+colnames(EDU) <- c("YEAR", "STATE", "EDU_TOTAL", "EDU_NO", "EDU_HS", "EDU_RS", "EDU_FH", "EDU_AH")
+EDU <- EDU[-c(1:2),]
+EDU <- EDU[, c(2, 1, 3:ncol(EDU))]
+
+# Rename YEAR rows and make it numeric
+EDU$YEAR <- as.numeric(as.character(EDU$YEAR))
+rownames(EDU) <- 1:nrow(EDU)
+
+# Recode STATE and make it factor
+EDU$STATE <- mapvalues(as.matrix(EDU$STATE), "Freistaat Sachsen", "Sachsen")
+EDU$STATE <- mapvalues(as.matrix(EDU$STATE), statelist_name, statelist_code)
+EDU$STATE <- factor(EDU$STATE, levels = statelist_code)
+
+# Make EDU numeric
+for (i in 3:8){
+  EDU[,i] <- as.numeric(sub(".", "", as.character(EDU[,i]), 
+                            fixed = TRUE))
+}
 
 
 
-# Merge and delete PD, UR, SA, and GDP
+
+# Merge and delete PD, UR, SA, GDP, BTAX
 INDEP <- merge(PD, UR, by = c("STATE", "YEAR"))
 INDEP <- merge(INDEP, SA, by = c("STATE"))
 INDEP <- merge(INDEP, GDP, by = c("STATE", "YEAR"))
-remove(PD, UR, SA, GDP)
+INDEP <- merge(INDEP, BTAX, by = c("STATE", "YEAR"))
+INDEP <- merge(INDEP, EDU, by = c("STATE", "YEAR"))
+remove(PD, UR, SA, GDP, BTAX, EDU)
