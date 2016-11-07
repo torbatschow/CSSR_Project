@@ -2,12 +2,19 @@
 # Independent and control variables
 # CSSR Project
 # Torben&Alex
+# Date: 07.11.2016
 ###########################
 
 # 0. Notes
 # 1. Preparation
-# 2. Import Data
-# 3. Clean data
+# 2. Population / State area
+# 3. Population density
+# 4. Unemployment rate
+# 5. GDP of states
+# 6. Beer tax
+# 7. Youth unemployment
+# 8. Education
+# 9. Merge data
 
 
 ##########################
@@ -15,11 +22,8 @@
 ##########################
 
 # ToDO
-# 0. State Area & Population per State
-#    https://www-genesis.destatis.de/genesis/online?sequenz=tabelleDownload&selectionname=12411-0010&regionalschluessel=&format=xlsx
+# 0. State Area
 #    Source: Destatis: 11111-0001	Gebietsfläche: Bundesländer, Stichtag
-#    Population: https://www.govdata.de/web/guest/suchen/-/details/destatis-service-12211-0005
-#     Only data set I found with a complete timeline
 #    Ged Data: Done.
 #    Clean Data: Done.
 # 1. Population density 
@@ -34,6 +38,7 @@
 #     Source: Regionaldatenbank? 
 #             difficult to find, but exists:
 #             e.g. behind paywall: https://de.statista.com/statistik/daten/studie/36739/umfrage/jugendarbeitslosigkeit-nach-bundeslaendern/
+#             Hertie has a campus access :)
 #             or for single states: https://www.govdata.de/web/guest/daten/-/details/stala-sn-service-13211-004z
 #             https://www.statistik.sachsen-anhalt.de/apps/StrukturKompass/indikator/zeitreihe/90
 #     Get Data: 
@@ -54,7 +59,12 @@
 #             https://www.destatis.de/GPStatistik/receive/DESerie_serie_00000146?list=all
 #     Get Data: Done.
 #     Clean Data: Done.
-# 7. Restructure Script: by variable instead of work step    
+# 7. Population
+#    Source: https://www.govdata.de/web/guest/suchen/-/details/destatis-service-12211-0005
+#     Only data set I found with a complete timeline
+#    Get Data: Done
+#    Clean Data:
+# 8. Restructure Script: by variable instead of work step    
 #    Done.
 
 
@@ -92,12 +102,19 @@ statelist_name <- c("Baden-Württemberg", "Bayern", "Berlin", "Brandenburg",
                     "Saarland", "Sachsen", "Sachsen-Anhalt", 
                     "Schleswig-Holstein", "Thüringen")
 
+statelist_name_noU <- c("baden-wuerttemberg", "bayern", "berlin", "brandenburg", 
+                    "bremen", "hamburg", "hessen", "mecklenburg-vorpommern", 
+                    "niedersachsen", "nordrhein-westfalen", "rheinland-pfalz", 
+                    "saarland", "sachsen", "sachsen-anhalt", 
+                    "schleswig-holstein", "thueringen")
+
+
 statelist_code <- c("DE-BW", "DE-BY", "DE-BE", "DE-BB", "DE-HB", "DE-HH", 
                     "DE-HE", "DE-MV", "DE-NI", "DE-NW", "DE-RP", "DE-SL",
                     "DE-SN", "DE-ST", "DE-SH", "DE-TH")
 
 ###########################
-# 2. Import data
+# 2. Population / State Area
 ###########################
 
 # Download state area (if not in directory)
@@ -108,68 +125,8 @@ if(class(try(read.csv("control/SA.csv")))=="try-error") {
 SA <- as.data.frame(read.csv("control/SA.csv", header = T, fileEncoding ="ISO-8859-1", 
                              stringsAsFactors = FALSE))
 
-if(class(try(read.csv("control/PP.csv")))=="try-error") {
-  url.PP <- "https://www-genesis.destatis.de/genesis/online?sequenz=tabelleDownload&selectionname=12211-0005&regionalschluessel=&format=csv"
-  write.csv(read.csv(url.PP, header = FALSE, sep=";", row.names=NULL), "control/PP.csv")
-}
-PP <- as.data.frame(read.csv("control/PP.csv", header = T, fileEncoding ="ISO-8859-1", 
-                             stringsAsFactors = FALSE))
-
-# Download population density if not in directory
-if(class(try(read.csv("control/PD.csv")))=="try-error") {
-url.PD <- "https://www-genesis.destatis.de/genesis/online?sequenz=tabelleDownload&selectionname=12411-0050&regionalschluessel=&format=csv"
-write.csv(read.csv(url.PD, header = FALSE, sep=";", row.names=NULL), "control/PD.csv")
-}
-PD <- as.data.frame(read.csv("control/PD.csv", header = T, fileEncoding ="ISO-8859-1", 
-                              stringsAsFactors = FALSE))
-
-# Download unemployment rate for states (if not in directory)
-if(class(try(read.csv("control/UR.csv")))=="try-error") {
-  url.UR <- "https://www-genesis.destatis.de/genesis/online?sequenz=tabelleDownload&selectionname=13211-0007&regionalschluessel=&format=csv"
-  write.csv(read.csv(url.UR, header = FALSE, sep=";", row.names=NULL), "control/UR.csv")
-}
-UR <- as.data.frame(read.csv("control/UR.csv", header = T, fileEncoding ="ISO-8859-1", 
-                             stringsAsFactors = FALSE))
-
-# Download GDP for states (if not in directory)
-if(class(try(read.csv("control/GDP.csv")))=="try-error") {
-  url.GDP <- "https://www-genesis.destatis.de/genesis/online?sequenz=tabelleDownload&selectionname=82111-0001&regionalschluessel=&format=csv"
-  write.csv(read.csv(url.GDP, header = FALSE, sep=";", row.names=NULL), "control/GDP.csv")
-}
-GDP <- as.data.frame(read.csv("control/GDP.csv", header = T, fileEncoding ="ISO-8859-1", 
-                             stringsAsFactors = FALSE))
-
-# Import Beer Tax for states
-BTAX <- as.data.frame(read.csv2("control/BTAX.csv", header = F, fileEncoding ="ISO-8859-1", 
-                              stringsAsFactors = FALSE))
-
-# Import Education for states
-EDU <- as.data.frame(read.csv2("control/EDU.csv", header = F, fileEncoding ="ISO-8859-1", 
-                                stringsAsFactors = FALSE))
-
-
-# youth unemployment rates
-
-
-# IDEA: Use CKAN access of govdata.de
-# https://cran.r-project.org/web/packages/ckanr/ckanr.pdf
-# https://ropensci.org/tutorials/ckanr_tutorial.html
-# Just set url
-#ckanr_setup(url = " https://www.govdata.de/ckan/api")
-# set url and key
-#ckanr_setup(url = "http://data.techno-science.ca/", key = "my-ckan-api-key")
-
-###########################
-# 3. Clean data
-###########################
-
-###########################
-# 3.0 State Area
-###########################
-
 SA <- SA[-c(1:6, 23:nrow(SA)),-c(1)]
 colnames(SA) <- c("STATE", "SA")
-
 
 # Recode STATE and make it factor
 SA$STATE <- mapvalues(as.matrix(SA$STATE), statelist_name, statelist_code)
@@ -179,9 +136,25 @@ SA$STATE <- factor(SA$STATE, levels = statelist_code)
 SA$SA <- as.numeric(sub(",", ".", as.character(SA$SA), 
                         fixed = TRUE))
 
-###########################
-# 3.1 Population Density
-###########################
+# Download population(if not in directory)
+if(class(try(read.csv("control/PP.csv")))=="try-error") {
+  url.PP <- "https://www-genesis.destatis.de/genesis/online?sequenz=tabelleDownload&selectionname=12211-0005&regionalschluessel=&format=csv"
+  write.csv(read.csv(url.PP, header = FALSE, sep=";", row.names=NULL), "control/PP.csv")
+}
+PP <- as.data.frame(read.csv("control/PP.csv", header = T, fileEncoding ="ISO-8859-1", 
+                             stringsAsFactors = FALSE))
+
+#############################
+# 3. Population Density
+############################
+
+# Download population density if not in directory
+if(class(try(read.csv("control/PD.csv")))=="try-error") {
+url.PD <- "https://www-genesis.destatis.de/genesis/online?sequenz=tabelleDownload&selectionname=12411-0050&regionalschluessel=&format=csv"
+write.csv(read.csv(url.PD, header = FALSE, sep=";", row.names=NULL), "control/PD.csv")
+}
+PD <- as.data.frame(read.csv("control/PD.csv", header = T, fileEncoding ="ISO-8859-1", 
+                              stringsAsFactors = FALSE))
 
 #Cleaning and Renaming PD
 #ISO 3166-2:DE
@@ -207,13 +180,19 @@ PD$STATE <- factor(PD$STATE, levels = statelist_code)
 
 # Make PD numeric
 PD$PD <- as.numeric(sub(".", "", as.character(PD$PD), 
-                                  fixed = TRUE))
-
-
+                        fixed = TRUE))
 
 ###########################
-# 3.2 Unemployent Rate
+# 4. Unemployment rate
 ###########################
+
+# Download unemployment rate for states (if not in directory)
+if(class(try(read.csv("control/UR.csv")))=="try-error") {
+  url.UR <- "https://www-genesis.destatis.de/genesis/online?sequenz=tabelleDownload&selectionname=13211-0007&regionalschluessel=&format=csv"
+  write.csv(read.csv(url.UR, header = FALSE, sep=";", row.names=NULL), "control/UR.csv")
+}
+UR <- as.data.frame(read.csv("control/UR.csv", header = T, fileEncoding ="ISO-8859-1", 
+                             stringsAsFactors = FALSE))
 
 # Delete leading and tailing rows / columns; re-arrange and rename
 UR <- UR[-c(1:5, 6, 407:421),-c(1)]
@@ -236,9 +215,17 @@ UR$UR <- as.numeric(sub(",", ".", as.character(UR$UR, fixed = TRUE)))
 UR$VAC <- as.numeric(sub(",", ".", as.character(UR$VAC, fixed = TRUE)))
 
 
-###########################
-# 3.4 State GDP
-###########################
+############################
+# 5. GDP of states
+############################
+
+# Download GDP for states (if not in directory)
+if(class(try(read.csv("control/GDP.csv")))=="try-error") {
+  url.GDP <- "https://www-genesis.destatis.de/genesis/online?sequenz=tabelleDownload&selectionname=82111-0001&regionalschluessel=&format=csv"
+  write.csv(read.csv(url.GDP, header = FALSE, sep=";", row.names=NULL), "control/GDP.csv")
+}
+GDP <- as.data.frame(read.csv("control/GDP.csv", header = T, fileEncoding ="ISO-8859-1", 
+                             stringsAsFactors = FALSE))
 
 # Delete leading and tailing rows / columns; rename them
 GDP <- GDP[-c(1:6, 33:nrow(GDP)),-c(1, ncol(GDP))]
@@ -262,10 +249,13 @@ GDP$STATE <- factor(GDP$STATE, levels = statelist_code)
 GDP$GDP <- as.numeric(sub(".", "", as.character(GDP$GDP), 
                           fixed = TRUE))
 
-###########################
-# 3.5 Beer Tax
-###########################
+##############################
+# 6. Beer Tax 
+############################
 
+# Import Beer Tax for states
+BTAX <- as.data.frame(read.csv2("control/BTAX.csv", header = F, fileEncoding ="ISO-8859-1", 
+                              stringsAsFactors = FALSE))
 # Delete leading and tailing rows / columns; rename them
 BTAX <- BTAX[-c(1:7, 1160:nrow(BTAX)),]
 colnames(BTAX) <- c("STATE", "YEAR", "Q", "BTAX")
@@ -294,12 +284,38 @@ BTAX$YEAR <- as.numeric(as.character(BTAX$YEAR))
 
 # Make BTAX numeric
 BTAX$BTAX <- as.numeric(sub(".", "", as.character(BTAX$BTAX), 
-                          fixed = TRUE))
+                            fixed = TRUE))
 
 
-###########################
-# 3.6 Education / Graduates per year
-###########################
+#############################
+# 7. Youth unemployment
+#############################
+
+# list of all excel files from statista
+YUR.L <- list.files ("control",recursive = TRUE, pattern = "^statistic")
+YUR.HH.L <- "statistic_id254782_jugendarbeitslosenquote--15-bis-unter-25-jahre--in-hamburg-bis-2015.xlsx"
+
+# add state column
+YUR.L <- cbind(LINK = YUR.L, STATE = gsub("-bis-2015.xlsx" ,"" , substring(YUR.L,71)))
+YUR.L <- as.data.frame(YUR.L)
+YUR.L$STATE <- mapvalues(as.matrix(YUR.L$STATE), statelist_name_noU, statelist_code)
+
+
+# read all 16 excel files
+for (i in 1:16) {
+  assign(paste0("YUR.", statelist_code[i]), 
+         read_excel(
+           paste("control/",YUR.L[YUR.L[,2] == statelist_code[i]][1],sep = ""),
+           sheet = 2))
+} 
+
+#############################
+# 8. Education
+#############################
+
+# Import Education for states
+EDU <- as.data.frame(read.csv2("control/EDU.csv", header = F, fileEncoding ="ISO-8859-1", 
+                                stringsAsFactors = FALSE))
 
 # Import Education for states
 EDU <- as.data.frame(read.csv2("control/EDU.csv", header = F, fileEncoding ="ISO-8859-1", 
@@ -329,6 +345,9 @@ for (i in 3:8){
 }
 
 
+###########################
+# 9. Merge Data
+###########################
 
 
 # Merge and delete PD, UR, SA, GDP, BTAX
