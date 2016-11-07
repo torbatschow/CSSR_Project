@@ -3,7 +3,10 @@
 
 ## Sources
 Population Density: Genesis Data Table 12411-0050
+Population: Genesis Data Table 12211-0005
 Unemployment Rates: Genesis Data Table 13211-0007
+State GDP: Gensis Data Table 82111-0001
+Beer Tax: Genesis Data Table 71211-0007
 
 ## Variables
 
@@ -12,12 +15,13 @@ Variable |Name Eng | Name GER
 `STATE`| State | Bundesland
 `YEAR`|Year | Jahr
 `PD` | Population Density | Bevölkerungsdichte
+`PP` | Population per State | Bevölkerungszahl Bundeslandebene
 `UTOTAL` | Registered unemployed | 
 `UR.LF`|Unemployment as percent. of civilian labour force| Arbeitslosenquote aller zivilen Erwerbspersonen 
 `UR`| Rate of registered unemployed| Arbeitslosenquote der abhängigen zivilen Erwerbspersonen
 `VAC`| Registered vacancies| 
 `SA`| State area | 
-`GDP`| GDP in market values | BIP 
+`GDP`| GDP in market values | BIP Bundland
 
 ### Arbeitslosenquote aller zivilen Erwerbspersonen 
 Die Arbeitslosenquote bezogen auf alle zivilen Erwerbspersonen wird von der Bundesagentur für Arbeit seit 1982 errechnet.Die Arbeitslosenquote zeigt die relative Unterauslastung des Arbeitskräfteangebots an, indem sie die registrierten Arbeitslosen (AL) zu den zivilen Erwerbspersonen (EP = zivile Erwerbstätige + registrierte Arbeitslose) in Beziehung setzt (AL/EP*100). Die zivilen Erwerbspersonen ermittelt die BA wie folgt: 

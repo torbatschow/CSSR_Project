@@ -15,8 +15,11 @@
 ##########################
 
 # ToDO
-# 0. State Area
+# 0. State Area & Population per State
+#    https://www-genesis.destatis.de/genesis/online?sequenz=tabelleDownload&selectionname=12411-0010&regionalschluessel=&format=xlsx
 #    Source: Destatis: 11111-0001	Gebietsfläche: Bundesländer, Stichtag
+#    Population: https://www.govdata.de/web/guest/suchen/-/details/destatis-service-12211-0005
+#     Only data set I found with a complete timeline
 #    Ged Data: Done.
 #    Clean Data: Done.
 # 1. Population density 
@@ -81,6 +84,7 @@ for (p in packages) {
 }
 rm(p, packages)
 
+
 # Generate list of states
 statelist_name <- c("Baden-Württemberg", "Bayern", "Berlin", "Brandenburg", 
                     "Bremen", "Hamburg", "Hessen", "Mecklenburg-Vorpommern", 
@@ -102,6 +106,13 @@ if(class(try(read.csv("control/SA.csv")))=="try-error") {
   write.csv(read.csv(url.SA, header = FALSE, sep=";", row.names=NULL), "control/SA.csv")
 }
 SA <- as.data.frame(read.csv("control/SA.csv", header = T, fileEncoding ="ISO-8859-1", 
+                             stringsAsFactors = FALSE))
+
+if(class(try(read.csv("control/PP.csv")))=="try-error") {
+  url.PP <- "https://www-genesis.destatis.de/genesis/online?sequenz=tabelleDownload&selectionname=12211-0005&regionalschluessel=&format=csv"
+  write.csv(read.csv(url.PP, header = FALSE, sep=";", row.names=NULL), "control/PP.csv")
+}
+PP <- as.data.frame(read.csv("control/PP.csv", header = T, fileEncoding ="ISO-8859-1", 
                              stringsAsFactors = FALSE))
 
 # Download population density if not in directory
