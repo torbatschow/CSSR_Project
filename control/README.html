@@ -122,7 +122,14 @@ $(document).ready(function () {
 <h1>Control Data</h1>
 <div id="sources" class="section level2">
 <h2>Sources</h2>
-<p>Population Density: Genesis Data Table 12411-0050 Unemployment Rates: Genesis Data Table 13211-0007</p>
+<p>Population Density: Genesis Data Table 12411-0050</p>
+<p>Population: Genesis Data Table 12211-0005</p>
+<p>State area: Genesis Data Table 11111-0001</p>
+<p>Unemployment Rates: Genesis Data Table 13211-0007</p>
+<p>State GDP: Genesis Data Table 82111-0001</p>
+<p>Beer Tax: Genesis Data Table 71211-0007</p>
+<p>Youth Unemployment: Statista (based on Bundesagentur für Arbeit)</p>
+<p>Education: Genesis Table ???</p>
 </div>
 <div id="variables" class="section level2">
 <h2>Variables</h2>
@@ -142,18 +149,18 @@ $(document).ready(function () {
 <tbody>
 <tr class="odd">
 <td align="left"><code>STATE</code></td>
-<td align="left">State</td>
+<td align="left">German State</td>
 <td align="left">Bundesland</td>
 </tr>
 <tr class="even">
 <td align="left"><code>YEAR</code></td>
-<td align="left">Year</td>
+<td align="left">Year 1999-2014</td>
 <td align="left">Jahr</td>
 </tr>
 <tr class="odd">
 <td align="left"><code>PD</code></td>
-<td align="left">Population Density</td>
-<td align="left">Bevölkerungsdichte</td>
+<td align="left">Population Density per qkm</td>
+<td align="left">Bevölkerungsdichte pro km^3</td>
 </tr>
 <tr class="even">
 <td align="left"><code>UTOTAL</code></td>
@@ -174,13 +181,79 @@ $(document).ready(function () {
 <td align="left">Registered vacancies</td>
 </tr>
 <tr class="even">
-<td align="left"><code>SA</code></td>
-<td align="left">State area</td>
+<td align="left"><code>PP</code></td>
+<td align="left">Population per State in 1000</td>
+<td align="left">Bevölkerung Bundesland in 1000</td>
 </tr>
 <tr class="odd">
+<td align="left"><code>PP.EM</code></td>
+<td align="left">Persons in employment in 1000</td>
+<td align="left">Erwerbstätige in 1000</td>
+</tr>
+<tr class="even">
+<td align="left"><code>PP.UE</code></td>
+<td align="left">Unemployed persons in 1000</td>
+<td align="left">Erwerbslose in 1000</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>PP.EA</code></td>
+<td align="left">Economically active population in 1000</td>
+<td align="left">Erwerbspersonen in 1000</td>
+</tr>
+<tr class="even">
+<td align="left"><code>PP.EIA</code></td>
+<td align="left">Economically inactive population in 1000</td>
+<td align="left">Nichterwerbspersonen in 1000</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>SA</code></td>
+<td align="left">Size of territory (state)</td>
+<td align="left">Gebietsfläche: Bundesländer</td>
+</tr>
+<tr class="even">
 <td align="left"><code>GDP</code></td>
-<td align="left">GDP in market values</td>
-<td align="left">BIP</td>
+<td align="left">GDP at market prices (current prices) (EUR mn)</td>
+<td align="left">VGR der Länder (Entstehungsrechnung) - Bruttoinlandsprodukt zu Marktpreisen (nominal)</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>BTAX</code></td>
+<td align="left">Tax revenue beer tax</td>
+<td align="left">Steueraufkommen Biersteuer</td>
+</tr>
+<tr class="even">
+<td align="left"><code>YUR</code></td>
+<td align="left">Youth unemployment rate 15-25 year-olds</td>
+<td align="left">Jugendarbeitslosenquote (15 bis unter 25 Jahre)</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>EDU_TOTAL</code></td>
+<td align="left">School Diploma Total</td>
+<td align="left">Schulabschlüsse Insgesamt</td>
+</tr>
+<tr class="even">
+<td align="left"><code>EDU_NO</code></td>
+<td align="left">x</td>
+<td align="left">ohne Hauptschulabschluss</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>EDU_HS</code></td>
+<td align="left">x</td>
+<td align="left">Hauptschulabschluss</td>
+</tr>
+<tr class="even">
+<td align="left"><code>EDU_RS</code></td>
+<td align="left">x</td>
+<td align="left">Realschulabschluss</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>EDU_FH</code></td>
+<td align="left">x</td>
+<td align="left">Fachhochschulreife</td>
+</tr>
+<tr class="even">
+<td align="left"><code>EDU_AH</code></td>
+<td align="left">x</td>
+<td align="left">Allgemeine Hochschulreife</td>
 </tr>
 </tbody>
 </table>

@@ -41,8 +41,8 @@
 #             Hertie has a campus access :)
 #             or for single states: https://www.govdata.de/web/guest/daten/-/details/stala-sn-service-13211-004z
 #             https://www.statistik.sachsen-anhalt.de/apps/StrukturKompass/indikator/zeitreihe/90
-#     Get Data: 
-#     Clean Data: 
+#     Get Data: Done
+#     Clean Data: Done
 # 4. state gdp
 #     Source: Destatis: "VGR der Länder (Entstehungsrechnung) - Bruttoinlandsprodukt" in market prices (nothing else available)
 #             https://www-genesis.destatis.de/genesis/online?sequenz=tabelleDownload&selectionname=82111-0001&regionalschluessel=&format=csv
@@ -63,7 +63,7 @@
 #    Source: https://www.govdata.de/web/guest/suchen/-/details/destatis-service-12211-0005
 #     Only data set I found with a complete timeline
 #    Get Data: Done
-#    Clean Data:
+#    Clean Data: Done
 # 8. Restructure Script: by variable instead of work step    
 #    Done.
 
@@ -143,6 +143,19 @@ if(class(try(read.csv("control/PP.csv")))=="try-error") {
 }
 PP <- as.data.frame(read.csv("control/PP.csv", header = T, fileEncoding ="ISO-8859-1", 
                              stringsAsFactors = FALSE))
+
+# remove source info and id column
+PP <- PP[-c(1:7),-1]
+
+# add variable names
+colnames(PP) <- c("STATE", "YEAR", "PP", "PP.EM", "PP.UE", "PP.EA", "PP.EIA")
+
+# streamline year column
+PP[,2] <- as.numeric(substring(as.character(PP[,2]),0,4))
+
+# Recode STATE and make it factor
+PP$STATE <- mapvalues(as.matrix(PP$STATE), statelist_name, statelist_code)
+PP$STATE <- factor(PP$STATE, levels = statelist_code)
 
 #############################
 # 3. Population Density
@@ -293,21 +306,28 @@ BTAX$BTAX <- as.numeric(sub(".", "", as.character(BTAX$BTAX),
 
 # list of all excel files from statista
 YUR.L <- list.files ("control",recursive = TRUE, pattern = "^statistic")
-YUR.HH.L <- "statistic_id254782_jugendarbeitslosenquote--15-bis-unter-25-jahre--in-hamburg-bis-2015.xlsx"
 
-# add state column
+# add state column to link list
 YUR.L <- cbind(LINK = YUR.L, STATE = gsub("-bis-2015.xlsx" ,"" , substring(YUR.L,71)))
 YUR.L <- as.data.frame(YUR.L)
 YUR.L$STATE <- mapvalues(as.matrix(YUR.L$STATE), statelist_name_noU, statelist_code)
 
+# youth unemployment data frame
+YUR <- as.data.frame(c(2015:1993))
+colnames(YUR) <- "YEAR"
 
-# read all 16 excel files
+# load, clean and merge 16 excel files
 for (i in 1:16) {
-  assign(paste0("YUR.", statelist_code[i]), 
-         read_excel(
-           paste("control/",YUR.L[YUR.L[,2] == statelist_code[i]][1],sep = ""),
-           sheet = 2))
-} 
+  tmp <- read_excel(paste("control/",YUR.L[YUR.L[,2] == statelist_code[i]][1],sep = ""),
+                    sheet = 2)
+  tmp <- tmp[c(3:25), c(1:2)]
+  YUR[,statelist_code[i]] <- as.numeric(tmp[,2])
+  remove(tmp)
+}
+
+# prepare for merging to independent variables
+YUR <- melt(YUR, id=1)
+colnames(YUR) <- c("YEAR", "STATE", "YUR")
 
 #############################
 # 8. Education
@@ -352,8 +372,10 @@ for (i in 3:8){
 
 # Merge and delete PD, UR, SA, GDP, BTAX
 INDEP <- merge(PD, UR, by = c("STATE", "YEAR"))
+INDEP <- merge(INDEP, PP, by= c("STATE", "YEAR"))
 INDEP <- merge(INDEP, SA, by = c("STATE"))
 INDEP <- merge(INDEP, GDP, by = c("STATE", "YEAR"))
 INDEP <- merge(INDEP, BTAX, by = c("STATE", "YEAR"))
+INDEP <- merge(INDEP, YUR, by = c("STATE", "YEAR"))
 INDEP <- merge(INDEP, EDU, by = c("STATE", "YEAR"))
-remove(PD, UR, SA, GDP, BTAX, EDU)
+remove(PD, PP, UR, SA, GDP, BTAX, YUR, EDU)
