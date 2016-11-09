@@ -36,7 +36,7 @@ try(setwd("D:/Eigene Datein/Dokumente/Uni/Hertie/Materials/Collaborative
 
 # Collect packages/libraries we need:
 packages <- c("readxl", "readr", "plyr", "zoo","reshape", "spatstat", 
-              "lattice")
+              "lattice", "lfe")
 
 # install packages if not installed before
 for (p in packages) {
@@ -50,12 +50,34 @@ for (p in packages) {
 }
 rm(p, packages)
 
-# functions
+# Generate list of states
+statelist_name <- c("Baden-Württemberg", "Bayern", "Berlin", "Brandenburg", 
+                    "Bremen", "Hamburg", "Hessen", "Mecklenburg-Vorpommern", 
+                    "Niedersachsen", "Nordrhein-Westfalen", "Rheinland-Pfalz", 
+                    "Saarland", "Sachsen", "Sachsen-Anhalt", 
+                    "Schleswig-Holstein", "Thüringen")
 
-# identify last characters
-#substrRight <- function(x, n){
-#  substr(x, nchar(x)-n+1, nchar(x))
-#}
+statelist_code <- c("DE-BW", "DE-BY", "DE-BE", "DE-BB", "DE-HB", "DE-HH", 
+                    "DE-HE", "DE-MV", "DE-NI", "DE-NW", "DE-RP", "DE-SL",
+                    "DE-SN", "DE-ST", "DE-SH", "DE-TH")
+
+# Generate list of age groups
+agelist_name <- c("Unter 1 Jahr", "1 Jahr bis unter 5 Jahre", 
+                  "5 bis unter 10 Jahre", "10 bis unter 15 Jahre", 
+                  "15 bis unter 20 Jahre", "20 bis unter 25 Jahre", 
+                  "25 bis unter 30 Jahre", "30 bis unter 35 Jahre", 
+                  "35 bis unter 40 Jahre", "40 bis unter 45 Jahre", 
+                  "45 bis unter 50 Jahre", "50 bis unter 55 Jahre", 
+                  "55 bis unter 60 Jahre", "60 bis unter 65 Jahre", 
+                  "65 bis unter 70 Jahre", "70 bis unter 75 Jahre", 
+                  "75 bis unter 80 Jahre", "80 bis unter 85 Jahre", 
+                  "85 bis unter 90 Jahre", "90 bis unter 95 Jahre", 
+                  "95 bis unter 100 Jahre", "100 Jahre und älter")
+
+agelist_code <- c("<1y", "1-4y", "5-9y", "10-14y", "15-19y", "20-24y", 
+                  "25-29y", "30-34y", "35-39y", "40-44y", "45-49y", "50-54y",
+                  "55-59y", "60-64y", "65-69y", "70-74y", "75-79y", "80-84y",
+                  "85-89y", "90-94y", "95-99y", "100y +")
 
 ################################################
 # 1. Classifications
@@ -119,53 +141,14 @@ F100$GENDER <- mapvalues(F100$GENDER, from = c("Männlich", "Weiblich",
 F100$GENDER <- factor(F100$GENDER, levels = c("M", "F", "U"))
 
 # Recode AGE and make it factor
-F100$AGE <- mapvalues(F100$AGE, 
-                     c("Unter 1 Jahr", "1 Jahr bis unter 5 Jahre", 
-                        "5 bis unter 10 Jahre", "10 bis unter 15 Jahre", 
-                        "15 bis unter 20 Jahre", "20 bis unter 25 Jahre", 
-                        "25 bis unter 30 Jahre", "30 bis unter 35 Jahre", 
-                        "35 bis unter 40 Jahre", "40 bis unter 45 Jahre", 
-                        "45 bis unter 50 Jahre", "50 bis unter 55 Jahre", 
-                        "55 bis unter 60 Jahre", "60 bis unter 65 Jahre", 
-                        "65 bis unter 70 Jahre", "70 bis unter 75 Jahre", 
-                        "75 bis unter 80 Jahre", "80 bis unter 85 Jahre", 
-                        "85 bis unter 90 Jahre", "90 bis unter 95 Jahre", 
-                        "95 bis unter 100 Jahre", "100 Jahre und älter"), 
-                     c("<1y", "1-4y", "5-9y", "10-14y",
-                       "15-19y", "20-24y", "25-29y", "30-34y", "35-39y", 
-                       "40-44y", "45-49y", "50-54y", "55-59y", "60-64y", 
-                       "65-69y", "70-74y", "75-79y", "80-84y", "85-89y", 
-                       "90-94y", "95-99y", "100y +"))
+F100$AGE <- mapvalues(F100$AGE, agelist_name, agelist_code)
 F100$AGE <- as.factor(F100$AGE)
-F100$AGE <- factor(F100$AGE, levels = c("<1y", "1-4y", "5-9y", "10-14y",
-                                        "15-19y", "20-24y", "25-29y", "30-34y",
-                                        "35-39y", "40-44y", "45-49y", "50-54y", 
-                                        "55-59y", "60-64y", "65-69y", "70-74y", 
-                                        "75-79y", "80-84y", "85-89y", "90-94y", 
-                                        "95-99y", "100y +"))
+F100$AGE <- factor(F100$AGE, levels = agelist_code)
 
 # Recode STATE and make it factor
-F100$STATE <- mapvalues(as.matrix(F100$STATE), 
-                      c("Baden-Württemberg", "Bayern", "Berlin", "Brandenburg", 
-                        "Bremen", "Hamburg", "Hessen", 
-                        "Mecklenburg-Vorpommern", "Niedersachsen", 
-                        "Nordrhein-Westfalen", "Rheinland-Pfalz", "Saarland", 
-                        "Sachsen", "Sachsen-Anhalt", "Schleswig-Holstein", 
-                        "Thüringen", "Früheres Bundesgebiet und Berlin-Ost", 
-                        "Neue Länder ohne Berlin-Ost", 
-                        "Ausland oder unbekannt"), 
-                      c("DE-BW", "DE-BY", "DE-BE", "DE-BB", "DE-HB", "DE-HH", 
-                        "DE-HE", "DE-MV", "DE-NI", "DE-NW", "DE-RP", "DE-SL", 
-                        "DE-SN", "DE-ST", "DE-SH", "DE-TH", "DE-West", 
-                        "DE-East", "Foreign_NA"))
+F100$STATE <- mapvalues(as.matrix(F100$STATE), statelist_name, statelist_code)
 F100$STATE <- as.factor(F100$STATE)
-F100$STATE <- factor(F100$STATE, levels = c("DE-BW", "DE-BY", "DE-BE",
-                                            "DE-BB", "DE-HB", "DE-HH", 
-                                            "DE-HE", "DE-MV", "DE-NI", 
-                                            "DE-NW", "DE-RP", "DE-SL", 
-                                            "DE-SN", "DE-ST", "DE-SH", 
-                                            "DE-TH", "DE-West", "DE-East", 
-                                            "Foreign_NA"))
+F100$STATE <- factor(F100$STATE, levels = statelist_code)
 
 # Make F100_CASES numeric
 F100$F100_CASES <- as.numeric(sub(".", "", as.character(F100$F100_CASES), 
@@ -215,53 +198,14 @@ F102$GENDER <- mapvalues(F102$GENDER, from = c("Männlich", "Weiblich",
 F102$GENDER <- factor(F102$GENDER, levels = c("M", "F", "U"))
 
 # Recode AGE and make it factor
-F102$AGE <- mapvalues(F102$AGE, 
-                      c("Unter 1 Jahr", "1 Jahr bis unter 5 Jahre", 
-                        "5 bis unter 10 Jahre", "10 bis unter 15 Jahre", 
-                        "15 bis unter 20 Jahre", "20 bis unter 25 Jahre", 
-                        "25 bis unter 30 Jahre", "30 bis unter 35 Jahre", 
-                        "35 bis unter 40 Jahre", "40 bis unter 45 Jahre", 
-                        "45 bis unter 50 Jahre", "50 bis unter 55 Jahre", 
-                        "55 bis unter 60 Jahre", "60 bis unter 65 Jahre", 
-                        "65 bis unter 70 Jahre", "70 bis unter 75 Jahre", 
-                        "75 bis unter 80 Jahre", "80 bis unter 85 Jahre", 
-                        "85 bis unter 90 Jahre", "90 bis unter 95 Jahre", 
-                        "95 bis unter 100 Jahre", "100 Jahre und älter"), 
-                      c("<1y", "1-4y", "5-9y", "10-14y",
-                        "15-19y", "20-24y", "25-29y", "30-34y", "35-39y", 
-                        "40-44y", "45-49y", "50-54y", "55-59y", "60-64y", 
-                        "65-69y", "70-74y", "75-79y", "80-84y", "85-89y", 
-                        "90-94y", "95-99y", "100y +"))
+F102$AGE <- mapvalues(F102$AGE, agelist_name, agelist_code)
 F102$AGE <- as.factor(F102$AGE)
-F102$AGE <- factor(F102$AGE, levels = c("<1y", "1-4y", "5-9y", "10-14y",
-                                        "15-19y", "20-24y", "25-29y", "30-34y",
-                                        "35-39y", "40-44y", "45-49y", "50-54y", 
-                                        "55-59y", "60-64y", "65-69y", "70-74y", 
-                                        "75-79y", "80-84y", "85-89y", "90-94y", 
-                                        "95-99y", "100y +"))
+F102$AGE <- factor(F102$AGE, levels = agelist_code)
 
 # Recode STATE and make it factor
-F102$STATE <- mapvalues(as.matrix(F102$STATE), 
-                        c("Baden-Württemberg", "Bayern", "Berlin", 
-                          "Brandenburg", "Bremen", "Hamburg", "Hessen", 
-                          "Mecklenburg-Vorpommern", "Niedersachsen", 
-                          "Nordrhein-Westfalen", "Rheinland-Pfalz", "Saarland", 
-                          "Sachsen", "Sachsen-Anhalt", "Schleswig-Holstein", 
-                          "Thüringen", "Früheres Bundesgebiet und Berlin-Ost", 
-                          "Neue Länder ohne Berlin-Ost", 
-                          "Ausland oder unbekannt"), 
-                        c("DE-BW", "DE-BY", "DE-BE", "DE-BB", "DE-HB", "DE-HH", 
-                          "DE-HE", "DE-MV", "DE-NI", "DE-NW", "DE-RP", "DE-SL", 
-                          "DE-SN", "DE-ST", "DE-SH", "DE-TH", "DE-West", 
-                          "DE-East", "Foreign_NA"))
+F102$STATE <- mapvalues(as.matrix(F102$STATE), statelist_name, statelist_code)
 F102$STATE <- as.factor(F102$STATE)
-F102$STATE <- factor(F102$STATE, levels = c("DE-BW", "DE-BY", "DE-BE", 
-                                            "DE-BB", "DE-HB", "DE-HH", 
-                                            "DE-HE", "DE-MV", "DE-NI", 
-                                            "DE-NW", "DE-RP", "DE-SL", 
-                                            "DE-SN", "DE-ST", "DE-SH", 
-                                            "DE-TH", "DE-West", "DE-East", 
-                                            "Foreign_NA"))
+F102$STATE <- factor(F102$STATE, levels = statelist_code)
 
 # Make F102_CASES numeric
 F102$F102_CASES <- as.numeric(sub(".", "", as.character(F102$F102_CASES), 
@@ -309,51 +253,14 @@ K70$GENDER <- mapvalues(K70$GENDER, from = c("Männlich", "Weiblich", "Unbekannt
 K70$GENDER <- factor(K70$GENDER, levels = c("M", "F", "U"))
 
 # Recode AGE and make it factor
-K70$AGE <- mapvalues(K70$AGE, 
-                      c("Unter 1 Jahr", "1 Jahr bis unter 5 Jahre", 
-                        "5 bis unter 10 Jahre", "10 bis unter 15 Jahre", 
-                        "15 bis unter 20 Jahre", "20 bis unter 25 Jahre", 
-                        "25 bis unter 30 Jahre", "30 bis unter 35 Jahre", 
-                        "35 bis unter 40 Jahre", "40 bis unter 45 Jahre", 
-                        "45 bis unter 50 Jahre", "50 bis unter 55 Jahre", 
-                        "55 bis unter 60 Jahre", "60 bis unter 65 Jahre", 
-                        "65 bis unter 70 Jahre", "70 bis unter 75 Jahre", 
-                        "75 bis unter 80 Jahre", "80 bis unter 85 Jahre", 
-                        "85 bis unter 90 Jahre", "90 bis unter 95 Jahre", 
-                        "95 bis unter 100 Jahre", "100 Jahre und älter"), 
-                      c("<1y", "1-4y", "5-9y", "10-14y",
-                        "15-19y", "20-24y", "25-29y", "30-34y",
-                        "35-39y", "40-44y", "45-49y", "50-54y", 
-                        "55-59y", "60-64y", "65-69y", "70-74y", 
-                        "75-79y", "80-84y", "85-89y", "90-94y", 
-                        "95-99y", "100y +"))
+K70$AGE <- mapvalues(K70$AGE, agelist_name, agelist_code)
 K70$AGE <- as.factor(K70$AGE)
-K70$AGE <- factor(K70$AGE, levels = c("<1y", "1-4y", "5-9y", "10-14y",
-                                        "15-19y", "20-24y", "25-29y", "30-34y",
-                                        "35-39y", "40-44y", "45-49y", "50-54y", 
-                                        "55-59y", "60-64y", "65-69y", "70-74y", 
-                                        "75-79y", "80-84y", "85-89y", "90-94y", 
-                                        "95-99y", "100y +"))
+K70$AGE <- factor(K70$AGE, levels = agelist_code)
 
 # Recode STATE and make it factor
-K70$STATE <- mapvalues(as.matrix(K70$STATE), 
-                        c("Baden-Württemberg", "Bayern", "Berlin", "Brandenburg", 
-                          "Bremen", "Hamburg", "Hessen", 
-                          "Mecklenburg-Vorpommern", "Niedersachsen", 
-                          "Nordrhein-Westfalen", "Rheinland-Pfalz", "Saarland", 
-                          "Sachsen", "Sachsen-Anhalt", "Schleswig-Holstein", 
-                          "Thüringen", "Früheres Bundesgebiet und Berlin-Ost", 
-                          "Neue Länder ohne Berlin-Ost", 
-                          "Ausland oder unbekannt"), 
-                        c("DE-BW", "DE-BY", "DE-BE", "DE-BB", "DE-HB", "DE-HH", 
-                          "DE-HE", "DE-MV", "DE-NI", "DE-NW", "DE-RP", "DE-SL", 
-                          "DE-SN", "DE-ST", "DE-SH", "DE-TH", "DE-West", 
-                          "DE-East", "Foreign_NA"))
+K70$STATE <- mapvalues(as.matrix(K70$STATE), statelist_name, statelist_code)
 K70$STATE <- as.factor(K70$STATE)
-K70$STATE <- factor(K70$STATE, levels = c("DE-BW", "DE-BY", "DE-BE", "DE-BB", "DE-HB", "DE-HH", 
-                                            "DE-HE", "DE-MV", "DE-NI", "DE-NW", "DE-RP", "DE-SL", 
-                                            "DE-SN", "DE-ST", "DE-SH", "DE-TH", "DE-West", 
-                                            "DE-East", "Foreign_NA"))
+K70$STATE <- factor(K70$STATE, levels = statelist_code)
 
 # Make K70_CASES numeric
 K70$K70_CASES <- as.numeric(sub(".", "", as.character(K70$K70_CASES), fixed = TRUE))
@@ -369,24 +276,4 @@ rownames(K70) <- 1:nrow(K70)
 HEALTH <- cbind(F100, F102[!names(F102) %in% names(F100)], K70[(!names(K70) %in% names(F100)) | (!names(K70) %in% names(F102))])
 
 # Remove leftovers
-rm(F100, F102, K70)
-
-
-
-#################################
-# TESTING
-#################################
-
-source("control/getControl.R")
-
-TOTAL <- merge(HEALTH, INDEP, by = c("STATE", "YEAR"))
-
-TOTAL <- TOTAL[order(TOTAL$STATE, TOTAL$YEAR, TOTAL$GENDER, TOTAL$AGE),]
-
-#HEALTH$YEAR <- as.numeric(sub(".", "", as.character(HEALTH$YEAR), fixed = TRUE))
-
-#xyplot(F102_CASES[STATE == "DE-East" & GENDER == "M"] ~ AGE, data = HEALTH)
-
-
-#mod1 = lm(F100_CASES[AGE=="15-19y"] ~ YEAR, data = HEALTH)
-#summary(mod1)
+rm(F100, F102, K70, statelist_code, statelist_name, agelist_code, agelist_name)

@@ -94,7 +94,6 @@ for (p in packages) {
 }
 rm(p, packages)
 
-
 # Generate list of states
 statelist_name <- c("Baden-Württemberg", "Bayern", "Berlin", "Brandenburg", 
                     "Bremen", "Hamburg", "Hessen", "Mecklenburg-Vorpommern", 
@@ -107,7 +106,6 @@ statelist_name_noU <- c("baden-wuerttemberg", "bayern", "berlin", "brandenburg",
                     "niedersachsen", "nordrhein-westfalen", "rheinland-pfalz", 
                     "saarland", "sachsen", "sachsen-anhalt", 
                     "schleswig-holstein", "thueringen")
-
 
 statelist_code <- c("DE-BW", "DE-BY", "DE-BE", "DE-BB", "DE-HB", "DE-HH", 
                     "DE-HE", "DE-MV", "DE-NI", "DE-NW", "DE-RP", "DE-SL",
@@ -156,6 +154,10 @@ PP[,2] <- as.numeric(substring(as.character(PP[,2]),0,4))
 # Recode STATE and make it factor
 PP$STATE <- mapvalues(as.matrix(PP$STATE), statelist_name, statelist_code)
 PP$STATE <- factor(PP$STATE, levels = statelist_code)
+PP$YEAR <- factor(PP$YEAR, levels = 1991:2015)
+for (i in 3:ncol(PP)){
+  PP[,i] <- as.numeric(PP[,i])
+}
 
 #############################
 # 3. Population Density
