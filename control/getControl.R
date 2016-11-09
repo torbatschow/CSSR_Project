@@ -73,7 +73,7 @@
 ###########################
 
 # Clear Global environment
- rm(list=ls())
+#rm(list=ls())
 
 # Setting Working directory
 try(setwd("/home/torben/GIT/Pair_Assignment_2"), silent = TRUE)
@@ -313,21 +313,23 @@ YUR.L <- as.data.frame(YUR.L)
 YUR.L$STATE <- mapvalues(as.matrix(YUR.L$STATE), statelist_name_noU, statelist_code)
 
 # youth unemployment data frame
-YUR <- as.data.frame(c(2015:1993))
-colnames(YUR) <- "YEAR"
+YUR <- data.frame(NA, NA, NA)
+YUR[,1] <- as.character(YUR[,1])
+YUR[,2] <- as.numeric(YUR[,2])
+YUR[,3] <- as.numeric(YUR[,3])
+colnames(YUR) <- c("STATE", "YEAR", "YUR")
 
 # load, clean and merge 16 excel files
 for (i in 1:16) {
   tmp <- read_excel(paste("control/",YUR.L[YUR.L[,2] == statelist_code[i]][1],sep = ""),
                     sheet = 2)
   tmp <- tmp[c(3:25), c(1:2)]
-  YUR[,statelist_code[i]] <- as.numeric(tmp[,2])
+  for (j in as.numeric(unlist(tmp[,1]))){
+    YUR <- rbind(YUR, c(statelist_code[i], j, as.numeric(tmp[tmp[,1] == j,2])))
+  }
   remove(tmp)
 }
-
-# prepare for merging to independent variables
-YUR <- melt(YUR, id=1)
-colnames(YUR) <- c("YEAR", "STATE", "YUR")
+YUR <- YUR[-1,]
 
 #############################
 # 8. Education
@@ -378,4 +380,4 @@ INDEP <- merge(INDEP, GDP, by = c("STATE", "YEAR"))
 INDEP <- merge(INDEP, BTAX, by = c("STATE", "YEAR"))
 INDEP <- merge(INDEP, YUR, by = c("STATE", "YEAR"))
 INDEP <- merge(INDEP, EDU, by = c("STATE", "YEAR"))
-remove(PD, PP, UR, SA, GDP, BTAX, YUR, EDU)
+remove(PD, PP, UR, SA, GDP, BTAX, YUR, EDU, YUR.L, i, j, state, statelist_code, statelist_name, statelist_name_noU, year)
