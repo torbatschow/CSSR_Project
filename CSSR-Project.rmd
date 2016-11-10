@@ -19,40 +19,17 @@ rm(list=ls())
 # Setting Working directory
 try(setwd("/home/torben/GIT/Pair_Assignment_2"), silent = TRUE)
 try(setwd("D:/Eigene Datein/Dokumente/Uni/Hertie/Materials/Collaborative Social Science Data Analysis/CSSR_Project"), silent = TRUE)
-
-# Collect packages/libraries we need:
-packages <- c("readxl")
-
-# Install packages if not installed before
-for (p in packages) {
-  if (p %in% installed.packages()[,1]) {
-    require(p, character.only=T)
-  }
-  else {
-    install.packages(p, repos="http://cran.rstudio.com", dependencies = TRUE)
-    require(p, character.only=T)
-  }
-}
-rm(p, packages)
 ```
 
 <!--
 **************************
 *****   OVERVIEW:    *****
 **************************
-What is our data and where do we get it from?
--- Acute alcohol intoxication - ICD10 Code: F10.0 - GBE-Bund 
----- Tabelle (gestaltbar): Diagnosedaten der Krankenhäuser nach Wohnsitz (ICD10-4-Steller, ab 2000) 
--- Alcoholic liver disease - ICD10 Code: K70 - GBE-Bund
-
-What are we controlling for?
-+- population density - Destatis: "Bevölkerungsdichte: Bundesländer, Stichtag"
--- unemployment rate - Destatis: "Arbeitslose, Arbeitslosenquoten, Gemeldete Arbeitsstellen: Bundesländer, Jahre"
--- youth unemployment - Regionaldatenbank? https://www.statistik.sachsen-anhalt.de/apps/StrukturKompass/indikator/zeitreihe/90
-+- state gdp - Destatis: "VGR der Länder - Bruttoinlandsprodukt"
--- Bildungsniveau
-   Alcohol sales / Beer sales https://www.destatis.de/GPStatistik/receive/DEHeft_heft_00014241
-   https://www.destatis.de/GPStatistik/receive/DESerie_serie_00000146?list=all
+ToDo:
+1. Include Results
+2. Interpret results
+3. Test common trend assumption
+4. Rewrite literature review
 -->
 
 # Introduction
@@ -62,6 +39,10 @@ Alcohol has a history of causing both joy and pain. In our research we want to f
 It is the aim of this paper is to identify factors interacting with alcohol related health problems and to assess alcohol policy interventions against it. Using the example of all German federal states and time series data for different age groups from 2000 to 2014, we will [1] analyse the possible connection between medical diagnoses of alcohol misuse and possibly explanatory socioeconomic factors like gender, age, unemployment rate, education level, and regional economic performance. For this, we will take both short-term and long-term medical consequences of alcohol misuse into account by examining hospital health records on acute alcohol intoxication as well as on alcoholic liver disease. Besides the socio-economic factors mentioned above, we will [2] test the effect of recent policy measures on the German state level on alcohol consumption, namely the ban on alcohol night sales introduced in 2010 in the state of Baden-Wuerttemberg.
 
 # Related Literature
+
+<!--
+NEEDS WORK
+-->
 
 Our research proposal is inspired by the work of @Marcus.2015 who analysed *"The Effect of a Ban on Late-Night Off-premise Alcohol Sales on Alcohol-Related Hospital Stays in Germany."* They find that the introduction of the alcohol night sales ban reduces alcohol-related hospitalizations among adolescents and young adults by about seven percent. In our analysis, we will not only try to replicate their work with publicly available data sets. We are also going to build upon it -- by differenciate between short-term and longer-term effects. The focus on socio-economic explanatory factors like economic performance for the alcohol abuse as such is based upon research done by e.g. @Popovici.2013 and @Ettner.1997. Focusing on the United States, the two studies found inconsistent results: While one sees "a positive and significant effect of unemployment on drinking behaviors and the findings are robust to numerous sensitivity tests" [@Popovici.2013] the other argues that "non-employment significantly reduces both alcohol consumption and dependence symptoms, probably due to an income effect." [@Ettner.1997] For the German case, @Henkel.2000 finds a negative correlation between economic situation and alcohol and nicotine consumption.
 
@@ -135,6 +116,14 @@ Finally, we are refining our DD approach further by turning it into a panel and 
 \end{equation}
 
 where $c_s$ now is capturing unobservable and time-invariant heterogeneity of states. In addition, we are replacing $dPOST$ with $z_t$ to capture time fixed effects affecting all states, e.g. a change in a federal law. This model can be estimated by using dummies for the time-periods and first-differencing or fixed-effects to address the unobserved heterogeneity of states.
+
+# First results
+
+```{r results, include = FALSE}
+source("health/getHealth.R")
+source("control/getControl.R")
+
+```
 
 
 # References

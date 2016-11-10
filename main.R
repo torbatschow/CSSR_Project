@@ -52,10 +52,10 @@ rm(p, packages)
 ################################################
 
 # Get health data
-source("health/getHealth.R")
+source("health/getHealth.R", encoding = "utf-8")
 
 # Get control data
-source("control/getControl.R")
+source("control/getControl.R", encoding = "utf-8")
 
 # Merge it
 TOTAL <- merge(HEALTH, INDEP, by = c("STATE", "YEAR"))

@@ -120,7 +120,8 @@ if(class(try(read.csv("control/SA.csv")))=="try-error") {
   url.SA <- "https://www-genesis.destatis.de/genesis/online?sequenz=tabelleDownload&selectionname=11111-0001&regionalschluessel=&format=csv"
   write.csv(read.csv(url.SA, header = FALSE, sep=";", row.names=NULL), "control/SA.csv")
 }
-SA <- as.data.frame(read.csv("control/SA.csv", header = T, fileEncoding ="ISO-8859-1", 
+SA <- as.data.frame(read.csv("control/SA.csv", header = T,
+                             fileEncoding ="ISO-8859-1", 
                              stringsAsFactors = FALSE))
 
 SA <- SA[-c(1:6, 23:nrow(SA)),-c(1)]
@@ -137,9 +138,11 @@ SA$SA <- as.numeric(sub(",", ".", as.character(SA$SA),
 # Download population(if not in directory)
 if(class(try(read.csv("control/PP.csv")))=="try-error") {
   url.PP <- "https://www-genesis.destatis.de/genesis/online?sequenz=tabelleDownload&selectionname=12211-0005&regionalschluessel=&format=csv"
-  write.csv(read.csv(url.PP, header = FALSE, sep=";", row.names=NULL), "control/PP.csv")
+  write.csv(read.csv(url.PP, header = FALSE, sep=";", row.names=NULL),
+            "control/PP.csv")
 }
-PP <- as.data.frame(read.csv("control/PP.csv", header = T, fileEncoding ="ISO-8859-1", 
+PP <- as.data.frame(read.csv("control/PP.csv", header = T,
+                             fileEncoding ="ISO-8859-1", 
                              stringsAsFactors = FALSE))
 
 # remove source info and id column
@@ -166,10 +169,12 @@ for (i in 3:ncol(PP)){
 # Download population density if not in directory
 if(class(try(read.csv("control/PD.csv")))=="try-error") {
 url.PD <- "https://www-genesis.destatis.de/genesis/online?sequenz=tabelleDownload&selectionname=12411-0050&regionalschluessel=&format=csv"
-write.csv(read.csv(url.PD, header = FALSE, sep=";", row.names=NULL), "control/PD.csv")
+write.csv(read.csv(url.PD, header = FALSE, sep=";", row.names=NULL), 
+          "control/PD.csv")
 }
-PD <- as.data.frame(read.csv("control/PD.csv", header = T, fileEncoding ="ISO-8859-1", 
-                              stringsAsFactors = FALSE))
+PD <- as.data.frame(read.csv("control/PD.csv", header = T,
+                             fileEncoding ="ISO-8859-1", 
+                             stringsAsFactors = FALSE))
 
 #Cleaning and Renaming PD
 #ISO 3166-2:DE
@@ -204,9 +209,11 @@ PD$PD <- as.numeric(sub(".", "", as.character(PD$PD),
 # Download unemployment rate for states (if not in directory)
 if(class(try(read.csv("control/UR.csv")))=="try-error") {
   url.UR <- "https://www-genesis.destatis.de/genesis/online?sequenz=tabelleDownload&selectionname=13211-0007&regionalschluessel=&format=csv"
-  write.csv(read.csv(url.UR, header = FALSE, sep=";", row.names=NULL), "control/UR.csv")
+  write.csv(read.csv(url.UR, header = FALSE, sep=";", row.names=NULL),
+            "control/UR.csv")
 }
-UR <- as.data.frame(read.csv("control/UR.csv", header = T, fileEncoding ="ISO-8859-1", 
+UR <- as.data.frame(read.csv("control/UR.csv", header = T,
+                             fileEncoding ="ISO-8859-1",
                              stringsAsFactors = FALSE))
 
 # Delete leading and tailing rows / columns; re-arrange and rename
@@ -225,6 +232,7 @@ UR$STATE <- factor(UR$STATE, levels = statelist_code)
 
 # Make UR columns numeric
 UR$UTOTAL <- as.numeric(sub(",", ".", as.character(UR$UTOTAL, fixed = TRUE)))
+UR[UR == "-"] <- NA
 UR$UR.LF <- as.numeric(sub(",", ".", as.character(UR$UR.LF, fixed = TRUE)))
 UR$UR <- as.numeric(sub(",", ".", as.character(UR$UR, fixed = TRUE)))
 UR$VAC <- as.numeric(sub(",", ".", as.character(UR$VAC, fixed = TRUE)))
@@ -237,10 +245,12 @@ UR$VAC <- as.numeric(sub(",", ".", as.character(UR$VAC, fixed = TRUE)))
 # Download GDP for states (if not in directory)
 if(class(try(read.csv("control/GDP.csv")))=="try-error") {
   url.GDP <- "https://www-genesis.destatis.de/genesis/online?sequenz=tabelleDownload&selectionname=82111-0001&regionalschluessel=&format=csv"
-  write.csv(read.csv(url.GDP, header = FALSE, sep=";", row.names=NULL), "control/GDP.csv")
+  write.csv(read.csv(url.GDP, header = FALSE, sep=";", row.names=NULL),
+            "control/GDP.csv")
 }
-GDP <- as.data.frame(read.csv("control/GDP.csv", header = T, fileEncoding ="ISO-8859-1", 
-                             stringsAsFactors = FALSE))
+GDP <- as.data.frame(read.csv("control/GDP.csv", header = T,
+                              fileEncoding ="ISO-8859-1",
+                              stringsAsFactors = FALSE))
 
 # Delete leading and tailing rows / columns; rename them
 GDP <- GDP[-c(1:6, 33:nrow(GDP)),-c(1, ncol(GDP))]
@@ -269,8 +279,9 @@ GDP$GDP <- as.numeric(sub(".", "", as.character(GDP$GDP),
 ############################
 
 # Import Beer Tax for states
-BTAX <- as.data.frame(read.csv2("control/BTAX.csv", header = F, fileEncoding ="ISO-8859-1", 
-                              stringsAsFactors = FALSE))
+BTAX <- as.data.frame(read.csv2("control/BTAX.csv", header = F,
+                                fileEncoding ="ISO-8859-1",
+                                stringsAsFactors = FALSE))
 # Delete leading and tailing rows / columns; rename them
 BTAX <- BTAX[-c(1:7, 1160:nrow(BTAX)),]
 colnames(BTAX) <- c("STATE", "YEAR", "Q", "BTAX")
@@ -285,9 +296,9 @@ for (state in statelist_code){
 }
 colnames(BTAXSUM) <- BTAXSUM[1,]
 BTAXSUM <- BTAXSUM[-1,]
-BTAX$BTAX <- as.numeric(sub(".", "", as.character(BTAX$BTAX), 
-                            fixed = TRUE))
-BTAXSUM$BTAX <- aggregate(BTAX$BTAX, by = list(BTAX$YEAR, BTAX$STATE), FUN = sum)[[3]]
+BTAX[BTAX == "..."] <- NA
+BTAXSUM$BTAX <- aggregate(as.numeric(BTAX$BTAX), by = list(BTAX$YEAR, BTAX$STATE),
+                          FUN = sum)[[3]]
 BTAX <- BTAXSUM
 rm(BTAXSUM)
 
@@ -322,6 +333,7 @@ YUR[,3] <- as.numeric(YUR[,3])
 colnames(YUR) <- c("STATE", "YEAR", "YUR")
 
 # load, clean and merge 16 excel files
+# remark: loop in a loop should be avoided to my knowledge
 for (i in 1:16) {
   tmp <- read_excel(paste("control/",YUR.L[YUR.L[,2] == statelist_code[i]][1],sep = ""),
                     sheet = 2)
@@ -338,18 +350,19 @@ YUR <- YUR[-1,]
 #############################
 
 # Import Education for states
-EDU <- as.data.frame(read.csv2("control/EDU.csv", header = F, fileEncoding ="ISO-8859-1", 
-                                stringsAsFactors = FALSE))
+EDU <- as.data.frame(read.csv2("control/EDU.csv", header = F,
+                     fileEncoding ="ISO-8859-1", stringsAsFactors = FALSE))
 
 # Import Education for states
-EDU <- as.data.frame(read.csv2("control/EDU.csv", header = F, fileEncoding ="ISO-8859-1", 
-                               stringsAsFactors = FALSE))
+EDU <- as.data.frame(read.csv2("control/EDU.csv", header = F, 
+                     fileEncoding ="ISO-8859-1", stringsAsFactors = FALSE))
 
 # Delete leading and tailing rows / columns; rename them
 EDU <- EDU[-c(1:7, 9, 331:nrow(EDU)),-c(2)]
 rownames(EDU) <- 1:nrow(EDU)
 EDU <- EDU[,-c(4, 6, 8, 10, 12, 14)]
-colnames(EDU) <- c("YEAR", "STATE", "EDU_TOTAL", "EDU_NO", "EDU_HS", "EDU_RS", "EDU_FH", "EDU_AH")
+colnames(EDU) <- c("YEAR", "STATE", "EDU_TOTAL", "EDU_NO", "EDU_HS", "EDU_RS",
+                   "EDU_FH", "EDU_AH")
 EDU <- EDU[-c(1:2),]
 EDU <- EDU[, c(2, 1, 3:ncol(EDU))]
 
@@ -382,4 +395,5 @@ INDEP <- merge(INDEP, GDP, by = c("STATE", "YEAR"))
 INDEP <- merge(INDEP, BTAX, by = c("STATE", "YEAR"))
 INDEP <- merge(INDEP, YUR, by = c("STATE", "YEAR"))
 INDEP <- merge(INDEP, EDU, by = c("STATE", "YEAR"))
-remove(PD, PP, UR, SA, GDP, BTAX, YUR, EDU, YUR.L, i, j, state, statelist_code, statelist_name, statelist_name_noU, year)
+remove(PD, PP, UR, SA, GDP, BTAX, YUR, EDU, YUR.L, i, j, state, statelist_code,
+       statelist_name, statelist_name_noU, year)
