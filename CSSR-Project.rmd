@@ -120,8 +120,9 @@ where $c_s$ now is capturing unobservable and time-invariant heterogeneity of st
 # First results
 
 ```{r results, include = FALSE}
-source("health/getHealth.R")
-source("control/getControl.R")
+source("main.R")
+
+
 
 ```
 

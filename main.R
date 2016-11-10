@@ -41,7 +41,7 @@ try(setwd("/home/torben/GIT/Pair_Assignment_2"), silent = TRUE)
 try(setwd("D:/Eigene Datein/Dokumente/Uni/Hertie/Materials/Collaborative Social Science Data Analysis/CSSR_Project"), silent = TRUE)
 
 # Collect packages/libraries we need:
-packages <- c("dplyr", "lfe")
+packages <- c("dplyr", "lfe", "stargazer")
 # can we add a short list so we have an overview for what we need the packages?
 # dplyr for data manipulatio in data.frame, lfe for fixed effect estimation
 # removed: , "spatstat", "lattice",
@@ -128,7 +128,7 @@ HEALTH <- rbind(HEALTH, AGG)
 TOTAL <- merge(HEALTH, INDEP, by = c("STATE", "YEAR"))
 TOTAL <- TOTAL[order(TOTAL$STATE, TOTAL$YEAR, TOTAL$GENDER, TOTAL$AGE),]
 
-# rm(HEALTH, INDEP)
+rm(HEALTH, INDEP, AGG, AGG.A, AGG.G, AGG.A.G)
 
 
 ################################################
@@ -157,24 +157,48 @@ TOTAL$K70_p1000 <- TOTAL$K70_CASES/TOTAL$PP
 # 3. Calculate Models
 ################################################
 
-#HEALTH$YEAR <- as.numeric(sub(".", "", as.character(HEALTH$YEAR), fixed = TRUE))
+# Model one: Simple Regression for 2000, 2007 and 2014 with aggregated data
+
+# data selection
+M1.2000 <- filter(TOTAL, AGE == "all", GENDER == "all", YEAR == 2000)
+M1.2007 <- filter(TOTAL, AGE == "all", GENDER == "all", YEAR == 2007)
+M1.2014 <- filter(TOTAL, AGE == "all", GENDER == "all", YEAR == 2014)
+
+# linear multiple regression
+mod1.2000 <- lm(F100_p1000 ~ GDP_P_C + UR.LF + BTAX_P_C + PD, M1.2000)
+mod1.2007 <- lm(F100_p1000 ~ GDP_P_C + UR.LF + BTAX_P_C + PD, M1.2007)
+mod1.2014 <- lm(F100_p1000 ~ GDP_P_C + UR.LF + BTAX_P_C + PD, M1.2014)
+
+#compare the models
+stargazer::stargazer(mod1.2000, mod1.2007, mod1.2014, 
+                     title = 'Test Model 1 2000, 2007, 2014',
+                     digits = 2, type = 'text')
+
+# Model two: Regression of differences
+
+M2 <- filter(TOTAL, GENDER == "all", AGE == "all")
+M2 <- M2 %>% group_by(STATE) %>% mutate(F100.D = F100_p1000 - lag(F100_p1000))
+M2 <- M2 %>% group_by(STATE) %>% mutate(GDP.D = GDP_P_C - lag(GDP_P_C))
+M2 <- M2 %>% group_by(STATE) %>% mutate(UR.LF.D = UR.LF - lag(UR.LF))
+M2 <- M2 %>% group_by(STATE) %>% mutate(BTAX_P_C.D = BTAX_P_C - lag(BTAX_P_C))
+M2 <- M2 %>% group_by(STATE) %>% mutate(PD.D = PD - lag(PD))
+
+mod2 <- lm(F100.D ~ GDP.D + UR.LF.D + BTAX_P_C.D, M2)
+summary(mod2)
 
 #xyplot(F102_CASES[STATE == "DE-East" & GENDER == "M"] ~ AGE, data = HEALTH)
 
 # remark: we treat each age group as a different observation here. Is that feasible?
 # State FE
-mod1 = felm(F100_p1000 ~ GDP_P_C + UR.LF + BTAX_P_C + PD | STATE, data = TOTAL)
-summary(mod1)
+modA = felm(F100_p1000 ~ GDP_P_C + UR.LF + BTAX_P_C + PD | STATE, data = TOTAL)
+summary(modA)
 
 # State and year FE
-mod2 = felm(F100_p1000 ~ GDP_P_C + UR.LF + BTAX_P_C + PD | STATE + YEAR, data = TOTAL)
-summary(mod2)
+modB = felm(F100_p1000 ~ GDP_P_C + UR.LF + BTAX_P_C + PD | STATE + YEAR, data = TOTAL)
+summary(modB)
 
 
 ###############################################
 # 4. Descriptive statistics
 ###############################################
 
-# X axis
-YEARS <- c(2000:2014)
-PP.Y <- filter(TOTAL, AGE == "1-4y" & GENDER == "M")
