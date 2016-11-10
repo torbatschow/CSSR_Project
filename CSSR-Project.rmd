@@ -19,6 +19,8 @@ rm(list=ls())
 # Setting Working directory
 try(setwd("/home/torben/GIT/Pair_Assignment_2"), silent = TRUE)
 try(setwd("D:/Eigene Datein/Dokumente/Uni/Hertie/Materials/Collaborative Social Science Data Analysis/CSSR_Project"), silent = TRUE)
+
+source("main.R")
 ```
 
 <!--
@@ -118,14 +120,28 @@ Finally, we are refining our DD approach further by turning it into a panel and 
 where $c_s$ now is capturing unobservable and time-invariant heterogeneity of states. In addition, we are replacing $dPOST$ with $z_t$ to capture time fixed effects affecting all states, e.g. a change in a federal law. This model can be estimated by using dummies for the time-periods and first-differencing or fixed-effects to address the unobserved heterogeneity of states.
 
 # First results
+The first model is rather inconclusive. We have choosen the simplest specification: The aggregated number of alcohol related hospitalizations in a state for three different years.
 
-```{r results, include = FALSE}
-source("main.R")
-
-
+```{r results = "asis", echo = FALSE} 
+stargazer::stargazer(mod1.2000, mod1.2007, mod1.2014,
+                     title = 'Regression results Model 1 for 2000, 2007 and 2014',
+                     digits = 2, type = 'latex', header = FALSE)
 
 ```
+The major draw back of this regression is the low number of observations. With one observation per state the standard error are huge. Eventhough the some results are significant, the variance over different years indicates that these results are not stable.  In a second step we are looking at difference over time, which increases the number of available observations to 224:
 
+```{r results = "asis", echo = FALSE} 
+stargazer::stargazer(mod2.F100, mod2.F102, mod2.K70,
+                     title = 'Regression results for equation 2 with first differenced data',
+                     digits = 2, type = 'latex', header = FALSE)
+
+```
+# Robustness test
+```{r results = "asis", echo = FALSE}
+stargazer::stargazer(mod1.list, 
+                     title = 'Test Model 1 2000 - 2014',
+                     digits = 2, type = 'latex', header = FALSE)
+```
 
 # References
 

@@ -149,7 +149,7 @@ TOTAL$BTAX_P_C <- TOTAL$BTAX/TOTAL$PP
 
 # F100 cases per 1000 people
 TOTAL$F100_p1000 <- TOTAL$F100_CASES/TOTAL$PP
-TOTAL$F100_p1000 <- TOTAL$F102_CASES/TOTAL$PP
+TOTAL$F102_p1000 <- TOTAL$F102_CASES/TOTAL$PP
 TOTAL$K70_p1000 <- TOTAL$K70_CASES/TOTAL$PP 
 
 
@@ -158,33 +158,57 @@ TOTAL$K70_p1000 <- TOTAL$K70_CASES/TOTAL$PP
 ################################################
 
 # Model one: Simple Regression for 2000, 2007 and 2014 with aggregated data
+assign(paste("M1", 2000, sep = "."),filter(TOTAL, AGE == "all", GENDER == "all", YEAR == 2000))
+assign(paste("mod1", 2000, sep = "."), lm(F100_p1000 ~ GDP_P_C + UR.LF + BTAX_P_C + PD, M1.2000))
 
 # data selection
-M1.2000 <- filter(TOTAL, AGE == "all", GENDER == "all", YEAR == 2000)
-M1.2007 <- filter(TOTAL, AGE == "all", GENDER == "all", YEAR == 2007)
-M1.2014 <- filter(TOTAL, AGE == "all", GENDER == "all", YEAR == 2014)
-
-# linear multiple regression
-mod1.2000 <- lm(F100_p1000 ~ GDP_P_C + UR.LF + BTAX_P_C + PD, M1.2000)
-mod1.2007 <- lm(F100_p1000 ~ GDP_P_C + UR.LF + BTAX_P_C + PD, M1.2007)
-mod1.2014 <- lm(F100_p1000 ~ GDP_P_C + UR.LF + BTAX_P_C + PD, M1.2014)
+for (i in 2000:2014)
+{
+  assign(paste("M1", i, sep = "."),
+         filter(select(TOTAL, YEAR, STATE, AGE, GENDER, F100_p1000, GDP_P_C, UR.LF, BTAX_P_C, PD),
+                AGE == "all", GENDER == "all", YEAR == i))
+  }
+M1.list <- mget(ls(pattern = "M1."))
+substring(names(M1.list[1]),4)
+for (i in 1:15)
+ {
+  tmp <- as.data.frame(M1.list[i])
+  colnames(tmp) <- substring(colnames(tmp),9)
+  assign(paste("mod1", substring(names(M1.list[i]),4), sep = "."), 
+         lm(F100_p1000 ~ GDP_P_C + UR.LF + BTAX_P_C + PD, tmp))
+  rm(tmp)
+ }
+mod1.list <- mget(ls(pattern = "mod1."))
 
 #compare the models
-stargazer::stargazer(mod1.2000, mod1.2007, mod1.2014, 
+stargazer::stargazer(mod1.2000, mod1.2001, mod1.2002, mod1.2003, 
                      title = 'Test Model 1 2000, 2007, 2014',
+                     digits = 2, type = 'text')
+
+stargazer::stargazer(mod1.list, 
+                     title = 'Test Model 1 2000 - 2014',
                      digits = 2, type = 'text')
 
 # Model two: Regression of differences
 
+# first differencing the data (the lag operator might not function correctly)
 M2 <- filter(TOTAL, GENDER == "all", AGE == "all")
 M2 <- M2 %>% group_by(STATE) %>% mutate(F100.D = F100_p1000 - lag(F100_p1000))
+M2 <- M2 %>% group_by(STATE) %>% mutate(F102.D = F102_p1000 - lag(F102_p1000))
+M2 <- M2 %>% group_by(STATE) %>% mutate(K70.D = K70_p1000 - lag(K70_p1000))
 M2 <- M2 %>% group_by(STATE) %>% mutate(GDP.D = GDP_P_C - lag(GDP_P_C))
 M2 <- M2 %>% group_by(STATE) %>% mutate(UR.LF.D = UR.LF - lag(UR.LF))
 M2 <- M2 %>% group_by(STATE) %>% mutate(BTAX_P_C.D = BTAX_P_C - lag(BTAX_P_C))
 M2 <- M2 %>% group_by(STATE) %>% mutate(PD.D = PD - lag(PD))
 
-mod2 <- lm(F100.D ~ GDP.D + UR.LF.D + BTAX_P_C.D, M2)
-summary(mod2)
+# dropping missing observations
+M2 <- M2 %>% filter(YEAR > 2000)
+
+# regression of equation 2
+mod2.F100 <- lm(F100.D ~ GDP.D + UR.LF.D + BTAX_P_C.D -1, M2)
+mod2.F102 <- lm(F102.D ~ GDP.D + UR.LF.D + BTAX_P_C.D -1, M2)
+mod2.K70 <- lm(K70.D ~ GDP.D + UR.LF.D + BTAX_P_C.D -1, M2)
+
 
 #xyplot(F102_CASES[STATE == "DE-East" & GENDER == "M"] ~ AGE, data = HEALTH)
 
