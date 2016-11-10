@@ -125,7 +125,6 @@ AGG <- rbind(AGG,AGG.G)
 HEALTH <- rbind(HEALTH, AGG)
 
 # Merge it
-# REMARK: Something goes wrong here. 3000 observations are lost in the merge. Looks like there is an error in getHealth.R
 TOTAL <- merge(HEALTH, INDEP, by = c("STATE", "YEAR"))
 TOTAL <- TOTAL[order(TOTAL$STATE, TOTAL$YEAR, TOTAL$GENDER, TOTAL$AGE),]
 

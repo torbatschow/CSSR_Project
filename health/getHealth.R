@@ -58,11 +58,16 @@ statelist_name <- c("Baden-Württemberg", "Bayern", "Berlin", "Brandenburg",
                     "Bremen", "Hamburg", "Hessen", "Mecklenburg-Vorpommern", 
                     "Niedersachsen", "Nordrhein-Westfalen", "Rheinland-Pfalz", 
                     "Saarland", "Sachsen", "Sachsen-Anhalt", 
-                    "Schleswig-Holstein", "Thüringen")
+                    "Schleswig-Holstein", "Thüringen", 
+                    "Früheres Bundesgebiet und Berlin-Ost",	 
+                    "Neue Länder ohne Berlin-Ost",
+                    "Ausland oder unbekannt")
+
 
 statelist_code <- c("DE-BW", "DE-BY", "DE-BE", "DE-BB", "DE-HB", "DE-HH", 
                     "DE-HE", "DE-MV", "DE-NI", "DE-NW", "DE-RP", "DE-SL",
-                    "DE-SN", "DE-ST", "DE-SH", "DE-TH")
+                    "DE-SN", "DE-ST", "DE-SH", "DE-TH", "DE-WEST", "DE-OST",
+                    "AUS")
 
 # Generate list of age groups
 agelist_name <- c("Unter 1 Jahr", "1 Jahr bis unter 5 Jahre", 
@@ -278,6 +283,9 @@ rownames(K70) <- 1:nrow(K70)
 # Combine health data
 HEALTH <- cbind(F100, F102[!names(F102) %in% names(F100)], K70[(!names(K70) %in% names(F100)) | (!names(K70) %in% names(F102))])
 HEALTH$YEAR <- as.numeric(HEALTH$YEAR)
+
+#delete non states
+HEALTH <- HEALTH[!(HEALTH$STATE == "DE-WEST" | HEALTH$STATE == "AUS" | HEALTH$STATE == "DE-OST"),]
 
 # Remove leftovers
 rm(F100, F102, K70, statelist_code, statelist_name, agelist_code, agelist_name)
