@@ -32,6 +32,7 @@ ToDo:
 2. Interpret results
 3. Test common trend assumption
 4. Rewrite literature review
+5. label regression tables
 -->
 
 # Introduction
@@ -120,7 +121,7 @@ Finally, we are refining our DD approach further by turning it into a panel and 
 where $c_s$ now is capturing unobservable and time-invariant heterogeneity of states. In addition, we are replacing $dPOST$ with $z_t$ to capture time fixed effects affecting all states, e.g. a change in a federal law. This model can be estimated by using dummies for the time-periods and first-differencing or fixed-effects to address the unobserved heterogeneity of states.
 
 # First results
-The first model is rather inconclusive. We have choosen the simplest specification: The aggregated number of alcohol related hospitalizations in a state for three different years.
+The first model is simple and its results are at maximum indicative. It does reveal to which state charateristics short-term alcoholrelated hospitalizations (ST-ARH) are correlated. We find that ST-ARH are higher in states with a lower GDP. This captures the basic intuition that binge dringing is more common in economically less well of regions. But this view is not confirmed by our second indicator for economic well-being: the unemployment rate. Rather contrary, states with higher unemployment rates have less cases of binge drinking. Finally, we find correlation between beer consumption (approximated by the beer tax revenue) and ST-ARH. These results are robust over all years of our investgation. But this result is only indicative since the data set is small and we are looking at an strongly aggregated level. Most likely there are many different things happpening which we cannot observe with this data.
 
 ```{r results = "asis", echo = FALSE} 
 stargazer::stargazer(mod1.2000, mod1.2007, mod1.2014,
@@ -128,7 +129,7 @@ stargazer::stargazer(mod1.2000, mod1.2007, mod1.2014,
                      digits = 2, type = 'latex', header = FALSE)
 
 ```
-The major draw back of this regression is the low number of observations. With one observation per state the standard error are huge. Eventhough the some results are significant, the variance over different years indicates that these results are not stable.  In a second step we are looking at difference over time, which increases the number of available observations to 224:
+The major draw back of this regression is the low number of observations. With one observation per state the standard error are huge. In the second step we increased our data set by looking at difference over time, which increases the number of available observations to 224:
 
 ```{r results = "asis", echo = FALSE} 
 stargazer::stargazer(mod2.F100, mod2.F102, mod2.K70,
@@ -136,12 +137,23 @@ stargazer::stargazer(mod2.F100, mod2.F102, mod2.K70,
                      digits = 2, type = 'latex', header = FALSE)
 
 ```
+
+
+
 # Robustness test
 ```{r results = "asis", echo = FALSE}
-stargazer::stargazer(mod1.list, 
-                     title = 'Test Model 1 2000 - 2014',
+stargazer::stargazer(mod1.list[1:5], 
+                     title = 'Robustness test model 1 for the years 2000-2004',
+                     digits = 2, type = 'latex', header = FALSE)
+stargazer::stargazer(mod1.list[6:10], 
+                     title = 'Robustness test model 1 for the years 2005-2009',
+                     digits = 2, type = 'latex', header = FALSE)
+stargazer::stargazer(mod1.list[11:15], 
+                     title = 'Robustness test model 1 for the years 2010-2014',
                      digits = 2, type = 'latex', header = FALSE)
 ```
+
+
 
 # References
 
@@ -150,3 +162,5 @@ stargazer::stargazer(mod1.list,
 [^ARH]: ARH is normalized by the state population and denoted in hospitalizations per 100,000 inhabitants.
 [^TCG]: The night-sale ban in Baden-Wuerttemberg has been the most prominent alcohol policy in 2010. There have also been general changes to opening hours as during this time the competency was transfered to the states and media campaigns. As we only have annual data we are not fully able to distinguish between these treatments, but we assume that they are outweigthed by the night-sales ban.
 [^REG]: Even if they were registered in consecutive reporting periods, the stay of patients for short-term ARH (*F10.0*) would be in average 2,1 days and for long-term ARH 10,7 days (*K70*) and 11,4 days (*F10.2*) in 2014, making the dynamic effect insignificantly small.
+
+

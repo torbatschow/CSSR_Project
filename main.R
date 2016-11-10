@@ -157,19 +157,20 @@ TOTAL$K70_p1000 <- TOTAL$K70_CASES/TOTAL$PP
 # 3. Calculate Models
 ################################################
 
-# Model one: Simple Regression for 2000, 2007 and 2014 with aggregated data
-assign(paste("M1", 2000, sep = "."),filter(TOTAL, AGE == "all", GENDER == "all", YEAR == 2000))
-assign(paste("mod1", 2000, sep = "."), lm(F100_p1000 ~ GDP_P_C + UR.LF + BTAX_P_C + PD, M1.2000))
+# Model one: Simple Regression for each year 2000 to 2014 individually with aggregated data
 
-# data selection
+# data selection for each model
 for (i in 2000:2014)
 {
   assign(paste("M1", i, sep = "."),
          filter(select(TOTAL, YEAR, STATE, AGE, GENDER, F100_p1000, GDP_P_C, UR.LF, BTAX_P_C, PD),
                 AGE == "all", GENDER == "all", YEAR == i))
   }
+
+# list of models
 M1.list <- mget(ls(pattern = "M1."))
-substring(names(M1.list[1]),4)
+
+# regression of each model
 for (i in 1:15)
  {
   tmp <- as.data.frame(M1.list[i])
@@ -180,13 +181,15 @@ for (i in 1:15)
  }
 mod1.list <- mget(ls(pattern = "mod1."))
 
-#compare the models
-stargazer::stargazer(mod1.2000, mod1.2001, mod1.2002, mod1.2003, 
-                     title = 'Test Model 1 2000, 2007, 2014',
+#compare the models (robustness check)
+stargazer::stargazer(mod1.list[1:5], 
+                     title = 'Regression Model 1 2000 - 2004',
                      digits = 2, type = 'text')
-
-stargazer::stargazer(mod1.list, 
-                     title = 'Test Model 1 2000 - 2014',
+stargazer::stargazer(mod1.list[6:10], 
+                     title = 'Regression Model 1 2005 - 2009',
+                     digits = 2, type = 'text')
+stargazer::stargazer(mod1.list[11:15], 
+                     title = 'Regression Model 1 2010 - 2014',
                      digits = 2, type = 'text')
 
 # Model two: Regression of differences
