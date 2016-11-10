@@ -11,9 +11,11 @@
 # ******TO BE COMPLETED******
 # ToDo:
 # 1. Aggregate total for age and gender
-#
-#
-#
+#    Done 
+# 2. Model 3-5 regression
+# 3. Descriptive statistics
+#    Basic line plots are done
+# 
 #
 #
 
@@ -41,9 +43,10 @@ try(setwd("/home/torben/GIT/Pair_Assignment_2"), silent = TRUE)
 try(setwd("D:/Eigene Datein/Dokumente/Uni/Hertie/Materials/Collaborative Social Science Data Analysis/CSSR_Project"), silent = TRUE)
 
 # Collect packages/libraries we need:
-packages <- c("dplyr", "lfe", "stargazer")
+packages <- c("dplyr", "lfe", "stargazer", "ggplot2")
 # can we add a short list so we have an overview for what we need the packages?
-# dplyr for data manipulatio in data.frame, lfe for fixed effect estimation
+# dplyr for data manipulatio in data.frame, lfe for fixed effect estimation, 
+# stargazer for regression tables
 # removed: , "spatstat", "lattice",
 
 # install packages if not installed before
@@ -229,3 +232,103 @@ summary(modB)
 # 4. Descriptive statistics
 ###############################################
 
+# Interesting cases: 
+# 1. common trend of F100 in BW and other states
+# 2. general trend of F100, F102 and K70
+# 3. trends of control variables
+
+# Diagnoses data trends #######################################################
+
+# select disgnoses data
+DS0 <- TOTAL %>% filter(GENDER == "all", AGE=="all") %>% 
+  select(STATE, YEAR, F100_p1000, F102_p1000, K70_p1000)
+
+# F10.0 diagnoses time series
+ggplot(data=DS0, aes(x = YEAR, y = F100_p1000, group = STATE, colour = STATE)) +   
+  geom_line() +                              # line plot
+  theme_bw() +                               # bw background
+  xlab("Years") +                            
+  ylab("F10.0 diagnoses per 1000 inhabliants") +
+  ggtitle("F10.0 diagnoses in German States 2000-2014")
+
+# F10.2 diagnoses time series
+ggplot(data=DS0, aes(x = YEAR, y = F102_p1000, group = STATE, colour = STATE)) +   
+  geom_line() +                              # line plot
+  theme_bw() +                               # bw background
+  xlab("Years") +                            
+  ylab("F10.2 diagnoses per 1000 inhabliants") +
+  ggtitle("F10.2 diagnoses in German States 2000-2014")
+
+# K70 diagnoses time series
+ggplot(data=DS0, aes(x = YEAR, y = K70_p1000, group = STATE, colour = STATE)) +   
+  geom_line() +                              # line plot
+  theme_bw() +                               # bw background
+  xlab("Years") +                            
+  ylab("K70 diagnoses per 1000 inhabliants") +
+  ggtitle("Alcohol-related liver diagnoses in German States 2000-2014")
+
+# control variable trend ################################################
+
+DS1 <- TOTAL %>% filter(GENDER == "all", AGE=="all") %>% 
+                 select(STATE, YEAR, GDP_P_C, UR.LF, YUR, BTAX_P_C)
+# GDP timeseries
+ggplot(data=DS1, aes(x = YEAR, y = GDP_P_C, group = STATE, colour = STATE)) +   
+       geom_line() +                              # line plot
+       theme_bw() +                               # bw background
+       xlab("Years") +                            
+       ylab("GDP per capita") +
+       ggtitle("GDP in German States 2000-2014")
+
+# Unemployment rate 
+ggplot(data=DS1, aes(x = YEAR, y = UR.LF, group = STATE, colour = STATE)) +   
+  geom_line() +                              # line plot
+  theme_bw() +                               # bw background
+  xlab("Years") +                            
+  ylab("Unemployment rate") +
+  ggtitle("Unemployment in German States 2000-2014")
+
+# Youth unemployment rate
+# REMARK: Something is wrong with the youth unemployment data set!!!!
+ggplot(data=DS1, aes(x = YEAR, y = YUR, group = STATE, colour = STATE)) +   
+  geom_line() +                              # line plot
+  theme_bw() +                               # bw background
+  xlab("Years") +                            
+  ylab("Youth unemployment rate") +
+  ggtitle("Youth unemployment in German States 2000-2014")
+
+# Beer Tax
+# REMARK: Beer TAX might be a bad proxy for beer consumption. 
+# According to this statistic Bremen is the largest consumer, but it probably just hints at Becks
+ggplot(data=DS1, aes(x = YEAR, y = BTAX_P_C, group = STATE, colour = STATE)) +   
+  geom_line() +                              # line plot
+  theme_bw() +                               # bw background
+  xlab("Years") +                            
+  ylab("Unemployment rate") +
+  ggtitle("Unemployment in German States 2000-2014")
+
+# Common Trend assumption #####################################################
+
+# select disgnoses data 15-19 and 20-24 year olds
+DS2 <- TOTAL %>% filter(GENDER == "all", AGE=="15-19y") %>% 
+  select(STATE, YEAR, F100_p1000, F102_p1000, K70_p1000)
+
+DS3 <- TOTAL %>% filter(GENDER == "all", AGE=="20-24y") %>% 
+  select(STATE, YEAR, F100_p1000, F102_p1000, K70_p1000)
+
+# Trend for 15-19 year olds
+# interesting, something seems to have happend between 2012 and 2013
+ggplot(data=DS2, aes(x = YEAR, y = F100_p1000, group = STATE, colour = STATE)) +   
+  geom_line() +                              # line plot
+  theme_bw() +                               # bw background
+  xlab("Years") +                            
+  ylab("F10.0 diagnoses per 1000 inhabliants for 15-19 year olds") +
+  ggtitle("F10.0 diagnoses in German States 2000-2014 for 15-19 year olds")
+
+# Trend for 20-24 year olds
+# interesting, something seems to have happend between 2012 and 2013
+ggplot(data=DS3, aes(x = YEAR, y = F100_p1000, group = STATE, colour = STATE)) +   
+  geom_line() +                              # line plot
+  theme_bw() +                               # bw background
+  xlab("Years") +                            
+  ylab("F10.0 diagnoses per 1000 inhabliants for 20-24 year olds") +
+  ggtitle("F10.0 diagnoses in German States 2000-2014 for 20-24 year olds")
