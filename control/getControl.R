@@ -333,7 +333,6 @@ YUR[,3] <- as.numeric(YUR[,3])
 colnames(YUR) <- c("STATE", "YEAR", "YUR")
 
 # load, clean and merge 16 excel files
-# remark: loop in a loop should be avoided to my knowledge
 for (i in 1:16) {
   tmp <- read_excel(paste("control/",YUR.L[YUR.L[,2] == statelist_code[i]][1],sep = ""),
                     sheet = 2)

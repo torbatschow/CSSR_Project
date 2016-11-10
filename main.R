@@ -69,13 +69,65 @@ source("health/getHealth.R", encoding = "utf-8")
 # Get control data
 source("control/getControl.R", encoding = "utf-8")
 
+# Cases list
+# ICD <- c("F100_CASES", "F102_CASES", "K70_CASES")
+# HEALTH.A <- data.frame(NA,NA,NA,NA)
+# colnames(HEALTH.A) <- c("STATE", "YEAR", "GENDER", "AGE")
+# for (k in ICD)
+# {
+#  AGG.A.G <- aggregate(as.numeric(HEALTH$ICD[k]), by = list(HEALTH$YEAR, HEALTH$STATE),
+#                       FUN = sum)
+# }
+ICD <- c("F100_CASES", "F102_CASES", "K70_CASES")
+#HEALTH.A <- data.frame(NA, NA, NA, NA)
+#colnames(HEALTH.A) <- c("STATE","YEAR", "GENDER", "AGE")
+
+# sum up all ages, gender (long way)
+AGG.A.G <- aggregate(as.numeric(HEALTH[,5]), by = list(HEALTH$STATE, HEALTH$YEAR),
+                     FUN = sum)
+for (i in 6:7)
+ {
+   AGG.A.G[,ICD[i-4]] <- aggregate(as.numeric(HEALTH[,i]), by = list(HEALTH$STATE, HEALTH$YEAR),
+                                FUN = sum)[[3]]
+ }
+
+colnames(AGG.A.G) <- c("STATE","YEAR", ICD[1:3])
+AGG.A.G$AGE <- as.factor("all")
+AGG.A.G$GENDER <- as.factor("all")
+
+# sum up all gender for each age
+AGG.G <- aggregate(as.numeric(HEALTH[,5]), by = list(HEALTH$STATE, HEALTH$YEAR, HEALTH$AGE),
+                   FUN = sum)
+for (i in 6:7)
+{
+  AGG.G[,ICD[i-4]] <- aggregate(as.numeric(HEALTH[,i]), by = list(HEALTH$STATE, HEALTH$YEAR, HEALTH$AGE),
+                                  FUN = sum)[[4]]
+}
+
+colnames(AGG.G) <- c("STATE","YEAR", "AGE", ICD[1:3])
+AGG.G$GENDER <- as.factor("all")
+
+# sum up all ages for each gender
+AGG.A <- aggregate(as.numeric(HEALTH[,5]), by = list(HEALTH$STATE, HEALTH$YEAR, HEALTH$GENDER),
+                   FUN = sum)
+for (i in 6:7)
+{
+  AGG.A[,ICD[i-4]] <- aggregate(as.numeric(HEALTH[,i]), by = list(HEALTH$STATE, HEALTH$YEAR, HEALTH$GENDER),
+                                FUN = sum)[[4]]
+}
+
+colnames(AGG.A) <- c("STATE","YEAR", "GENDER", ICD[1:3])
+AGG.A$AGE <- as.factor("all")
+
+#merge them to health
+AGG <- rbind(AGG.A.G, AGG.A)
+AGG <- rbind(AGG,AGG.G)
+HEALTH <- rbind(HEALTH, AGG)
+
 # Merge it
+# REMARK: Something goes wrong here. 3000 observations are lost in the merge. Looks like there is an error in getHealth.R
 TOTAL <- merge(HEALTH, INDEP, by = c("STATE", "YEAR"))
 TOTAL <- TOTAL[order(TOTAL$STATE, TOTAL$YEAR, TOTAL$GENDER, TOTAL$AGE),]
-
-# sum up all ages, gender
-
-
 
 # rm(HEALTH, INDEP)
 

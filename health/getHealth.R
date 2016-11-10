@@ -277,6 +277,7 @@ rownames(K70) <- 1:nrow(K70)
 
 # Combine health data
 HEALTH <- cbind(F100, F102[!names(F102) %in% names(F100)], K70[(!names(K70) %in% names(F100)) | (!names(K70) %in% names(F102))])
+HEALTH$YEAR <- as.numeric(HEALTH$YEAR)
 
 # Remove leftovers
 rm(F100, F102, K70, statelist_code, statelist_name, agelist_code, agelist_name)
