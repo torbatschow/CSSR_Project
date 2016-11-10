@@ -24,7 +24,7 @@ Variable |Name Eng | Name GER
 -----|-------------------- | --------------------
 `STATE`| German State | Bundesland
 `YEAR`| Year 1999-2014 | Jahr
-`PD` | Population Density per qkm | Bevölkerungsdichte pro km^3
+`PD` | Population Density per qkm | Bevölkerungsdichte pro km^3 (Basis Zensus 2011)
 `UTOTAL` | Registered unemployed | 
 `UR.LF`|Unemployment as percent. of civilian labour force| Arbeitslosenquote aller zivilen Erwerbspersonen 
 `UR`| Rate of registered unemployed| Arbeitslosenquote der abhängigen zivilen Erwerbspersonen

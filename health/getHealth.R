@@ -35,10 +35,11 @@ try(setwd("D:/Eigene Datein/Dokumente/Uni/Hertie/Materials/Collaborative
           Social Science Data Analysis/CSSR_Project"), silent = TRUE)
 
 # Collect packages/libraries we need:
-# can we add a short list so we have an overview for what we need the packages?
-# readxl = read excel files, reshape for melt function
-packages <- c("readxl", "readr", "plyr", "zoo","reshape", "spatstat", 
-              "lattice", "lfe")
+packages <- c("readxl", "readr", "plyr", "zoo","reshape")
+# remark: can we add a short list so we have an overview for what we need the packages?
+# readxl = read excel files, readr for read_csv, reshape for melt function, 
+# plyr for mapvalues function, zoo for na.locf function 
+# where in list, but not needed for this script or: "spatstat","lattice", "lfe"
 
 # install packages if not installed before
 for (p in packages) {
