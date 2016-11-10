@@ -121,7 +121,7 @@ Finally, we are refining our DD approach further by turning it into a panel and 
 where $c_s$ now is capturing unobservable and time-invariant heterogeneity of states. In addition, we are replacing $dPOST$ with $z_t$ to capture time fixed effects affecting all states, e.g. a change in a federal law. This model can be estimated by using dummies for the time-periods and first-differencing or fixed-effects to address the unobserved heterogeneity of states.
 
 # First results
-The first model is simple and its results are at maximum indicative. It does reveal to which state charateristics short-term alcoholrelated hospitalizations (ST-ARH) are correlated. We find that ST-ARH are higher in states with a lower GDP. This captures the basic intuition that binge dringing is more common in economically less well of regions. But this view is not confirmed by our second indicator for economic well-being: the unemployment rate. Rather contrary, states with higher unemployment rates have less cases of binge drinking. Finally, we find correlation between beer consumption (approximated by the beer tax revenue) and ST-ARH. These results are robust over all years of our investgation. But this result is only indicative since the data set is small and we are looking at an strongly aggregated level. Most likely there are many different things happpening which we cannot observe with this data.
+The first model is simple and its results are at maximum indicative. It does reveal to which state charateristics short-term alcoholrelated hospitalizations (ST-ARH) are correlated. We find that ST-ARH are higher in states with a lower GDP. This captures the basic intuition that binge dringing is more common in economically less well of regions. But this view is not confirmed by our second indicator for economic well-being: the unemployment rate. Rather contrary, states with higher unemployment rates have less cases of binge drinking. Finally, we find correlation between beer consumption (approximated by the beer tax revenue) and ST-ARH. These results are robust over all years of our investgation. But this is not surprising as the variables we are considering are no strongly fluctuating over the time-horizon of our investigation. Most of them follow more or less a trend. As the contradicting interpretation already hints at, we are most likey not seeing what is happing below the aggregated surface.
 
 ```{r results = "asis", echo = FALSE} 
 stargazer::stargazer(mod1.2000, mod1.2007, mod1.2014,
@@ -135,10 +135,9 @@ The major draw back of this regression is the low number of observations. With o
 stargazer::stargazer(mod2.F100, mod2.F102, mod2.K70,
                      title = 'Regression results for equation 2 with first differenced data',
                      digits = 2, type = 'latex', header = FALSE)
-
 ```
-
-
+The difference show a correlation between GDP growth and short-term ARH. A superficial interpretation could be that individuals in years of strong growth tend to party more. But again, this should be seen with care. For short-term ARH the other variables are not significant.
+The effects of changes on long-term ARH are unsurprisingly inconclusive. In our case each coefficient is exactly directed in the opposite direction for our two long-term ARH indicators. But a clear result would have been implausible as long-term ARH result from excessive drinking behaviour over years. Short-term macro developments should not have any implication on this.
 
 # Robustness test
 ```{r results = "asis", echo = FALSE}
