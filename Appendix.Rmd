@@ -1,0 +1,39 @@
+---
+title: "Appendix"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# Setting Working directory
+try(setwd("/home/torben/GIT/Pair_Assignment_2"), silent = TRUE)
+try(setwd("D:/Eigene Datein/Dokumente/Uni/Hertie/Materials/Collaborative Social Science Data Analysis/CSSR_Project"), silent = TRUE)
+
+# load data / models / graphs
+source("main.R")
+```
+
+#Appendix
+
+
+## Descriptive Statistics
+```{r descriptive, echo=FALSE}
+
+```
+
+## Robustness Tests
+
+
+```{r robustness, results="asis", echo=FALSE}
+stargazer::stargazer(mod1.list[1:5], 
+                     title = 'Robustness test model 1 for the years 2000-2004',
+                     digits = 2, type = 'latex', header = FALSE)
+stargazer::stargazer(mod1.list[6:10], 
+                     title = 'Robustness test model 1 for the years 2005-2009',
+                     digits = 2, type = 'latex', header = FALSE)
+stargazer::stargazer(mod1.list[11:15], 
+                     title = 'Robustness test model 1 for the years 2010-2014',
+                     digits = 2, type = 'latex', header = FALSE)
+```
+

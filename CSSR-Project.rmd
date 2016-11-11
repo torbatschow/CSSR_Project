@@ -29,10 +29,14 @@ source("main.R")
 **************************
 ToDo:
 1. Include Results
-2. Interpret results
-3. Test common trend assumption
+    Needs editing
+2. Add descritive stats and robustness test
+      Test common trend assumption
 4. Rewrite literature review
 5. label regression tables
+6. Bibliography before the appendix
+    Instruction: http://stackoverflow.com/questions/16427637/pandoc-insert-appendix-after-bibliography
+    
 -->
 
 # Introduction
@@ -144,15 +148,7 @@ The effects of changes on long-term ARH are unsurprisingly inconclusive. In our 
 # Robustness test
 
 ```{r results = "asis", echo = FALSE}
-stargazer::stargazer(mod1.list[1:5], 
-                     title = 'Robustness test model 1 for the years 2000-2004',
-                     digits = 2, type = 'latex', header = FALSE)
-stargazer::stargazer(mod1.list[6:10], 
-                     title = 'Robustness test model 1 for the years 2005-2009',
-                     digits = 2, type = 'latex', header = FALSE)
-stargazer::stargazer(mod1.list[11:15], 
-                     title = 'Robustness test model 1 for the years 2010-2014',
-                     digits = 2, type = 'latex', header = FALSE)
+
 ```
 
 

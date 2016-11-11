@@ -233,7 +233,6 @@ summary(modA)
 modB = felm(F100_p1000 ~ GDP_P_C + UR.LF + BTAX_P_C | STATE + AGE + YEAR, data = TOTAL)
 summary(modB)
 
-
 ###############################################
 # 4. Descriptive statistics
 ###############################################
