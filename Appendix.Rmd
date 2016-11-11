@@ -19,20 +19,70 @@ source("main.R")
 
 ## Descriptive Statistics
 ```{r descriptive, echo=FALSE}
+# select diagnoses data for state comparison
+DS.A <- TOTAL %>% filter(GENDER == "all", AGE=="all") %>% 
+  select(STATE, YEAR, F100_p1000, F102_p1000, K70_p1000, GDP_P_C, UR.LF, YUR, BTAX_P_C, PP)
 
+# Youth unemployment rate
+ggplot(data=DS.A, aes(x = YEAR, y = YUR, group = STATE, colour = STATE)) +   
+  geom_line() +                              # line plot
+  theme_bw() +                               # bw background
+  xlab("Years") +                            
+  ylab("Youth unemployment rate") +
+  ggtitle("Youth unemployment in German states 2000-2014")
+
+# Beer Tax
+# REMARK: Beer TAX might be a bad proxy for beer consumption. 
+# According to this statistic Bremen is the largest consumer, but it probably just hints at Becks
+ggplot(data=DS.A, aes(x = YEAR, y = BTAX_P_C, group = STATE, colour = STATE)) +   
+  geom_line() +                              # line plot
+  theme_bw() +                               # bw background
+  xlab("Years") +                            
+  ylab("Beer tax revenue per capita") +
+  ggtitle("Beer tax in German states 2000-2014")
+
+# German wide beer tax revenue
+BTAX.G <- TOTAL %>% filter(GENDER == "all", AGE == "all") %>%
+                    select(YEAR, STATE, BTAX)
+BTAX.G <- aggregate(as.numeric(BTAX.G$BTAX), by = list(BTAX.G$YEAR),
+          FUN = sum)
+colnames(BTAX.G) <- c("YEAR","BTAX")
+
+# Beer tax revenue in Germany 2000-2014
+ggplot(data=BTAX.G, aes(x = YEAR, y = BTAX)) +   
+  geom_line(colour="blue", size=1.5) +       # line plot
+  theme_bw() +                               # bw background
+  xlab("Years") +                            
+  ylab("Beer Tax Revenue in Tsd. Euro") +
+  ggtitle("Beer Tax Revenue 2000-2014")
 ```
 
 ## Robustness Tests
 
 
 ```{r robustness, results="asis", echo=FALSE}
+
+mod1.labels <- c("GDP per capita", "Unemployment rate", "Beer tax", "Population density", "(Intercept)")
+mod1.modellist <- as.character(c(2000:2014))
 stargazer::stargazer(mod1.list[1:5], 
+                     covariate.labels = mod1.labels,
+                     column.labels = mod1.modellist[1:5],
+                     model.numbers  = FALSE,
+                     dep.var.labels = "F10.0 Diagnoses per 1000 capita",
                      title = 'Robustness test model 1 for the years 2000-2004',
                      digits = 2, type = 'latex', header = FALSE)
 stargazer::stargazer(mod1.list[6:10], 
+                     covariate.labels = mod1.labels,
+                     column.labels = mod1.modellist[6:10],
+                     model.numbers  = FALSE,
+                     dep.var.labels = "F10.0 Diagnoses per 1000 capita",
                      title = 'Robustness test model 1 for the years 2005-2009',
                      digits = 2, type = 'latex', header = FALSE)
 stargazer::stargazer(mod1.list[11:15], 
+                     covariate.labels = mod1.labels,
+                     column.labels = mod1.modellist[11:15],
+                     model.numbers  = FALSE,
+                     dep.var.labels = "F10.0 Diagnoses per 1000 capita",
                      title = 'Robustness test model 1 for the years 2010-2014',
                      digits = 2, type = 'latex', header = FALSE)
 ```
