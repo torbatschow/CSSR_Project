@@ -80,7 +80,7 @@ try(setwd("/home/torben/GIT/Pair_Assignment_2"), silent = TRUE)
 try(setwd("D:/Eigene Datein/Dokumente/Uni/Hertie/Materials/Collaborative Social Science Data Analysis/CSSR_Project"), silent = TRUE)
 
 # Collect packages/libraries we need:
-packages <- c("readxl", "RCurl", "ckanr", "plyr", "reshape2")
+packages <- c("readxl", "RCurl", "ckanr", "plyr", "reshape2", "ggplot2")
 
 # install packages if not installed before
 for (p in packages) {
@@ -395,4 +395,5 @@ INDEP <- merge(INDEP, BTAX, by = c("STATE", "YEAR"))
 INDEP <- merge(INDEP, YUR, by = c("STATE", "YEAR"))
 INDEP <- merge(INDEP, EDU, by = c("STATE", "YEAR"))
 remove(PD, PP, UR, SA, GDP, BTAX, YUR, EDU, YUR.L, i, j, state, statelist_code,
-       statelist_name, statelist_name_noU, year)
+      statelist_name, statelist_name_noU, year)
+

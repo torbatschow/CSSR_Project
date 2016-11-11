@@ -36,7 +36,7 @@ Variable |Name Eng | Name GER
 `PP.EIA`| Economically inactive population in 1000 | Nichterwerbspersonen in 1000
 `SA`| Size of territory (state) |  Gebietsfläche: Bundesländer
 `GDP`| GDP at market prices (current prices) (EUR mn)| VGR der Länder (Entstehungsrechnung) - Bruttoinlandsprodukt zu Marktpreisen (nominal)
-`BTAX`| Tax revenue beer tax | Steueraufkommen Biersteuer
+`BTAX`| Tax revenue beer tax in tsd. euro | Steueraufkommen Biersteuer (Tsd. EUR)
 `YUR`| Youth unemployment rate 15-25 year-olds | Jugendarbeitslosenquote (15 bis unter 25 Jahre)
 `EDU_TOTAL` | School Diploma Total | Schulabschlüsse Insgesamt
 `EDU_NO` | x | ohne Hauptschulabschluss
@@ -44,6 +44,12 @@ Variable |Name Eng | Name GER
 `EDU_RS` | x| Realschulabschluss
 `EDU_FH` | x| Fachhochschulreife
 `EDU_AH`| x | Allgemeine Hochschulreife
+
+### Population
+
+Time series includes an change due to the 2011 microzensus. 
+
+Distribution over age groups for 2011 can be found under: [Link](http://www.statistikportal.de/Statistik-Portal/de_jb01_z2.asp)
 
 
 ### Arbeitslosenquote aller zivilen Erwerbspersonen 
@@ -79,4 +85,8 @@ Sozialversicherungspflichtig Beschäftigte zum 30.6. des Vorjahres
 Alle Komponenten der Bezugsgröße werden wohnortbezogen aufbereitet. Die Bezugsgrößen werden einmal jährlich - üblicherweise ab Berichtsmonat Mai - aktualisiert.
 
 © Statistisches Bundesamt, Wiesbaden 2012
+
+### Beer Tax
+Beer tax is reported from breweries to local authorities on a monthly basis on the basis of original gravity measured on a Plato scale. For more information see: [Zoll](https://www.zoll.de/DE/Fachthemen/Steuern/Verbrauchsteuern/Alkohol-Tabakwaren-Kaffee/Steuerhoehe/Bier/bier_node.html)
+
 

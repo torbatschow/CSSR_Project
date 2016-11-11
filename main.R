@@ -16,12 +16,6 @@
 # 3. Descriptive statistics
 #    Basic line plots are done
 # 
-#
-#
-
-
-
-
 ##################################################
 ## CONTENT
 ##################################################
@@ -43,7 +37,7 @@ try(setwd("/home/torben/GIT/Pair_Assignment_2"), silent = TRUE)
 try(setwd("D:/Eigene Datein/Dokumente/Uni/Hertie/Materials/Collaborative Social Science Data Analysis/CSSR_Project"), silent = TRUE)
 
 # Collect packages/libraries we need:
-packages <- c("dplyr", "lfe", "stargazer", "ggplot2")
+packages <- c("dplyr", "stargazer", "ggplot2")
 # can we add a short list so we have an overview for what we need the packages?
 # dplyr for data manipulatio in data.frame, lfe for fixed effect estimation, 
 # stargazer for regression tables
@@ -61,7 +55,6 @@ for (p in packages) {
 }
 rm(p, packages)
 
-
 ################################################
 # 1. Combine Data
 ################################################
@@ -73,17 +66,7 @@ source("health/getHealth.R", encoding = "utf-8")
 source("control/getControl.R", encoding = "utf-8")
 
 # Cases list
-# ICD <- c("F100_CASES", "F102_CASES", "K70_CASES")
-# HEALTH.A <- data.frame(NA,NA,NA,NA)
-# colnames(HEALTH.A) <- c("STATE", "YEAR", "GENDER", "AGE")
-# for (k in ICD)
-# {
-#  AGG.A.G <- aggregate(as.numeric(HEALTH$ICD[k]), by = list(HEALTH$YEAR, HEALTH$STATE),
-#                       FUN = sum)
-# }
 ICD <- c("F100_CASES", "F102_CASES", "K70_CASES")
-#HEALTH.A <- data.frame(NA, NA, NA, NA)
-#colnames(HEALTH.A) <- c("STATE","YEAR", "GENDER", "AGE")
 
 # sum up all ages, gender (long way)
 AGG.A.G <- aggregate(as.numeric(HEALTH[,5]), by = list(HEALTH$STATE, HEALTH$YEAR),
@@ -166,7 +149,8 @@ aggregate(F102_CASES ~ YEAR + GENDER + AGE, sum, data = TOTAL)[,4]
 # 3. Calculate Models
 ################################################
 
-# Model one: Simple Regression for each year 2000 to 2014 individually with aggregated data
+# Model one ################################################################### 
+# Simple Regression for each year 2000 to 2014 individually with aggregated data
 
 # data selection for each model
 for (i in 2000:2014)
@@ -201,7 +185,7 @@ stargazer::stargazer(mod1.list[11:15],
                      title = 'Regression Model 1 2010 - 2014',
                      digits = 2, type = 'text')
 
-# Model two: Regression of differences
+# Model two: Regression of differences ########################################
 
 # first differencing the data (the lag operator might not function correctly)
 M2 <- filter(TOTAL, GENDER == "all", AGE == "all")
@@ -221,17 +205,27 @@ mod2.F100 <- lm(F100.D ~ GDP.D + UR.LF.D + BTAX_P_C.D -1, M2)
 mod2.F102 <- lm(F102.D ~ GDP.D + UR.LF.D + BTAX_P_C.D -1, M2)
 mod2.K70 <- lm(K70.D ~ GDP.D + UR.LF.D + BTAX_P_C.D -1, M2)
 
+# Model three ###############################################################
 
-#xyplot(F102_CASES[STATE == "DE-East" & GENDER == "M"] ~ AGE, data = HEALTH)
+#remark: what age group do we select here? 15-19, 20-24, aggregate both or all?
+M3 <- TOTAL %>% filter(GENDER == "all", AGE == "15-19y")
+M3$dBW <- as.numeric(M3$STATE == "DE-BW")
+M3$dPOST <- as.numeric(M3$YEAR >= 2010)
 
-# remark: we treat each age group as a different observation here. Is that feasible?
-# State FE
-modA = felm(F100_p1000 ~ GDP_P_C + UR.LF + BTAX_P_C | STATE + AGE, data = TOTAL)
-summary(modA)
+mod3.16 <- lm(F100_p1000 ~ dBW + dPOST + dBW:dPOST, M3)
+mod3.13 <- lm(F100_p1000 ~ dBW + dPOST + dBW:dPOST, 
+              filter(M3, !(STATE %in% c("DE-HB", "DE-HH", "DE-BE"))))
 
-# State and year FE
-modB = felm(F100_p1000 ~ GDP_P_C + UR.LF + BTAX_P_C | STATE + AGE + YEAR, data = TOTAL)
-summary(modB)
+stargazer::stargazer(mod3.16, mod3.13, 
+                     title = 'Model 3 Simple Diff-in-Diff',
+                     digits = 2, type = 'text')
+
+
+# Robustness check: different composition of control group
+# idea 1: make regression to find trend for 2000-2010 -> 
+# states with similar coefficient should be in the control group
+# idea 2: exclude city states  HB, HH, BE (mod.13)
+
 
 ###############################################
 # 4. Descriptive statistics
