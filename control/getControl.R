@@ -343,7 +343,7 @@ for (i in 1:16) {
   remove(tmp)
 }
 YUR <- YUR[-1,]
-
+YUR$YUR <- as.numeric(YUR$YUR)
 #############################
 # 8. Education
 #############################
