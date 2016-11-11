@@ -21,6 +21,38 @@ try(setwd("/home/torben/GIT/Pair_Assignment_2"), silent = TRUE)
 try(setwd("D:/Eigene Datein/Dokumente/Uni/Hertie/Materials/Collaborative Social Science Data Analysis/CSSR_Project"), silent = TRUE)
 
 source("main.R")
+
+# Collect packages/libraries we need:
+packages <- c("fontcm", "extrafont")
+# can we add a short list so we have an overview for what we need the packages?
+# extrafont for pretty font in ggplot plots
+
+# install packages if not installed before
+for (p in packages) {
+  if (p %in% installed.packages()[,1]) {
+    require(p, character.only=T)
+  }
+  else {
+    install.packages(p, repos="http://cran.rstudio.com", dependencies = TRUE)
+    require(p, character.only=T)
+  }
+}
+rm(p, packages)
+
+# Initiate Label Names
+statelist_code <- c("DE-BW", "DE-BY", "DE-BE", "DE-BB", "DE-HB", "DE-HH", 
+                    "DE-HE", "DE-MV", "DE-NI", "DE-NW", "DE-RP", "DE-SL",
+                    "DE-SN", "DE-ST", "DE-SH", "DE-TH")
+
+statelist_name <- c("Baden-Württemberg", "Bayern", "Berlin", "Brandenburg", 
+                    "Bremen", "Hamburg", "Hessen", "Mecklenburg-Vorpommern", 
+                    "Niedersachsen", "Nordrhein-Westfalen", "Rheinland-Pfalz", 
+                    "Saarland", "Sachsen", "Sachsen-Anhalt", 
+                    "Schleswig-Holstein", "Thüringen")
+statelist.code.short <- substr(statelist_code, 4, 5)
+
+# Load fancy fonts
+loadfonts()
 ```
 
 <!--
@@ -124,8 +156,44 @@ Finally, we are refining our DD approach further by turning it into a panel and 
 
 where $c_s$ now is capturing unobservable and time-invariant heterogeneity of states. In addition, we are replacing $dPOST$ with $z_t$ to capture time fixed effects affecting all states, e.g. a change in a federal law. This model can be estimated by using dummies for the time-periods and first-differencing or fixed-effects to address the unobserved heterogeneity of states.
 
+# Descriptive Statistics Overview
+
+Looking at the dependend variables, especially the short-term alcohol related hospitalizations (ST-ARH) show a clear upward trend over time. The numbers of acute intoxication per 1000 people only moderately increase in city states like Berlin (BE), Bremen (HB), and Hamburg (HH). Schleswig-Holstein and other states, on the contrary, double their rates in the time span from 2000 to 2014.
+
+```{r echo = FALSE} 
+#font_import("cmr10")
+ggplot(data=DS0, aes(x = YEAR, y = F100_p1000, group = STATE, colour = STATE, label = STATE)) +   
+  geom_line() +                              # line plot
+  theme_bw() +                               # bw background
+  xlab("Years") +                            
+  ylab("F10.0 diagnoses per 1000 people") +
+  ggtitle("F10.0 diagnoses in German States 2000-2014") +
+  scale_color_discrete(name  = "State", breaks = statelist_code, labels = statelist.code.short) +
+  theme(legend.position = "bottom", 
+        legend.key = element_rect(size = 5, fill = 'white', colour = 'white'),
+        legend.key.size = unit(2.0, 'lines'))
+  #annotate("text", x = 0, y = 0.1, label = "Label", parse = TRUE, family = "cmr10")
+```
+
+The long-term ARH values also slightly increase, but it is a rather moderate one. This is a reasonable finding, as already the description "long-term" suggests that any change is very unlikely to happen in a short period of time, as captchured by our sample.
+
+```{r echo = FALSE} 
+ggplot(data=DS0, aes(x = YEAR, y = K70_p1000, group = STATE, colour = STATE)) +   
+  geom_line() +                              # line plot
+  theme_bw() +                               # bw background
+  xlab("Years") +                            
+  ylab("K70 diagnoses per 1000 inhabliants") +
+  ggtitle("Alcohol-related liver diagnoses in German States 2000-2014") +
+  scale_color_discrete(name  = "State", breaks = statelist_code, labels = statelist.code.short) +
+  theme(legend.position = "bottom", 
+        legend.key = element_rect(size = 5, fill = 'white', colour = 'white'),
+        legend.key.size = unit(2.0, 'lines'))
+```
+
+
+
 # First results
-The first model, shown in *Table 1*, is simple and its results are at maximum indicative. It does reveal to which state charateristics short-term alcoholrelated hospitalizations (ST-ARH) are correlated. We find that ST-ARH are higher in states with a lower GDP. This captures the basic intuition that binge dringing is more common in economically less well of regions. But this view is not confirmed by our second indicator for economic well-being: the unemployment rate. Rather contrary, states with higher unemployment rates have less cases of binge drinking. Finally, we find correlation between beer consumption (approximated by the beer tax revenue) and ST-ARH. These results are robust over all years of our investgation. But this is not surprising as the variables we are considering are no strongly fluctuating over the time-horizon of our investigation. Most of them follow more or less a trend. As the contradicting interpretation already hints at, we are most likey not seeing what is happing below the aggregated surface.
+The first model, shown in *Table 1*, is simple and its results are at maximum indicative. It does reveal to which state charateristics short-term alcohol related hospitalizations (ST-ARH) are correlated. We find that ST-ARH are higher in states with a lower GDP. This captures the basic intuition that binge dringing is more common in economically less well of regions. But this view is not confirmed by our second indicator for economic well-being: the unemployment rate. Rather contrary, states with higher unemployment rates have less cases of binge drinking. Finally, we find correlation between beer consumption (approximated by the beer tax revenue) and ST-ARH. These results are robust over all years of our investgation. But this is not surprising as the variables we are considering are no strongly fluctuating over the time-horizon of our investigation. Most of them follow more or less a trend. As the contradicting interpretation already hints at, we are most likey not seeing what is happing below the aggregated surface.
 
 ```{r results = "asis", echo = FALSE} 
 stargazer::stargazer(mod1.2000, mod1.2007, mod1.2014,
