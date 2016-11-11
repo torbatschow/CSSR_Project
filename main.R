@@ -121,6 +121,35 @@ rm(HEALTH, INDEP, AGG, AGG.A, AGG.G, AGG.A.G, ICD, i)
 # 2. Calculate Missing Variables
 ################################################
 
+# Generate variables for whole Germany
+Germany <- aggregate(F100_CASES ~ YEAR + GENDER + AGE, sum, data = TOTAL)
+Germany <- cbind(STATE = "DE-DE", Germany)
+Germany$F102_CASES <- aggregate(F102_CASES ~ YEAR + GENDER + AGE, sum, data = TOTAL)[,4]
+Germany$K70_CASES <- aggregate(K70_CASES ~ YEAR + GENDER + AGE, sum, data = TOTAL)[,4]
+Germany$PD <- NA
+Germany$UTOTAL <- aggregate(UTOTAL ~ YEAR + GENDER + AGE, sum, data = TOTAL)[,4]
+Germany$UR.LF <- NA
+Germany$UR <- NA
+Germany$VAC <- aggregate(VAC ~ YEAR + GENDER + AGE, sum, data = TOTAL)[,4]
+Germany$PP <- aggregate(PP ~ YEAR + GENDER + AGE, sum, data = TOTAL)[,4]
+Germany$PP.EM <- aggregate(PP.EM ~ YEAR + GENDER + AGE, sum, data = TOTAL)[,4]
+Germany$PP.UE <- aggregate(PP.UE ~ YEAR + GENDER + AGE, sum, data = TOTAL)[,4]
+Germany$PP.EA <- aggregate(PP.EA ~ YEAR + GENDER + AGE, sum, data = TOTAL)[,4]
+Germany$PP.EIA <- aggregate(PP.EIA ~ YEAR + GENDER + AGE, sum, data = TOTAL)[,4]
+Germany$SA <- aggregate(SA ~ YEAR + GENDER + AGE, sum, data = TOTAL)[,4]
+Germany$GDP <- aggregate(GDP ~ YEAR + GENDER + AGE, sum, data = TOTAL)[,4]
+Germany$BTAX <- aggregate(BTAX ~ YEAR + GENDER + AGE, sum, data = TOTAL)[,4]
+Germany$YUR <- NA
+Germany$EDU_TOTAL <- aggregate(EDU_TOTAL ~ YEAR + GENDER + AGE, sum, data = TOTAL)[,4]
+Germany$EDU_NO <- aggregate(EDU_NO ~ YEAR + GENDER + AGE, sum, data = TOTAL)[,4]
+Germany$EDU_HS <- aggregate(EDU_HS ~ YEAR + GENDER + AGE, sum, data = TOTAL)[,4]
+Germany$EDU_RS <- aggregate(EDU_RS ~ YEAR + GENDER + AGE, sum, data = TOTAL)[,4]
+Germany$EDU_FH <- aggregate(EDU_FH ~ YEAR + GENDER + AGE, sum, data = TOTAL)[,4]
+Germany$EDU_AH <- aggregate(EDU_AH ~ YEAR + GENDER + AGE, sum, data = TOTAL)[,4]
+Germany[,5:27] <- sapply(Germany[,5:27], as.numeric)
+TOTAL <- rbind(TOTAL, Germany)
+rm(Germany)
+
 # GDP per capita (in tousand per capita)
 # remark: just checked with data from 2014 and seems like our calculations are slightly higher.
 #         This could be because of differing reference dates to the Dresden data.
@@ -133,21 +162,6 @@ TOTAL$GDP_P_C <- TOTAL$GDP/TOTAL$PP
 
 # Beer tax per capita
 TOTAL$BTAX_P_C <- TOTAL$BTAX/TOTAL$PP
-
-# Generate variables for whole Germany
-
-Germany <- aggregate(F100_CASES ~ YEAR + GENDER + AGE, sum, data = TOTAL)
-Germany <- cbind(STATE = "DE-DE", Germany)
-Germany$F102_CASES <- aggregate(F102_CASES ~ YEAR + GENDER + AGE, sum, data = TOTAL)[,4]
-Germany$K70_CASES <- aggregate(K70_CASES ~ YEAR + GENDER + AGE, sum, data = TOTAL)[,4]
-for (i in 8:32) {
-  Germany[colnames(TOTAL)[i]] = NA
-}
-Germany$PP <- aggregate(PP ~ YEAR + GENDER + AGE, sum, data = TOTAL)[,4]
-Germany$GDP <- aggregate(GDP ~ YEAR + GENDER + AGE, sum, data = TOTAL)[,4]
-Germany[,5:32] <- sapply(Germany[,5:32], as.numeric)
-TOTAL <- rbind(TOTAL, Germany)
-
 
 # F100 cases per 1000 people
 TOTAL$F100_p1000 <- TOTAL$F100_CASES/TOTAL$PP
@@ -346,7 +360,7 @@ ggplot(data=DS1, aes(x = YEAR, y = BTAX_P_C, group = STATE, colour = STATE)) +
 # Common Trend assumption #####################################################
 
 # select disgnoses data 15-19 and 20-24 year olds
-DS2 <- TOTAL %>% filter(GENDER == "all", AGE=="15-19y") %>% 
+DS2 <- TOTAL %>% filter(GENDER == "all", AGE=="15-19y", STATE!="DE-DE") %>% 
   select(STATE, YEAR, F100_p1000, F102_p1000, K70_p1000)
 
 DS3 <- TOTAL %>% filter(GENDER == "all", AGE=="20-24y") %>% 
@@ -379,5 +393,5 @@ ggplot(data=DS4, aes(x = YEAR, y = F100_p1000, group = STATE, colour = STATE)) +
   geom_line() +                              # line plot
   theme_bw() +                               # bw background
   xlab("Years") +                            
-  ylab("F10.0 diagnoses per 1000 inhabliants for 20-24 year olds") +
-  ggtitle("F10.0 diagnoses in German States 2000-2014 for 20-24 year olds")
+  ylab("F10.0 diagnoses per 1000 inhabliants for 40-44 year olds") +
+  ggtitle("F10.0 diagnoses in German States 2000-2014 for 40-44 year olds")

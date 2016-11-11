@@ -23,9 +23,9 @@ try(setwd("D:/Eigene Datein/Dokumente/Uni/Hertie/Materials/Collaborative Social 
 source("main.R")
 
 # Collect packages/libraries we need:
-packages <- c("fontcm", "extrafont")
+packages <- c("fontcm", "psych")
 # can we add a short list so we have an overview for what we need the packages?
-# extrafont for pretty font in ggplot plots
+# psych allows for summary statistics
 
 # install packages if not installed before
 for (p in packages) {
@@ -159,60 +159,87 @@ Looking at the dependend variables, especially the short-term alcohol related ho
 
 ```{r echo = FALSE} 
 #font_import("cmr10")
-ggplot(data=DS0, aes(x = YEAR, y = F100_p1000, group = STATE, colour = STATE, label = STATE)) +   
+ggplot(data=DS0, aes(x = YEAR, y = F100_p1000, group = STATE, colour = STATE, label = STATE)) +
+  scale_x_continuous(breaks = c(2000, 2005, 2010, 2014), minor_breaks = c(2000:2014)) +
   geom_line() +                              # line plot
   theme_bw() +                               # bw background
   xlab("Years") +                            
-  ylab("F10.0 diagnoses per 1000 people") +
+  ylab("F10.0 diagnoses \nper 1000 people") +
   ggtitle("F10.0 diagnoses in German States 2000-2014") +
   scale_color_discrete(name  = "State", breaks = statelist_code, labels = statelist.code.short) +
   theme(legend.position = "bottom", 
         legend.key = element_rect(size = 5, fill = 'white', colour = 'white'),
-        legend.key.size = unit(2.0, 'lines'))
+        legend.key.size = unit(2.0, 'lines'),
+        axis.title.y=element_text(margin=margin(10,10,0,10)))
   #annotate("text", x = 0, y = 0.1, label = "Label", parse = TRUE, family = "cmr10")
 ```
 
-The long-term ARH values also slightly increase, but it is a rather moderate one. This is a reasonable finding, as already the description "long-term" suggests that any change is very unlikely to happen in a short period of time, as captchured by our sample.
+The long-term ARH values also slightly increase, but it is a rather moderate one. This is a reasonable finding, as already the description "long-term" suggests that any change is very unlikely to happen in a short period of time like the one captchured by our sample.
 
 ```{r echo = FALSE} 
-ggplot(data=DS0, aes(x = YEAR, y = K70_p1000, group = STATE, colour = STATE)) +   
+ggplot(data=DS0, aes(x = YEAR, y = K70_p1000, group = STATE, colour = STATE)) +
+  scale_x_continuous(breaks = c(2000, 2005, 2010, 2014), minor_breaks = c(2000:2014)) +
   geom_line() +                              # line plot
   theme_bw() +                               # bw background
   xlab("Years") +                            
-  ylab("K70 diagnoses per 1000 inhabliants") +
+  ylab("K70 diagnoses \nper 1000 inhabliants") +
   ggtitle("Alcohol-related liver diagnoses in German States 2000-2014") +
   scale_color_discrete(name  = "State", breaks = statelist_code, labels = statelist.code.short) +
   theme(legend.position = "bottom", 
         legend.key = element_rect(size = 5, fill = 'white', colour = 'white'),
-        legend.key.size = unit(2.0, 'lines'))
+        legend.key.size = unit(2.0, 'lines'),
+        axis.title.y=element_text(margin=margin(10,10,0,10)))
 ```
 
 With regards to the different age groups, the distribution of cases is already somewhat reveiling: long-term ARH numbers as an indicator for strong alcoholism show that it rather is a problem for best-agers than for younger people. The numbers begin to rise at the 35-39 years age group and start declining with the 65-69 years group -- probably due to a higher mortality (although the data does not offer such interpretation).
 
 ```{r echo = FALSE} 
-# K70 cases per 1000 per age group
-ggplot(data=PL1, aes(x=AGE, y=K70_p1000)) +
+# Bar diagram: K70 cases per 1000 per age group
+ggplot(data=PL1, aes(x = AGE, y = K70_p1000, fill = AGE)) +
   geom_bar(stat="identity") +
   xlab("Age Group") +
   ylab("K70 cases per 1000 people") +
-  ggtitle("K70 cases in Germany per 1000 per age group") +
-  theme(axis.text.x  = element_text(angle=90, vjust=0.5))
+  ggtitle("K70 cases in Germany \n per 1000 per age group") +
+  guides(fill=FALSE) +
+  theme(axis.text.x  = element_text(angle=90, vjust=0.5),
+        axis.title.y=element_text(margin=margin(10,10,0,10)))
 ```
 
-However, the short-term ARH have two peaks: The first is a very strong one at the 15-19 years age group. It appears resonable to interpret this one as a sign of younsters making first experiences with alcoholic drinks. In Germany, the two age-thresholds for buying alcoholic beverages are 16 years (for beer and whine) and 18 years (for brandy).
+In Germany, the two age-thresholds for buying alcoholic beverages are 16 years (for beer and whine) and 18 years (for brandy). This helps with the interpretation of the short-term ARH bar plot with its two peaks: The first is a very strong one at the 15-19 years age group. It appears resonable to interpret this one as a sign of younsters making first experiences with alcoholic drinks -- and overdoing it. The second "mid-life crisis" peak corresponds with the peak of long-term alcohol abuse shown before.
 
 ```{r echo = FALSE} 
-# F10.0 cases per 1000 per age group
-ggplot(data=PL1, aes(x=AGE, y=F100_p1000)) +
+# Bar diagram: F10.0 cases per 1000 per age group in DE-DE
+ggplot(data=PL1, aes(x=AGE, y=F100_p1000, fill = AGE)) +
   geom_bar(stat="identity") +
   xlab("Age Group") +
   ylab("F10.0 cases per 1000 people") +
-  ggtitle("F10.0 cases in Germany per 1000 per age group") +
-  theme(axis.text.x  = element_text(angle=90, vjust=0.5))
+  ggtitle("F10.0 cases in Germany \n per 1000 per age group") +
+  guides(fill=FALSE) +
+  theme(axis.text.x  = element_text(angle=90, vjust=0.5),
+        axis.title.y=element_text(margin=margin(10,10,0,10)))
 ```
 
-# First results
-The first model, shown in *Table 1*, is simple and its results are at maximum indicative. It does reveal to which state charateristics short-term alcohol related hospitalizations (ST-ARH) are correlated. We find that ST-ARH are higher in states with a lower GDP. This captures the basic intuition that binge dringing is more common in economically less well of regions. But this view is not confirmed by our second indicator for economic well-being: the unemployment rate. Rather contrary, states with higher unemployment rates have less cases of binge drinking. Finally, we find correlation between beer consumption (approximated by the beer tax revenue) and ST-ARH. These results are robust over all years of our investgation. But this is not surprising as the variables we are considering are no strongly fluctuating over the time-horizon of our investigation. Most of them follow more or less a trend. As the contradicting interpretation already hints at, we are most likey not seeing what is happing below the aggregated surface.
+An alarming development is illustrated by the high increase in 15-19-year-olds admitted to hospitals with acute alcohol intoxication. From 2000 to 2011, Bavaria more than tripled its quota in this regard. However, since then many states show a reversed development with declining numbers of short-term ARH cases.
+
+```{r echo = FALSE} 
+# F10.0 cases per 1000 per age group
+ggplot(data=DS2, aes(x = YEAR, y = F100_p1000, group = STATE, colour = STATE)) +
+  scale_x_continuous(breaks = c(2000, 2005, 2010, 2014), minor_breaks = c(2000:2014)) +
+  geom_line() +                              # line plot
+  theme_bw() +                               # bw background
+  xlab("Years") +                            
+  ylab("F10.0 diagnoses per 1000 inhabliants \nfor 15-19-year-olds") +
+  ggtitle("F10.0 diagnoses in German States 2000-2014 \nfor 15-19-year-olds") +
+  scale_color_discrete(name  = "State", breaks = statelist_code, labels = statelist.code.short) +
+  theme(legend.position = "bottom", 
+        legend.key = element_rect(size = 5, fill = 'white', colour = 'white'),
+        legend.key.size = unit(2.0, 'lines'),
+        axis.title.y=element_text(margin=margin(10,10,0,10)))
+
+```
+
+# First Results
+The first model shown in *Table 1* is simple and its results are indicative, at most. It does reveal to which state charateristics short-term alcohol related hospitalizations (ST-ARH) are correlated. We find that ST-ARH are higher in states with a lower GDP. This captures the basic intuition that binge dringing is more common in regions that are economically less well-off. But this view is not confirmed by our second indicator for economic well-being: the unemployment rate. To the contrary, states with higher unemployment rates have less cases of binge drinking. Finally, we find correlation between beer consumption (approximated by the beer tax revenue) and ST-ARH. These results are robust over all years of our investgation. But this is not surprising as the variables we are considering are not strongly fluctuating during the period under investigation. Most of them follow more or less the same trend. As the contradicting interpretation already hints at, we are most likey not seeing what is happing below the aggregated surface.
 
 ```{r results = "asis", echo = FALSE} 
 stargazer::stargazer(mod1.2000, mod1.2007, mod1.2014,
@@ -220,25 +247,17 @@ stargazer::stargazer(mod1.2000, mod1.2007, mod1.2014,
                      digits = 2, type = 'latex', header = FALSE)
 
 ```
-The major draw back of this regression is the low number of observations. With one observation per state the standard error are huge. In the second step we increased our data set by looking at difference over time, which increases the number of available observations to 224 (*Table 2*).
+
+The major drawback of this regression is the low number of observations. With one observation per state the standard error are *huge*. In the second step we increased our data set by looking at difference over time, which increases the number of available observations to 224 (*Table 2*).
 
 ```{r results = "asis", echo = FALSE} 
 stargazer::stargazer(mod2.F100, mod2.F102, mod2.K70,
                      title = 'Regression results for equation 2 with first differenced data',
                      digits = 2, type = 'latex', header = FALSE)
 ```
+
 The difference show a correlation between GDP growth and short-term ARH. A superficial interpretation could be that individuals in years of strong growth tend to party more. But again, this should be seen with care. For short-term ARH the other variables are not significant.
-The effects of changes on long-term ARH are unsurprisingly inconclusive. In our case each coefficient is exactly directed in the opposite direction for our two long-term ARH indicators. But a clear result would have been implausible as long-term ARH result from excessive drinking behaviour over years. Short-term macro developments should not have any implication on this.
-
-\newpage
-
-# Robustness test
-
-```{r results = "asis", echo = FALSE}
-
-```
-
-
+The effects of changes on long-term ARH are unsurprisingly inconclusive. In our case each coefficient is directed exactly in the opposite direction of our two long-term ARH indicators. But a clear result would again have been implausible, as long-term ARH result from excessive drinking behaviour over years. Short-term macro developments should not have any impact on this.
 
 # References
 

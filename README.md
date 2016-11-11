@@ -21,13 +21,18 @@ Second, to estimate the effects on health we use [hospital diagnosis statistics]
 
 Third, the data on socio-economic factors includes the respective state's population, population density, unemployment rates of different age groups, the state GDP and beer sales by state. We are aware of the fact that other alcoholic beverages besides beer probably play a role in the cases under scrutiny. However, with these numbers not available, the beer consumption serves as a proxy for general alcohol consumption in the state. We are collecting the supplementary data from different statistics provided by *Destatis*.
 
+## File Structure
+
+We collect and combine our independend variables via [getControl.R](control/getControl.R) in the [control](control/) folder. Our dependend health data is gathered via [getHealth.R](health/getHealth.R) from the [health](health/) folder. 
+[main.R](main.R) is the file where the two dataset collections are combined and prepared for the analysis.
+[CSSR-Project.rmd](CSSR-Project.rmd) generates the output pdf, and [Appendix.Rmd](Appendix.Rmd) holds additional figures, tables, and robustness checks.
 
 ## Assignment Tasks
 
-### [Second Assignment](Pair_Assignment_2.rmd)
+### Second Assignment
 The second pair assignment is a proposal for your Collaborative Research Project. It is an opportunity for you to layout your collaborative research paper question, justify why it is interesting, provide basic literature review (properly cited using BibTeX), and identify data sources/methodologies that you can access to help answer your question. You will also demonstrate your understanding of literate programming technologies. Deadline 28 October, 2,000 words maximum, 10% of final grade.
 
-### Third Assignment
+### [Third Assignment](CSSR-Project.rmd)
 
 In the third pair assignment you will gather web based data from at least two sources, merge the data sets, conduct basic inferential statistics on the data to address a relevant research question and briefly describe the results including with dynamically generated tables and figures. Students are encouraged to access data and perform statistical analyses with an eye to answering questions relevant for their Collaborative Research Project. Deadline: 11 November. The write up should be 1,500 words maximum and use literate programming, 10% of final grade.
 
