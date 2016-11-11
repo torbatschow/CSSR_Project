@@ -50,9 +50,6 @@ statelist_name <- c("Baden-Württemberg", "Bayern", "Berlin", "Brandenburg",
                     "Saarland", "Sachsen", "Sachsen-Anhalt", 
                     "Schleswig-Holstein", "Thüringen")
 statelist.code.short <- substr(statelist_code, 4, 5)
-
-# Load fancy fonts
-loadfonts()
 ```
 
 <!--
@@ -190,7 +187,29 @@ ggplot(data=DS0, aes(x = YEAR, y = K70_p1000, group = STATE, colour = STATE)) +
         legend.key.size = unit(2.0, 'lines'))
 ```
 
+With regards to the different age groups, the distribution of cases is already somewhat reveiling: long-term ARH numbers as an indicator for strong alcoholism show that it rather is a problem for best-agers than for younger people. The numbers begin to rise at the 35-39 years age group and start declining with the 65-69 years group -- probably due to a higher mortality (although the data does not offer such interpretation).
 
+```{r echo = FALSE} 
+# K70 cases per 1000 per age group
+ggplot(data=PL1, aes(x=AGE, y=K70_p1000)) +
+  geom_bar(stat="identity") +
+  xlab("Age Group") +
+  ylab("K70 cases per 1000 people") +
+  ggtitle("K70 cases in Germany per 1000 per age group") +
+  theme(axis.text.x  = element_text(angle=90, vjust=0.5))
+```
+
+However, the short-term ARH have two peaks: The first is a very strong one at the 15-19 years age group. It appears resonable to interpret this one as a sign of younsters making first experiences with alcoholic drinks. In Germany, the two age-thresholds for buying alcoholic beverages are 16 years (for beer and whine) and 18 years (for brandy).
+
+```{r echo = FALSE} 
+# F10.0 cases per 1000 per age group
+ggplot(data=PL1, aes(x=AGE, y=F100_p1000)) +
+  geom_bar(stat="identity") +
+  xlab("Age Group") +
+  ylab("F10.0 cases per 1000 people") +
+  ggtitle("F10.0 cases in Germany per 1000 per age group") +
+  theme(axis.text.x  = element_text(angle=90, vjust=0.5))
+```
 
 # First results
 The first model, shown in *Table 1*, is simple and its results are at maximum indicative. It does reveal to which state charateristics short-term alcohol related hospitalizations (ST-ARH) are correlated. We find that ST-ARH are higher in states with a lower GDP. This captures the basic intuition that binge dringing is more common in economically less well of regions. But this view is not confirmed by our second indicator for economic well-being: the unemployment rate. Rather contrary, states with higher unemployment rates have less cases of binge drinking. Finally, we find correlation between beer consumption (approximated by the beer tax revenue) and ST-ARH. These results are robust over all years of our investgation. But this is not surprising as the variables we are considering are no strongly fluctuating over the time-horizon of our investigation. Most of them follow more or less a trend. As the contradicting interpretation already hints at, we are most likey not seeing what is happing below the aggregated surface.

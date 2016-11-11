@@ -134,16 +134,25 @@ TOTAL$GDP_P_C <- TOTAL$GDP/TOTAL$PP
 # Beer tax per capita
 TOTAL$BTAX_P_C <- TOTAL$BTAX/TOTAL$PP
 
+# Generate variables for whole Germany
+
+Germany <- aggregate(F100_CASES ~ YEAR + GENDER + AGE, sum, data = TOTAL)
+Germany <- cbind(STATE = "DE-DE", Germany)
+Germany$F102_CASES <- aggregate(F102_CASES ~ YEAR + GENDER + AGE, sum, data = TOTAL)[,4]
+Germany$K70_CASES <- aggregate(K70_CASES ~ YEAR + GENDER + AGE, sum, data = TOTAL)[,4]
+for (i in 8:32) {
+  Germany[colnames(TOTAL)[i]] = NA
+}
+Germany$PP <- aggregate(PP ~ YEAR + GENDER + AGE, sum, data = TOTAL)[,4]
+Germany$GDP <- aggregate(GDP ~ YEAR + GENDER + AGE, sum, data = TOTAL)[,4]
+Germany[,5:32] <- sapply(Germany[,5:32], as.numeric)
+TOTAL <- rbind(TOTAL, Germany)
+
+
 # F100 cases per 1000 people
 TOTAL$F100_p1000 <- TOTAL$F100_CASES/TOTAL$PP
 TOTAL$F102_p1000 <- TOTAL$F102_CASES/TOTAL$PP
 TOTAL$K70_p1000 <- TOTAL$K70_CASES/TOTAL$PP 
-
-
-
-
-aggregate(F100_CASES ~ YEAR + GENDER + AGE, sum, data = TOTAL)[,4]
-aggregate(F102_CASES ~ YEAR + GENDER + AGE, sum, data = TOTAL)[,4]
 
 ################################################
 # 3. Calculate Models
@@ -265,6 +274,27 @@ ggplot(data=DS0, aes(x = YEAR, y = K70_p1000, group = STATE, colour = STATE)) +
   xlab("Years") +                            
   ylab("K70 diagnoses per 1000 inhabliants") +
   ggtitle("Alcohol-related liver diagnoses in German States 2000-2014")
+
+# Plots ############
+
+PL1 <- TOTAL %>% filter(GENDER == "all", AGE!="all", STATE=="DE-DE")
+
+# F10.0 cases per 1000 per age group
+ggplot(data=PL1, aes(x=AGE, y=F100_p1000)) +
+  geom_bar(stat="identity") +
+  xlab("Age Group") +
+  ylab("F10.0 cases per 1000 people") +
+  ggtitle("F10.0 cases in Germany per 1000 per age group") +
+  theme(axis.text.x  = element_text(angle=90, vjust=0.5))
+
+# K70 cases per 1000 per age group
+ggplot(data=PL1, aes(x=AGE, y=K70_p1000)) +
+  geom_bar(stat="identity") +
+  xlab("Age Group") +
+  ylab("K70 cases per 1000 people") +
+  ggtitle("K70 cases in Germany per 1000 per age group") +
+  theme(axis.text.x  = element_text(angle=90, vjust=0.5))
+
 
 
 # control variable trend ################################################
