@@ -139,16 +139,16 @@ In the second step of our analysis, we are looking at the effect of the night sa
 
 where $dBW$ is a dummy variable to indicate the treatmeant group (here the state of Baden-Wuerttemberg), $dPOST$ a time dummy indicating the post-treatment period and $dBAN$ a dummy for the night-sale-prohibition ($= 1$ for Baden-Wuerttemberg from 2010 on). Since were are re-engineering @Marcus.2015 here, we will limit the DD application to ARH by young people (15-25). To check for further robustness of the results, we are comparing short-term ARH (F10.0), which should show an effect according to @Marcus.2015, and long-term ARH (K70/F10.2), which should not be affected in the short term by the treatment.
 
-As the DD approach crucially depends on the common trend assumption, it is advisable to include control variables to capture possible trends affecting treatment and control group differently. We control for youth unemployment ($YUR$) as an economic factor and $B$ as a proxy variable for the general alcohol consumption.
+As the DD approach crucially depends on the common trend assumption, it is advisable to include control variables to capture possible trends affecting treatment and control group differently. We control for youth unemployment ($YUR$)  and $GDP$ as a proxy variable for the economic situation.
 
 \begin{equation}
-  ARH_{s,t} = \delta_0 + \delta_1 \cdot dBW_{s} + \delta_2 \cdot dPOST_t + \delta_3 \cdot dBAN_{s,t} + \delta_4 \cdot YUR_{s,t} + \delta_4 \cdot B_{s,t} + \epsilon_{s,t}
+  ARH_{s,t} = \delta_0 + \delta_1 \cdot dBW_{s} + \delta_2 \cdot dPOST_t + \delta_3 \cdot dBAN_{s,t} + \delta_4 \cdot YUR_{s,t} + \delta_4 \cdot GDP_{s,t} + \epsilon_{s,t}
 \end{equation}
 
 Finally, we are refining our DD approach further by turning it into a panel and splitting up the control group. This is the final version of the model, but we expect it to generate less insightful results as we (with all states seperately) have comparably few data points (due to comparably little money to invest in data...).
 
 \begin{equation}
-  ARH_{s,t} = \theta_0 + \theta_1 \cdot dBAN_{s,t} + \theta_2 \cdot YUR_{s,t} + \theta_3 \cdot B_{s,t} + c_s + z_t + \epsilon_{s,t}
+  ARH_{s,t} = \theta_0 + \theta_1 \cdot dBAN_{s,t} + \theta_2 \cdot YUR_{s,t} + \theta_3 \cdot GDP_{s,t} + c_s + z_t + \epsilon_{s,t}
 \end{equation}
 
 where $c_s$ now is capturing unobservable and time-invariant heterogeneity of states. In addition, we are replacing $dPOST$ with $z_t$ to capture time fixed effects affecting all states, e.g. a change in a federal law. This model can be estimated by using dummies for the time-periods and first-differencing or fixed-effects to address the unobserved heterogeneity of states.
@@ -158,6 +158,10 @@ where $c_s$ now is capturing unobservable and time-invariant heterogeneity of st
 Looking at the dependend variables, especially the short-term alcohol related hospitalizations (ST-ARH) show a clear upward trend over time. The numbers of acute intoxication per 1000 people only moderately increase in city states like Berlin (BE), Bremen (HB), and Hamburg (HH). Schleswig-Holstein and other states, on the contrary, double their rates in the time span from 2000 to 2014.
 
 ```{r echo = FALSE} 
+# data frame for plot
+DS0 <- TOTAL %>% filter(GENDER == "all", AGE=="all") %>% 
+  select(STATE, YEAR, F100_p1000, F102_p1000, K70_p1000)
+
 #font_import("cmr10")
 ggplot(data=DS0, aes(x = YEAR, y = F100_p1000, group = STATE, colour = STATE, label = STATE)) +
   scale_x_continuous(breaks = c(2000, 2005, 2010, 2014), minor_breaks = c(2000:2014)) +
@@ -194,6 +198,9 @@ ggplot(data=DS0, aes(x = YEAR, y = K70_p1000, group = STATE, colour = STATE)) +
 With regards to the different age groups, the distribution of cases is already somewhat reveiling: long-term ARH numbers as an indicator for strong alcoholism show that it rather is a problem for best-agers than for younger people. The numbers begin to rise at the 35-39 years age group and start declining with the 65-69 years group -- probably due to a higher mortality (although the data does not offer such interpretation).
 
 ```{r echo = FALSE} 
+# data frame for plot
+PL1 <- TOTAL %>% filter(GENDER == "all", AGE!="all", STATE=="DE-DE")
+
 # Bar diagram: K70 cases per 1000 per age group
 ggplot(data=PL1, aes(x = AGE, y = K70_p1000, fill = AGE)) +
   geom_bar(stat="identity") +
@@ -222,6 +229,10 @@ ggplot(data=PL1, aes(x=AGE, y=F100_p1000, fill = AGE)) +
 An alarming development is illustrated by the high increase in 15-19-year-olds admitted to hospitals with acute alcohol intoxication. From 2000 to 2011, Bavaria more than tripled its quota in this regard. However, since then many states show a reversed development with declining numbers of short-term ARH cases.
 
 ```{r echo = FALSE} 
+# data frame for plot
+DS2 <- TOTAL %>% filter(GENDER == "all", AGE=="15-19y", STATE!="DE-DE") %>% 
+   select(STATE, YEAR, F100_p1000, F102_p1000, K70_p1000)
+
 # F10.0 cases per 1000 per age group
 ggplot(data=DS2, aes(x = YEAR, y = F100_p1000, group = STATE, colour = STATE)) +
   scale_x_continuous(breaks = c(2000, 2005, 2010, 2014), minor_breaks = c(2000:2014)) +
@@ -241,8 +252,14 @@ ggplot(data=DS2, aes(x = YEAR, y = F100_p1000, group = STATE, colour = STATE)) +
 # First Results
 The first model shown in *Table 1* is simple and its results are indicative, at most. It does reveal to which state charateristics short-term alcohol related hospitalizations (ST-ARH) are correlated. We find that ST-ARH are higher in states with a lower GDP. This captures the basic intuition that binge dringing is more common in regions that are economically less well-off. But this view is not confirmed by our second indicator for economic well-being: the unemployment rate. To the contrary, states with higher unemployment rates have less cases of binge drinking. Finally, we find correlation between beer consumption (approximated by the beer tax revenue) and ST-ARH. These results are robust over all years of our investgation. But this is not surprising as the variables we are considering are not strongly fluctuating during the period under investigation. Most of them follow more or less the same trend. As the contradicting interpretation already hints at, we are most likey not seeing what is happing below the aggregated surface.
 
-```{r results = "asis", echo = FALSE} 
+```{r results = "asis", echo = FALSE}
+
+mod1.labels <- c("GDP per capita", "Unemployment rate", "Beer tax", "Population density", "(Intercept)")
 stargazer::stargazer(mod1.2000, mod1.2007, mod1.2014,
+                     covariate.labels = mod1.labels,
+                     column.labels = c("2000", "2007", "2014"),
+                     model.numbers  = FALSE,
+                     dep.var.labels = "F10.0 Diagnoses per 1000 capita",
                      title = 'Regression results Model 1 for 2000, 2007 and 2014',
                      digits = 2, type = 'latex', header = FALSE)
 
@@ -252,6 +269,10 @@ The major drawback of this regression is the low number of observations. With on
 
 ```{r results = "asis", echo = FALSE} 
 stargazer::stargazer(mod2.F100, mod2.F102, mod2.K70,
+                     column.labels = c("F10.0", "F10.2", "K70"),
+                     covariate.labels = c("GDP Change", "Unemployment Change", "Beer Tax Change", "(Intercept)"),
+                     model.numbers  = FALSE,
+                     dep.var.labels = c("Change in F10.0","Change in F10.2","Change in K70"),
                      title = 'Regression results for equation 2 with first differenced data',
                      digits = 2, type = 'latex', header = FALSE)
 ```
