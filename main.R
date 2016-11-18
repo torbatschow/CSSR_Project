@@ -10,11 +10,11 @@
 # dependend and independend variables, including additionally calculated ones:
 # ******TO BE COMPLETED******
 # ToDo:
-# 1. Aggregate total for age and gender
-#    Done 
-# 2. Model 3-5 regression
-# 3. Descriptive statistics
-#    Basic line plots are done
+# 1. Model 3-5 regression
+# 2. Robustness Check
+# 3. Heat Map Germany    
+# 
+#
 # 
 ##################################################
 ## CONTENT
@@ -105,7 +105,7 @@ for (i in 6:7)
 colnames(AGG.A) <- c("STATE","YEAR", "GENDER", ICD[1:3])
 AGG.A$AGE <- as.factor("all")
 
-#merge them to health
+# merge them to health
 AGG <- rbind(AGG.A.G, AGG.A)
 AGG <- rbind(AGG,AGG.G)
 HEALTH <- rbind(HEALTH, AGG)
@@ -230,7 +230,7 @@ mod2.K70 <- lm(K70.D ~ GDP.D + UR.LF.D + BTAX_P_C.D -1, M2)
 
 # Model three ###############################################################
 
-#remark: what age group do we select here? 15-19, 20-24, aggregate both or all?
+# remark: what age group do we select here? 15-19, 20-24, aggregate both or all?
 M3 <- TOTAL %>% filter(GENDER == "all", AGE == "15-19y")
 M3$dBW <- as.numeric(M3$STATE == "DE-BW")
 M3$dPOST <- as.numeric(M3$YEAR >= 2010)
@@ -262,6 +262,8 @@ stargazer::stargazer(mod3.16, mod3.13,
 # 1. common trend of F100 in BW and other states
 # 2. general trend of F100, F102 and K70
 # 3. trends of control variables
+# 4. Germany heat map
+#   http://stackoverflow.com/questions/34691798/heat-map-of-germany-using-spplot
 
 # Diagnoses data trends #######################################################
 
