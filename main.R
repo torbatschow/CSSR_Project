@@ -415,3 +415,24 @@ stargazer::stargazer(mod5,
 #  xlab("Years") +                            
 #  ylab("F10.0 diagnoses per 1000 inhabliants for 40-44 year olds") +
 #  ggtitle("F10.0 diagnoses in German States 2000-2014 for 40-44 year olds")
+
+
+# Map of Germany
+# Get map file
+if(class(try(readRDS("GermanyMap.rds")))=="try-error") {
+  download.file("http://biogeo.ucdavis.edu/data/gadm2.8/rds/DEU_adm1.rds", destfile = "GermanyMap.rds", method="curl")
+}
+map.Germany <- readRDS("GermanyMap.rds")
+# Fix name issues
+map.Germany$HASC_1 <- sub("\\.", "-", as.character(map.Germany$HASC_1))
+map.Germany$HASC_1 <- sub("BR", "BB", as.character(map.Germany$HASC_1))
+# Choose data
+STATES <- TOTAL %>% filter(GENDER == "all", AGE == "all", STATE!="DE-DE", YEAR == 2014)
+# Align order of states in map and data
+map.Germany <- map.Germany[match(STATES$STATE, map.Germany$HASC_1),]
+# Choose variable to plot
+map.Germany$value <- STATES$F100_p1000
+# Plot!
+colors <- c('#ffffcc','#ffeda0','#fed976','#feb24c','#fd8d3c','#fc4e2a','#e31a1c','#bd0026','#800026')
+spplot(map.Germany, zcol = "value", col.regions = colors)
+
