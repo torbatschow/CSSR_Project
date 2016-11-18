@@ -37,10 +37,10 @@ try(setwd("/home/torben/GIT/Pair_Assignment_2"), silent = TRUE)
 try(setwd("D:/Eigene Datein/Dokumente/Uni/Hertie/Materials/Collaborative Social Science Data Analysis/CSSR_Project"), silent = TRUE)
 
 # Collect packages/libraries we need:
-packages <- c("dplyr", "stargazer", "ggplot2")
+packages <- c("dplyr", "stargazer", "ggplot2", "plm")
 # can we add a short list so we have an overview for what we need the packages?
 # dplyr for data manipulatio in data.frame, lfe for fixed effect estimation, 
-# stargazer for regression tables
+# stargazer for regression tables, plm for panel data estimation
 # removed: , "spatstat", "lattice",
 
 # install packages if not installed before
@@ -248,6 +248,10 @@ stargazer::stargazer(mod3.16, mod3.13,
 # idea 1: make regression to find trend for 2000-2010 -> 
 # states with similar coefficient should be in the control group
 # idea 2: exclude city states  HB, HH, BE (mod.13)
+
+# Model four ##################################################################
+
+# use plm package https://www.jstatsoft.org/article/view/v027i02/v27i02.pdf
 
 
 ###############################################
