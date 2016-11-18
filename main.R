@@ -37,7 +37,7 @@ try(setwd("/home/torben/GIT/Pair_Assignment_2"), silent = TRUE)
 try(setwd("D:/Eigene Datein/Dokumente/Uni/Hertie/Materials/Collaborative Social Science Data Analysis/CSSR_Project"), silent = TRUE)
 
 # Collect packages/libraries we need:
-packages <- c("dplyr", "stargazer", "ggplot2", "plm")
+packages <- c("dplyr", "stargazer", "ggplot2", "plm", "latticeExtra", "sp")
 # can we add a short list so we have an overview for what we need the packages?
 # dplyr for data manipulatio in data.frame, lfe for fixed effect estimation, 
 # stargazer for regression tables, plm for panel data estimation
@@ -419,8 +419,9 @@ stargazer::stargazer(mod5,
 
 # Map of Germany
 # Get map file
+# remark: The download doesn't work for me (the file cannot be opened after being downloaded, but if I it manually it works)
 if(class(try(readRDS("GermanyMap.rds")))=="try-error") {
-  download.file("http://biogeo.ucdavis.edu/data/gadm2.8/rds/DEU_adm1.rds", destfile = "GermanyMap.rds", method="curl")
+  download.file("http://biogeo.ucdavis.edu/data/gadm2.8/rds/DEU_adm1.rds", destfile = "GermanyMap.rds")
 }
 map.Germany <- readRDS("GermanyMap.rds")
 # Fix name issues
@@ -433,6 +434,9 @@ map.Germany <- map.Germany[match(STATES$STATE, map.Germany$HASC_1),]
 # Choose variable to plot
 map.Germany$value <- STATES$F100_p1000
 # Plot!
-colors <- c('#ffffcc','#ffeda0','#fed976','#feb24c','#fd8d3c','#fc4e2a','#e31a1c','#bd0026','#800026')
+# remark: I combined two color sequences and changed the order of one of them
+colors <- c('#08306b','#08519c','#2171b5','#4292c6', '#6baed6', '#9ecae1', '#c6dbef', '#deebf7', '#f7fbff',
+            '#fff5f0','#fee0d2','#fcbba1','#fc9272','#fb6a4a','#ef3b2c','#cb181d','#a50f15','#67000d')
 spplot(map.Germany, zcol = "value", col.regions = colors)
+
 
