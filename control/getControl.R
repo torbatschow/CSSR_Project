@@ -22,50 +22,11 @@
 ##########################
 
 # ToDO
-# 0. State Area
-#    Source: Destatis: 11111-0001	Gebietsfläche: Bundesländer, Stichtag
-#    Ged Data: Done.
-#    Clean Data: Done.
-# 1. Population density 
-#     Source: Destatis: "Bevölkerungsdichte: Bundesländer, Stichtag"
-#     Get Data: Done
-#     Clean Data: Done
-# 2. Unemployment rate
-#     Source: Destatis: "Arbeitslose, Arbeitslosenquoten, Gemeldete Arbeitsstellen: Bundesländer, Jahre"
-#     Get Data: Done
-#     Clean Data: Done
-# 3. youth unemployment -
-#     Source: Regionaldatenbank? 
-#             difficult to find, but exists:
-#             e.g. behind paywall: https://de.statista.com/statistik/daten/studie/36739/umfrage/jugendarbeitslosigkeit-nach-bundeslaendern/
-#             Hertie has a campus access :)
-#             or for single states: https://www.govdata.de/web/guest/daten/-/details/stala-sn-service-13211-004z
-#             https://www.statistik.sachsen-anhalt.de/apps/StrukturKompass/indikator/zeitreihe/90
-#     Get Data: Done
-#     Clean Data: Done
-# 4. state gdp
-#     Source: Destatis: "VGR der Länder (Entstehungsrechnung) - Bruttoinlandsprodukt" in market prices (nothing else available)
-#             https://www-genesis.destatis.de/genesis/online?sequenz=tabelleDownload&selectionname=82111-0001&regionalschluessel=&format=csv
-#     Get Data: Done.
-#     Clean Data: Done.
-# 5. ***ACHTUNGACHTUNGACHTUNG*** Bildungsniveau - Absolventen/Abgänger nach dem Schulabschluss ***ACHTUNGACHTUNGACHTUNG***
-#     Source: Regionaldatenbank GENESIS: 192-71-4-B	Allgemeinbildende Schulen: Absolventen/Abgänger nach dem Schulabschluss - Schuljahr -  regionale Ebenen
-#             Only the graduates per YEAR, but maybe of use for for youth analysis...
-#     Get Data: DONE.
-#     Clean Data: DONE.
-# 6. Beer Tax
-#     Source: Genesis-online: 71211-0007	Steuereinnahmen: Bundesländer, Quartale, Steuerarten vor der Steuerverteilung
-#             https://www.destatis.de/GPStatistik/receive/DEHeft_heft_00014241
-#             https://www.destatis.de/GPStatistik/receive/DESerie_serie_00000146?list=all
-#     Get Data: Done.
-#     Clean Data: Done.
-# 7. Population
-#    Source: https://www.govdata.de/web/guest/suchen/-/details/destatis-service-12211-0005
-#     Only data set I found with a complete timeline
-#    Get Data: Done
-#    Clean Data: Done
-# 8. Restructure Script: by variable instead of work step    
-#    Done.
+# 1. Clean script
+# 2. Check beer 
+#      https://de.statista.com/statistik/daten/studie/317586/umfrage/umsatz-im-gh-mit-nahrungs-und-genussmitteln-in-deutschland-nach-bundeslaendern/
+#      https://de.statista.com/statistik/daten/studie/28932/umfrage/bierabsatz-nach-bundeslaendern/
+# 3. What to do with education?
 
 
 ###########################
