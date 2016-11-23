@@ -198,15 +198,15 @@ for (i in 1:15)
 mod1.list <- mget(ls(pattern = "mod1."))
 
 #compare the models (robustness check)
-stargazer::stargazer(mod1.list[1:5], 
-                     title = 'Regression Model 1 2000 - 2004',
-                     digits = 2, type = 'text')
-stargazer::stargazer(mod1.list[6:10], 
-                     title = 'Regression Model 1 2005 - 2009',
-                     digits = 2, type = 'text')
-stargazer::stargazer(mod1.list[11:15], 
-                     title = 'Regression Model 1 2010 - 2014',
-                     digits = 2, type = 'text')
+#stargazer::stargazer(mod1.list[1:5], 
+#                     title = 'Regression Model 1 2000 - 2004',
+#                     digits = 2, type = 'text')
+#stargazer::stargazer(mod1.list[6:10], 
+#                     title = 'Regression Model 1 2005 - 2009',
+#                     digits = 2, type = 'text')
+#stargazer::stargazer(mod1.list[11:15], 
+#                     title = 'Regression Model 1 2010 - 2014',
+#                     digits = 2, type = 'text')
 
 # Model two: Regression of differences ########################################
 
@@ -231,7 +231,7 @@ mod2.K70 <- lm(K70.D ~ GDP.D + UR.LF.D + BTAX_P_C.D -1, M2)
 # Model three ###############################################################
 
 # remark: what age group do we select here? 15-19, 20-24, aggregate both or all?
-MDD <- TOTAL %>% filter(GENDER == "all", AGE == "15-19y")
+MDD <- TOTAL %>% filter(GENDER == "all", AGE == "all")
 MDD$dBW <- as.numeric(MDD$STATE == "DE-BW")
 MDD$dPOST <- as.numeric(MDD$YEAR >= 2010)
 MDD$dBAN <- MDD$dBW * MDD$dPOST
@@ -240,17 +240,17 @@ mod3.16 <- lm(F100_p1000 ~ dBW + dPOST + dBW:dPOST, MDD)
 mod3.13 <- lm(F100_p1000 ~ dBW + dPOST + dBW:dPOST, 
               filter(MDD, !(STATE %in% c("DE-HB", "DE-HH", "DE-BE"))))
 
-stargazer::stargazer(mod3.16, mod3.13, 
-                     title = 'Model 3 Simple Diff-in-Diff',
-                     digits = 2, type = 'text')
+#stargazer::stargazer(mod3.16, mod3.13, 
+#                     title = 'Model 3 Simple Diff-in-Diff',
+#                     digits = 2, type = 'text')
 
 # Model four ##################################################################
 
 mod4 <- lm(F100_p1000 ~ dBW*dPOST +  GDP_P_C + YUR, MDD)
 
-stargazer::stargazer(mod4, 
-                     title = 'Model 4 Simple Diff-in-Diff with controls',
-                     digits = 2, type = 'text')
+#stargazer::stargazer(mod4, 
+#                     title = 'Model 4 Simple Diff-in-Diff with controls',
+#                     digits = 2, type = 'text')
 
 # Robustness check: different composition of control group
 # idea 1: make regression to find trend for 2000-2010 -> 
@@ -264,9 +264,9 @@ stargazer::stargazer(mod4,
 mod5 <- plm(F100_p1000 ~ dBAN + YUR + GDP_P_C, MDD, effect = "twoways",
             index = c("STATE", "YEAR"))
 
-stargazer::stargazer(mod5, 
-                     title = 'Model 5 Panel Diff-in-Diff',
-                     digits = 2, type = 'text')
+#stargazer::stargazer(mod5, 
+#                     title = 'Model 5 Panel Diff-in-Diff',
+#                     digits = 2, type = 'text')
 
 ###############################################
 # 4. Descriptive statistics
@@ -420,6 +420,7 @@ stargazer::stargazer(mod5,
 # Map of Germany
 # Get map file
 # remark: The download doesn't work for me (the file cannot be opened after being downloaded, but if I it manually it works)
+# remark reply: have you set your WD above? O:-)
 if(class(try(readRDS("GermanyMap.rds")))=="try-error") {
   download.file("http://biogeo.ucdavis.edu/data/gadm2.8/rds/DEU_adm1.rds", destfile = "GermanyMap.rds")
 }
@@ -428,15 +429,37 @@ map.Germany <- readRDS("GermanyMap.rds")
 map.Germany$HASC_1 <- sub("\\.", "-", as.character(map.Germany$HASC_1))
 map.Germany$HASC_1 <- sub("BR", "BB", as.character(map.Germany$HASC_1))
 # Choose data
-STATES <- TOTAL %>% filter(GENDER == "all", AGE == "all", STATE!="DE-DE", YEAR == 2014)
+STATES.2000 <- TOTAL %>% filter(GENDER == "all", AGE == "all", STATE!="DE-DE", YEAR == 2000)
+STATES.2005 <- TOTAL %>% filter(GENDER == "all", AGE == "all", STATE!="DE-DE", YEAR == 2005)
+STATES.2006 <- TOTAL %>% filter(GENDER == "all", AGE == "all", STATE!="DE-DE", YEAR == 2006)
+STATES.2007 <- TOTAL %>% filter(GENDER == "all", AGE == "all", STATE!="DE-DE", YEAR == 2007)
+STATES.2010 <- TOTAL %>% filter(GENDER == "all", AGE == "all", STATE!="DE-DE", YEAR == 2010)
+STATES.2014 <- TOTAL %>% filter(GENDER == "all", AGE == "all", STATE!="DE-DE", YEAR == 2014)
 # Align order of states in map and data
-map.Germany <- map.Germany[match(STATES$STATE, map.Germany$HASC_1),]
+map.Germany.2000 <- map.Germany[match(STATES.2000$STATE, map.Germany$HASC_1),]
+map.Germany.2005 <- map.Germany[match(STATES.2005$STATE, map.Germany$HASC_1),]
+map.Germany.2006 <- map.Germany[match(STATES.2006$STATE, map.Germany$HASC_1),]
+map.Germany.2007 <- map.Germany[match(STATES.2007$STATE, map.Germany$HASC_1),]
+map.Germany.2010 <- map.Germany[match(STATES.2010$STATE, map.Germany$HASC_1),]
+map.Germany.2014 <- map.Germany[match(STATES.2014$STATE, map.Germany$HASC_1),]
 # Choose variable to plot
-map.Germany$value <- STATES$F100_p1000
-# Plot!
+map.Germany.2000.F100_p1000 <- map.Germany.2000
+map.Germany.2000.F100_p1000$value <- STATES.2000$F100_p1000
+map.Germany.2005.F100_p1000 <- map.Germany.2005
+map.Germany.2005.F100_p1000$value <- STATES.2005$F100_p1000
+map.Germany.2006.F100_p1000 <- map.Germany.2006
+map.Germany.2006.F100_p1000$value <- STATES.2006$F100_p1000
+map.Germany.2007.F100_p1000 <- map.Germany.2007
+map.Germany.2007.F100_p1000$value <- STATES.2007$F100_p1000
+map.Germany.2010.F100_p1000 <- map.Germany.2010
+map.Germany.2010.F100_p1000$value <- STATES.2010$F100_p1000
+map.Germany.2014.F100_p1000 <- map.Germany.2014
+map.Germany.2014.F100_p1000$value <- STATES.2014$F100_p1000
+# Choose plotting color pattern
 # remark: I combined two color sequences and changed the order of one of them
-colors <- c('#08306b','#08519c','#2171b5','#4292c6', '#6baed6', '#9ecae1', '#c6dbef', '#deebf7', '#f7fbff',
-            '#fff5f0','#fee0d2','#fcbba1','#fc9272','#fb6a4a','#ef3b2c','#cb181d','#a50f15','#67000d')
-spplot(map.Germany, zcol = "value", col.regions = colors)
+colors <- c('#04152f','#052047','#08306b','#08519c','#2171b5','#4292c6', '#6baed6', '#9ecae1', '#c6dbef', '#deebf7', '#f7fbff',
+            '#fff5f0','#fee0d2','#fcbba1','#fc9272','#fb6a4a','#ef3b2c','#cb181d','#a50f15','#67000d','#330007', '#1a0003')
+# PLot it!
+spplot(map.Germany.2014.F100_p1000, zcol = "value", col.regions = colors)
 
 
