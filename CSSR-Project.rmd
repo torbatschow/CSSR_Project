@@ -1,11 +1,11 @@
 ---
-title: "Alcohol and Health"
+title: "Drink and Thrive? The economics of binge-drinking in Germany"
 subtitle: "CSSR Final Project"
 author: "Alex Sacharow & Torben Klausa"
 header-includes:
     - \usepackage{fancyhdr}
     - \pagestyle{fancy}
-    - \fancyhead[LO,LE]{Drink and Thrive? Alcohol Policy in Germany}
+    - \fancyhead[LO,LE]{Drink and Thrive? The economics of binge-drinking in Germany}
     - \fancyfoot[LO,LE]{CSSR Project}
     - \fancyfoot[RE,RO]{Torben Klausa and Alexander Sacharow}
 date: "November 11, 2016"
