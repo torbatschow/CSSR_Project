@@ -1,7 +1,13 @@
 ---
-title: "CSSR Final Project"
-subtitle: "Alcohol and Health"
+title: "Alcohol and Health"
+subtitle: "CSSR Final Project"
 author: "Alex Sacharow & Torben Klausa"
+header-includes:
+    - \usepackage{fancyhdr}
+    - \pagestyle{fancy}
+    - \fancyhead[CO,CE]{This is fancy}
+    - \fancyfoot[CO,CE]{So is this}
+    - \fancyfoot[LE,RO]{\thepage}
 date: "November 11, 2016"
 output: 
   pdf_document:
