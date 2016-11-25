@@ -1,5 +1,6 @@
 ---
-title: "CSSR Assignment 3"
+title: "CSSR Final Project"
+subtitle: "Alcohol and Health"
 author: "Alex Sacharow & Torben Klausa"
 date: "November 11, 2016"
 output: 
