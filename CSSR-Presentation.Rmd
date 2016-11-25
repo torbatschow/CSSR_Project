@@ -14,21 +14,28 @@ knitr::opts_chunk$set(echo = FALSE)
 
 Here we go!!!!
 
-## Slide with Bullets
+## Background
 
 - Bullet 1
 - Bullet 2
 - Bullet 3
 
-## Slide with R Output
+## Data
 
 ```{r cars, echo = TRUE}
 summary(cars)
 ```
 
-## Slide with Plot
+## Empiricial Strategy
 
 ```{r pressure}
 plot(pressure)
 ```
 
+## Data Visuals
+
+Karte
+
+## Results
+
+## Conclusion
