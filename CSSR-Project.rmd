@@ -1,5 +1,4 @@
 ---
-title: "CSSR Assignment 3"
 title: "Alcohol and Health"
 subtitle: "CSSR Final Project"
 author: "Alex Sacharow & Torben Klausa"
