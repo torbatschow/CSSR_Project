@@ -1,4 +1,5 @@
 ---
+title: "CSSR Assignment 3"
 title: "Alcohol and Health"
 subtitle: "CSSR Final Project"
 author: "Alex Sacharow & Torben Klausa"
@@ -166,16 +167,16 @@ Looking at the dependend variables, especially the short-term alcohol related ho
 
 The development in German states from the beginning of the present dataset to the end (2000 - 2014) shows that apparently only the big city states have been able to retain their relatively low level of short-term ARH. 
 
-```{r echo = FALSE} 
+```{r echo = FALSE, out.width=c('500px', '300px'), fig.show='hold'} 
 spplot(map.Germany.2000.F100_p1000, 
        zcol = "value", 
        col.regions = colors,
-       main=list(label="F10.0 diagnoses per 1000 PP\n year 2000, all age groups"),
+       main=list(label="2000: F10.0 diagnoses\nper 1000 pp all age groups"),
        at = seq(0, 2.2, by = 0.1))
 spplot(map.Germany.2014.F100_p1000, 
        zcol = "value", 
        col.regions = colors,
-       main=list(label="F10.0 diagnoses per 1000 PP\n year 2014, all age groups"),
+       main=list(label="2014: F10.0 diagnoses\nper 1000 pp all age groups"),
        at = seq(0, 2.2, by = 0.1),
        colorkey=FALSE)
 ```
