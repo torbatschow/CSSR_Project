@@ -1,13 +1,51 @@
 ---
-title: "Drinking implication on health in Germany"
+title: "Drink and Thrive? The economics of binge-drinking in Germany"
 subtitle: "CSSR Presentation"
 author: "Torben and Alex"
 date: "02 December 2016"
 output: ioslides_presentation
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# Clear Global environment
+rm(list=ls())
+
+# Setting Working directory
+try(setwd("/home/torben/GIT/Pair_Assignment_2"), silent = TRUE)
+try(setwd("D:/Eigene Datein/Dokumente/Uni/Hertie/Materials/Collaborative Social Science Data Analysis/CSSR_Project"), silent = TRUE)
+
+source("main.R")
+
+# Collect packages/libraries we need:
+packages <- c("fontcm", "psych")
+# can we add a short list so we have an overview for what we need the packages?
+# psych allows for summary statistics
+
+# install packages if not installed before
+for (p in packages) {
+  if (p %in% installed.packages()[,1]) {
+    require(p, character.only=T)
+  }
+  else {
+    install.packages(p, repos="http://cran.rstudio.com", dependencies = TRUE)
+    require(p, character.only=T)
+  }
+}
+rm(p, packages)
+
+# Initiate Label Names
+statelist_code <- c("DE-BW", "DE-BY", "DE-BE", "DE-BB", "DE-HB", "DE-HH", 
+                    "DE-HE", "DE-MV", "DE-NI", "DE-NW", "DE-RP", "DE-SL",
+                    "DE-SN", "DE-ST", "DE-SH", "DE-TH")
+
+statelist_name <- c("Baden-Württemberg", "Bayern", "Berlin", "Brandenburg", 
+                    "Bremen", "Hamburg", "Hessen", "Mecklenburg-Vorpommern", 
+                    "Niedersachsen", "Nordrhein-Westfalen", "Rheinland-Pfalz", 
+                    "Saarland", "Sachsen", "Sachsen-Anhalt", 
+                    "Schleswig-Holstein", "Thüringen")
+statelist.code.short <- substr(statelist_code, 4, 5)
 ```
 
 ## What / Structure
@@ -28,13 +66,38 @@ summary(cars)
 
 ## Empiricial Strategy
 
-```{r pressure}
-plot(pressure)
-```
+- Dependent variable: Alcohol-related hospitalization (pp 1000)
+
+**Question 1: Differences between states**
+
+Method: Multiple regression
+
+- *Variation*: Levels and differences
+- *Robustness check:* Different years and long vs. short-term alcohol diagnosis
+
+**Question 2: Effect of night-sale-ban**
+
+Method: Difference-in-Difference
+
+- *Variation*: Control variables and number of periods
+- *Robustness check:* different control group compositions
+
 
 ## Data Visuals
 
-Karte
+```{r echo = FALSE, out.width=c('300px', '300px'), fig.show='hold'} 
+spplot(map.Germany.2000.F100_p1000, 
+       zcol = "value", 
+       col.regions = colors,
+       main=list(label="2000: F10.0 diagnoses\nper 1000 pp all age groups"),
+       at = seq(0, 2.2, by = 0.1))
+spplot(map.Germany.2014.F100_p1000, 
+       zcol = "value", 
+       col.regions = colors,
+       main=list(label="2014: F10.0 diagnoses\nper 1000 pp all age groups"),
+       at = seq(0, 2.2, by = 0.1),
+       colorkey=FALSE)
+```
 
 ## Results
 
