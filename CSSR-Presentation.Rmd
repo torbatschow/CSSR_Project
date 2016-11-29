@@ -82,15 +82,16 @@ Method: Difference-in-Difference
 - *Variation*: Control variables and number of periods
 - *Robustness check:* different control group compositions
 
+## Data Visuals - F10.0 Cases in Germany
 
-## Data Visuals
-
-```{r echo = FALSE, out.width=c('300px', '300px'), fig.show='hold'} 
+```{r echo = FALSE, fig.width=4, fig.height=5, out.extra='style="float:left"'} 
 spplot(map.Germany.2000.F100_p1000, 
        zcol = "value", 
        col.regions = colors,
        main=list(label="2000: F10.0 diagnoses\nper 1000 pp all age groups"),
        at = seq(0, 2.2, by = 0.1))
+```
+```{r echo = FALSE, fig.width=4, fig.height=5, out.extra='style="float:right"'} 
 spplot(map.Germany.2014.F100_p1000, 
        zcol = "value", 
        col.regions = colors,
@@ -98,6 +99,35 @@ spplot(map.Germany.2014.F100_p1000,
        at = seq(0, 2.2, by = 0.1),
        colorkey=FALSE)
 ```
+
+## Data Visuals -  F10.0 per Age Group
+
+```{r echo = FALSE, fig.width=8, fig.height=5} 
+# Bar diagram: F10.0 cases per 1000 per age group in DE-DE
+PL1 <- TOTAL %>% filter(GENDER == "all", AGE!="all", STATE=="DE-DE")
+ggplot(data=PL1, aes(x=AGE, y=F100_p1000)) +
+  geom_bar(stat="identity", fill = "#1E90FF") +
+  xlab("Age Group") +
+  ylab("F10.0 cases per 1000 people") +
+  ggtitle("F10.0 cases in Germany \n per 1000 per age group") +
+  guides(fill=FALSE) +
+  theme(axis.text.x  = element_text(angle=90, vjust=0.5),
+        axis.title.y=element_text(margin=margin(10,10,0,10)))
+```
+
+## Data Visuals - K70 per Age Group
+```{r echo = FALSE, fig.width=8, fig.height=5} 
+# Bar diagram: K70 cases per 1000 per age group
+ggplot(data=PL1, aes(x = AGE, y = K70_p1000, fill = AGE)) +
+  geom_bar(stat="identity", fill = "#1E90FF") +
+  xlab("Age Group") +
+  ylab("K70 cases per 1000 people") +
+  ggtitle("K70 cases in Germany \n per 1000 per age group") +
+  guides(fill=FALSE) +
+  theme(axis.text.x  = element_text(angle=90, vjust=0.5),
+        axis.title.y=element_text(margin=margin(10,10,0,10)))
+```
+
 
 ## Results
 
