@@ -166,7 +166,7 @@ Looking at the dependend variables, especially the short-term alcohol related ho
 
 The development in German states from the beginning of the present dataset to the end (2000 - 2014) shows that apparently only the big city states have been able to retain their relatively low level of short-term ARH. 
 
-```{r echo = FALSE, out.width=c('300px', '300px'), fig.show='hold'} 
+```{r echo = FALSE, out.width=c('300px', '300px')} 
 spplot(map.Germany.2000.F100_p1000, 
        zcol = "value", 
        col.regions = colors,
