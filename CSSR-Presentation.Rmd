@@ -132,3 +132,68 @@ ggplot(data=PL1, aes(x = AGE, y = K70_p1000, fill = AGE)) +
 ## Results
 
 ## Conclusion
+
+## Appendix 1
+
+```{r Model1, results = "asis", echo = FALSE}
+mod1.labels <- c("GDP per capita", "Unemployment rate", "Beer tax", "Population density", "(Intercept)")
+stargazer::stargazer(mod1.2000, mod1.2007, mod1.2014,
+                     covariate.labels = mod1.labels,
+                     column.labels = c("2000", "2007", "2014"),
+                     model.numbers  = FALSE,
+                     dep.var.labels = "F10.0 Diagnoses per 1000 capita",
+                     title = 'Regression results for Model 1 for 2000, 2007 and 2014',
+                     digits = 2, type = 'html', header = FALSE)
+```
+
+## Appendix 2
+
+```{r Model2, results = "asis", echo = FALSE} 
+stargazer::stargazer(mod2.F100, mod2.F102, mod2.K70,
+                     column.labels = c("F10.0", "F10.2", "K70"),
+                     covariate.labels = c("GDP Change", "Unemployment Change", "Beer Tax Change", "(Intercept)"),
+                     model.numbers  = FALSE,
+                     dep.var.labels = c("Change in F10.0","Change in F10.2","Change in K70"),
+                     title = 'Regression results for Model 2 with first differenced data',
+                     digits = 2, type = 'html', header = FALSE)
+```
+
+## Appendix 3
+
+```{r Model3, results = "asis", echo = FALSE} 
+stargazer::stargazer(mod3.16, mod3.13, 
+                     column.labels = c("All States", "All but City States"),
+                     covariate.labels = c("DE-BW dummy", "Post-treatment dummy", "Interaction", "(Intercept)"),
+                     model.numbers  = FALSE,
+                     dep.var.labels = c("F10.0 cases per 1000 PP"),                    
+                     title = 'Model 3: simple differences-in-differences',
+                     digits = 2, type = 'html', header = FALSE)
+
+```
+
+## Appendix 4
+
+```{r Model4, results = "asis", echo = FALSE} 
+stargazer::stargazer(mod4, 
+                     column.labels = c("All States"),
+                     covariate.labels = c("DE-BW dummy", "Post-sales ban dummy", 
+                                          "GDP per capita", "Youth uneployment rate", 
+                                          "Interaction dummy", "(Intercept)"),
+                     model.numbers  = FALSE,
+                     dep.var.labels = c("F10.0 cases per 1000 PP"),                           
+                     title = 'Model 4: simple differences-in-differences with controls',
+                     digits = 2, type = 'html', header = FALSE)
+```
+
+## Appendix 5
+
+```{r Model5, results = "asis", echo = FALSE} 
+
+stargazer::stargazer(mod5, 
+                     column.labels = c("All States"),
+                     covariate.labels = c("DE-BW ban dummy", "Youth uneployment rate", "GDP per capita"),
+                     model.numbers  = FALSE,
+                     dep.var.labels = c("F10.0 cases per 1000 PP"),                           
+                     title = 'Model 5: multi-period panel differences-in-differences',
+                     digits = 2, type = 'html', header = FALSE)
+```

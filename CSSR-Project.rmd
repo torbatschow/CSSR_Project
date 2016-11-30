@@ -312,7 +312,7 @@ stargazer::stargazer(mod3.16, mod3.13,
                      covariate.labels = c("DE-BW dummy", "Post-treatment dummy", "Interaction", "(Intercept)"),
                      model.numbers  = FALSE,
                      dep.var.labels = c("F10.0 cases per 1000 PP"),                    
-                     title = 'Regression results for Model 3, simple diff-in-diff',
+                     title = 'Model 3: simple differences-in-differences',
                      digits = 2, type = 'latex', header = FALSE)
 
 ```
@@ -327,7 +327,7 @@ stargazer::stargazer(mod4,
                                           "Interaction dummy", "(Intercept)"),
                      model.numbers  = FALSE,
                      dep.var.labels = c("F10.0 cases per 1000 PP"),                           
-                     title = 'Regression results for Model 3, simple diff-in-diff with controls',
+                     title = 'Model 4: simple differences-in-differences with controls',
                      digits = 2, type = 'latex', header = FALSE)
 ```
 
@@ -342,7 +342,7 @@ stargazer::stargazer(mod5,
                      covariate.labels = c("DE-BW ban dummy", "Youth uneployment rate", "GDP per capita"),
                      model.numbers  = FALSE,
                      dep.var.labels = c("F10.0 cases per 1000 PP"),                           
-                     title = 'Regression results for Model 5, panel diff-in-diff',
+                     title = 'Model 5: multi-period panel differences-in-differences',
                      digits = 2, type = 'latex', header = FALSE)
 ```
 
