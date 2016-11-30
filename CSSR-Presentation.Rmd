@@ -131,6 +131,8 @@ ggplot(data=PL1, aes(x = AGE, y = K70_p1000, fill = AGE)) +
 
 ## Results
 
+
+
 ## Conclusion
 
 ## Appendix 1
@@ -177,7 +179,7 @@ stargazer::stargazer(mod3.16, mod3.13,
 stargazer::stargazer(mod4, 
                      column.labels = c("All States"),
                      covariate.labels = c("DE-BW dummy", "Post-sales ban dummy", 
-                                          "GDP per capita", "Youth uneployment rate", 
+                                          "GDP per capita", "Youth unemployment rate", 
                                           "Interaction dummy", "(Intercept)"),
                      model.numbers  = FALSE,
                      dep.var.labels = c("F10.0 cases per 1000 PP"),                           
@@ -191,9 +193,28 @@ stargazer::stargazer(mod4,
 
 stargazer::stargazer(mod5, 
                      column.labels = c("All States"),
-                     covariate.labels = c("DE-BW ban dummy", "Youth uneployment rate", "GDP per capita"),
+                     covariate.labels = c("DE-BW ban dummy", "Youth unemployment rate", "GDP per capita"),
                      model.numbers  = FALSE,
                      dep.var.labels = c("F10.0 cases per 1000 PP"),                           
                      title = 'Model 5: multi-period panel differences-in-differences',
                      digits = 2, type = 'html', header = FALSE)
+```
+
+## Appendix 6
+
+```{r Maps2, message=FALSE, echo = FALSE} 
+
+#library(googleVis)
+
+#require(datasets)
+
+#states <- data.frame(state.name, state.x77)
+
+#GeoStates <- gvisGeoChart(states, "state.name", "Illiteracy",
+                            options=list(region="DE", 
+                            displayMode="regions", 
+                            resolution="provinces",
+                            width=600, height=400))
+
+#plot(GeoStates)
 ```

@@ -309,7 +309,7 @@ The next step in refining our model (*Model 3*) takes us to analyzing a policy m
 ```{r Model3, results = "asis", echo = FALSE} 
 stargazer::stargazer(mod3.16, mod3.13, 
                      column.labels = c("All States", "All but City States"),
-                     covariate.labels = c("DE-BW dummy", "Post-treatment dummy", "Interaction", "(Intercept)"),
+                     covariate.labels = c("DE-BW dummy", "Post-treatment dummy", "Night-Sale Ban", "(Intercept)"),
                      model.numbers  = FALSE,
                      dep.var.labels = c("F10.0 cases per 1000 PP"),                    
                      title = 'Model 3: simple differences-in-differences',
@@ -323,7 +323,7 @@ In case such a common trend is an economic on, we can capture it and take it out
 stargazer::stargazer(mod4, 
                      column.labels = c("All States"),
                      covariate.labels = c("DE-BW dummy", "Post-sales ban dummy", 
-                                          "GDP per capita", "Youth uneployment rate", 
+                                          "GDP per capita", "Youth unemployment rate", 
                                           "Interaction dummy", "(Intercept)"),
                      model.numbers  = FALSE,
                      dep.var.labels = c("F10.0 cases per 1000 PP"),                           
@@ -339,7 +339,7 @@ But these explanations are tentatively, at best. Therefore, it is advisable to t
 
 stargazer::stargazer(mod5, 
                      column.labels = c("All States"),
-                     covariate.labels = c("DE-BW ban dummy", "Youth uneployment rate", "GDP per capita"),
+                     covariate.labels = c("DE-BW ban dummy", "Youth unemployment rate", "GDP per capita"),
                      model.numbers  = FALSE,
                      dep.var.labels = c("F10.0 cases per 1000 PP"),                           
                      title = 'Model 5: multi-period panel differences-in-differences',
