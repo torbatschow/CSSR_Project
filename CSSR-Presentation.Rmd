@@ -298,19 +298,36 @@ simZ2.UR.LF.D <- sim(Z2.F100, x = setZ2.UR.LF.D)
 
 
 ```{r R1GraphTop, echo = FALSE, fig.width=4, fig.height=2.8, out.extra='style="float:left"'}
-ci.plot(simZ.GDP.PP, xlab = "GDP level", title = "Model 1: F10.0 Diagnoses 2014")
+ci.plot(simZ.GDP.PP, ylab ="Expected conditional F10.0", xlab = "GDP level",
+        main = "Model 1: F10.0 Diagnoses 2014")
 # title(xlab="GDP level", line=-1, cex.lab=1)
-ci.plot(simZ.UR.LF, xlab = "Unemployment level")
+ci.plot(simZ.UR.LF, ylab ="Expected conditional F10.0", xlab = "Unemployment level",
+        main = "Model 1: F10.0 Diagnoses 2014")
 
 ```
 
 ```{r R1GraphBelow, echo = FALSE, fig.width=4, fig.height=2.8, out.extra='style="float:left"'}
-ci.plot(simZ2.GDP.D, xlab = "GDP change")
-ci.plot(simZ2.UR.LF.D, xlab = "Unemployment change")
+ci.plot(simZ2.GDP.D, ylab ="Expected conditional F10.0", xlab = "GDP change",
+        main = "Model 2: Changes F10.0 Diagnoses")
+ci.plot(simZ2.UR.LF.D, ylab ="Expected conditional F10.0", xlab = "Unemployment change",
+        main = "Model 2: Changes F10.0 Diagnoses")
 ```
 
-## Conclusion
+## Result Night Sale Ban
+F10.0 Diagnoses for 15-19 year olds (control group: 13 non-city states)
+```{r Result Night Ban, results = "asis", echo = FALSE} 
+stargazer::stargazer(mod5.age15.13,
+                     covariate.labels = c("DE-BW ban dummy", "Youth unemployment rate", "GDP per capita"),
+                     model.numbers  = FALSE,
+                     dep.var.labels = c("F10.0 cases per 1000 PP"),                           
+                     title = 'Model 5: multi-period panel differences-in-differences',
+                     omit.stat = c("rsq", "f"),
+                     digits = 2, type = 'html', header = FALSE)
+```
 
+
+
+## Conclusion
 ```{r echo = FALSE} 
 # Generate variables for "What if no ban had happened?"
 bancomparison <- data.frame(YEAR = integer(),
@@ -394,8 +411,8 @@ stargazer::stargazer(mod4,
 
 ```{r Model5, results = "asis", echo = FALSE} 
 
-stargazer::stargazer(mod5, 
-                     column.labels = c("All States"),
+stargazer::stargazer(mod5, mod5.age15.16, mod5.age15.13,
+                     column.labels = c("All States", "15-19y", "15-19y + control: non-city"),
                      covariate.labels = c("DE-BW ban dummy", "Youth unemployment rate", "GDP per capita"),
                      model.numbers  = FALSE,
                      dep.var.labels = c("F10.0 cases per 1000 PP"),                           
