@@ -118,6 +118,7 @@ ggplot(data=PL1, aes(x=AGE, y=F100_p1000)) +
   xlab("Age Group") +
   ylab("F10.0 cases per 1000 people") +
   ggtitle("F10.0 cases in Germany \n per 1000 per age group") +
+  theme_bw() +           # do we want it to be bw or grey?
   guides(fill=FALSE) +
   theme(axis.text.x  = element_text(angle=90, vjust=0.5),
         axis.title.y=element_text(margin=margin(10,10,0,10)))
@@ -301,6 +302,7 @@ stargazer::stargazer(mod1.2000, mod1.2007, mod1.2014,
                      model.numbers  = FALSE,
                      dep.var.labels = "F10.0 Diagnoses per 1000 capita",
                      title = 'Regression results for Model 1 for 2000, 2007 and 2014',
+                     omit.stat = c("rsq", "f"),
                      digits = 2, type = 'html', header = FALSE)
 ```
 
@@ -308,11 +310,12 @@ stargazer::stargazer(mod1.2000, mod1.2007, mod1.2014,
 
 ```{r Model2, results = "asis", echo = FALSE} 
 stargazer::stargazer(mod2.F100, mod2.F102, mod2.K70,
-                     column.labels = c("F10.0", "F10.2", "K70"),
+#                     column.labels = c("F10.0", "F10.2", "K70"),
                      covariate.labels = c("GDP Change", "Unemployment Change", "Beer Tax Change", "(Intercept)"),
                      model.numbers  = FALSE,
                      dep.var.labels = c("Change in F10.0","Change in F10.2","Change in K70"),
                      title = 'Regression results for Model 2 with first differenced data',
+                     omit.stat = c("rsq", "f"),
                      digits = 2, type = 'html', header = FALSE)
 ```
 
@@ -325,6 +328,7 @@ stargazer::stargazer(mod3.16, mod3.13,
                      model.numbers  = FALSE,
                      dep.var.labels = c("F10.0 cases per 1000 PP"),                    
                      title = 'Model 3: simple differences-in-differences',
+                     omit.stat = c("rsq", "f"),
                      digits = 2, type = 'html', header = FALSE)
 
 ```
@@ -340,6 +344,7 @@ stargazer::stargazer(mod4,
                      model.numbers  = FALSE,
                      dep.var.labels = c("F10.0 cases per 1000 PP"),                           
                      title = 'Model 4: simple differences-in-differences with controls',
+                     omit.stat = c("rsq", "f"),
                      digits = 2, type = 'html', header = FALSE)
 ```
 
@@ -353,6 +358,7 @@ stargazer::stargazer(mod5,
                      model.numbers  = FALSE,
                      dep.var.labels = c("F10.0 cases per 1000 PP"),                           
                      title = 'Model 5: multi-period panel differences-in-differences',
+                     omit.stat = c("rsq", "f"),
                      digits = 2, type = 'html', header = FALSE)
 ```
 
