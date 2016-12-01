@@ -19,7 +19,7 @@ try(setwd("D:/Eigene Datein/Dokumente/Uni/Hertie/Materials/Collaborative Social 
 source("main.R")
 
 # Collect packages/libraries we need:
-packages <- c("fontcm", "psych", "plotly")
+packages <- c("fontcm", "psych", "plotly", "Zelig")
 # can we add a short list so we have an overview for what we need the packages?
 # psych allows for summary statistics
 # plotly makes html graphs
@@ -268,9 +268,46 @@ Method: Difference-in-Difference
 - *Variation*: Control variables and number of periods
 - *Robustness check:* different control group compositions
 
-## Results
+## Results Question 1
+```{r Result1, echo = FALSE}
+# Simulation of model 1 
+Z1.2014 <- zelig(F100_p1000 ~ GDP_P_C + UR.LF + PD, cite = FALSE,
+            data = M1.2014, model = "normal")
+
+# Simulation of relationhip F10.0 diagnoses and GDP per capita
+setZ.GDP.PP <- setx(Z1.2014, GDP_P_C = 15:46)
+simZ.GDP.PP <- sim(Z1.2014, x = setZ.GDP.PP)
+
+# Simulation of relationhip F10.0 diagnoses and unemployment rate
+setZ.UR.LF <- setx(Z1.2014, UR.LF = 5:21)
+simZ.UR.LF <- sim(Z1.2014, x = setZ.UR.LF)
+
+# Simulation of model 2 
+Z2.F100 <- zelig(F100.D ~ GDP.D + UR.LF.D -1, cite = FALSE,
+                 data = ungroup(M2), model = "normal")
+  
+# Simulation of relationhip F10.0 diagnoses and GDP per capita
+setZ2.GDP.D <- setx(Z2.F100, GDP.D = -4:4)
+simZ2.GDP.D <- sim(Z2.F100, x = setZ2.GDP.D)
 
 
+# Simulation of relationhip F10.0 diagnoses and GDP per capita
+setZ2.UR.LF.D <- setx(Z2.F100, UR.LF.D = -3:4)
+simZ2.UR.LF.D <- sim(Z2.F100, x = setZ2.UR.LF.D)
+```
+
+
+```{r R1GraphTop, echo = FALSE, fig.width=4, fig.height=2.8, out.extra='style="float:left"'}
+ci.plot(simZ.GDP.PP, xlab = "GDP level", title = "Model 1: F10.0 Diagnoses 2014")
+# title(xlab="GDP level", line=-1, cex.lab=1)
+ci.plot(simZ.UR.LF, xlab = "Unemployment level")
+
+```
+
+```{r R1GraphBelow, echo = FALSE, fig.width=4, fig.height=2.8, out.extra='style="float:left"'}
+ci.plot(simZ2.GDP.D, xlab = "GDP change")
+ci.plot(simZ2.UR.LF.D, xlab = "Unemployment change")
+```
 
 ## Conclusion
 
