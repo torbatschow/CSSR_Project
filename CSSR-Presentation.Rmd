@@ -116,10 +116,11 @@ ggplot(data=PL1, aes(x=AGE, y=F100_p1000)) +
   geom_bar(stat="identity", fill = "#1E90FF") +
   xlab("Age Group") +
   ylab("F10.0 cases per 1000 people") +
-  ggtitle("F10.0 cases in Germany \n per 1000 per age group") +
-  theme_bw() +           # do we want it to be bw or grey?
+  ggtitle("") +
+  #theme_bw() +           # do we want it to be bw or grey?
   guides(fill=FALSE) +
-  theme(axis.text.x  = element_text(angle=90, vjust=0.5),
+  theme(text  = element_text(colour = "#797979"),
+        axis.text.x  = element_text(angle=90, vjust=0.5),
         axis.title.y=element_text(margin=margin(10,10,0,10)))
 ```
 
@@ -131,9 +132,10 @@ ggplot(data=PL1, aes(x = AGE, y = K70_p1000, fill = AGE)) +
   geom_bar(stat="identity", fill = "#1E90FF") +
   xlab("Age Group") +
   ylab("K70 cases per 1000 people") +
-  ggtitle("K70 cases in Germany \n per 1000 per age group") +
+  ggtitle("") +
   guides(fill=FALSE) +
-  theme(axis.text.x  = element_text(angle=90, vjust=0.5),
+  theme(text  = element_text(colour = "#797979"),
+        axis.text.x  = element_text(angle=90, vjust=0.5),
         axis.title.y=element_text(margin=margin(10,10,0,10)))
 ```
 
@@ -176,7 +178,8 @@ F100Plot <- plot_ly(data = filter(DS0, STATE == "DE-BW"),
                     name = "Treatment State BW",
                     #color = ~GROUP[1],
                     legendgroup = ~GROUP[1],
-                    line = list(color = "red", width = 4))
+                    line = list(color = "red", width = 4)) %>%
+  layout(title = "", xaxis = list(title = "Year"), yaxis = list(title = "F10.0 cases per 1000 people"))
 
 # Non-City States
 for (i in 1:12){
@@ -199,25 +202,6 @@ for (i in 1:3){
                         name = paste("City State", substr(statelist_cities[i], 4, 5)))
 }
 F100Plot
-
-#layout(F100Plot, title = "TITLE", font = list(#family = "Courier New, monospace",
-#                                              size = 10,
-#                                              color = "#000000"))
-
-#  ggplot(data=DS0, aes(x = YEAR, y = F100_p1000, group = STATE, colour = STATE, label = STATE)) +
-#  scale_x_continuous(breaks = c(2000, 2005, 2010, 2014), minor_breaks = c(2000:2014)) +
-#  geom_line() +                              # line plot
- # theme_bw() +                               # bw background
-#  xlab("Years") +                            
-#  ylab("F10.0 diagnoses \nper 1000 people") +
-#  ggtitle("F10.0 diagnoses in German States 2000-2014") +
-#  scale_color_discrete(name  = "State", breaks = statelist_code, labels = statelist.code.short) +
-#  theme(legend.position = "bottom", 
-#        legend.key = element_rect(size = 5, fill = 'white', colour = 'white'),
-#        legend.key.size = unit(2.0, 'lines'),
-#        axis.title.y=element_text(margin=margin(10,10,0,10)))
-
-  #annotate("text", x = 0, y = 0.1, label = "Label", parse = TRUE)
 ```
 
 ## Data Visuals - F10.0 Increase - 15-19 y/o
@@ -239,7 +223,8 @@ F100Plot <- plot_ly(data = filter(DS0, STATE == "DE-BW"),
                     name = "Treatment State BW",
                     #color = ~GROUP[1],
                     legendgroup = ~GROUP[1],
-                    line = list(color = "red", width = 4))
+                    line = list(color = "red", width = 4)) %>%
+  layout(title = "", xaxis = list(title = "Year"), yaxis = list(title = "F10.0 cases per 1000 people"))
 
 # Non-City States
 for (i in 1:12){
