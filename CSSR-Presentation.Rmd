@@ -54,6 +54,7 @@ statelist_other_wo_treatment <- c("DE-BY", "DE-BB", "DE-HE", "DE-MV", "DE-NI", "
                     "DE-SN", "DE-ST", "DE-SH", "DE-TH")
 ```
 
+
 ## Structure
 
 - Introduction
@@ -86,7 +87,7 @@ Night sales ban on alcohol: any effect on binge drinking in Baden-Wuerttemberg?
 
 ------------------------------------------------------------------------
 Variables                       Reasoning
-------------------------------  -----------------------------------------
+------------------------------  ----------------------------------------
 F10.0 cases                     Number of people hospitalized with 
 per 1000                        acute alcohol intoxication
 
@@ -105,7 +106,6 @@ Treatment dummies               Capture the policy measure effect
 (local & temporal)
 
 ------------------------------------------------------------------------
-
 
 ## Data Visuals - F10.0 per Age Group
 
@@ -310,6 +310,29 @@ ci.plot(simZ2.UR.LF.D, xlab = "Unemployment change")
 ```
 
 ## Conclusion
+
+```{r echo = FALSE} 
+# Generate variables for "What if no ban had happened?"
+bancomparison <- data.frame(YEAR = integer(),
+                 WBAN = integer(),
+                 WOBAN = integer(),
+                 stringsAsFactors=FALSE)
+for (i in 2011:2014) {
+  assign(paste("filter.", i, sep = ""), 
+         filter(TOTAL, GENDER == "all", AGE == "15-19y", STATE == "DE-BW", YEAR == i))
+  assign(paste("f100.", i, ".wban", sep = ""), 
+         eval(parse(text = paste("filter.", i, "$F100_CASES", sep = ""))))
+#  assign(paste("f100.", i, ".woban", sep = ""), 
+#         trunc(eval(parse(text = paste("f100.", i, ".wban + (filter.", i, "$PP * 0.06)", sep = "")))))
+bancomparison <- rbind(bancomparison, data.frame(YEAR = i,
+                 WBAN = eval(parse(text = paste("filter.", i, "$F100_CASES", sep = ""))),
+                 WOBAN = trunc(eval(parse(text = paste("f100.", i, ".wban + (filter.", i, "$PP * 0.06)", sep = "")))),
+                 stringsAsFactors=FALSE))
+}
+plot_ly(bancomparison, x = ~YEAR, y = ~WBAN, type = 'bar', name = 'With Ban') %>%
+  add_trace(y = ~WOBAN, name = 'Without Ban') %>%
+  layout(xaxis = list(title = 'Year'), yaxis = list(title = 'F10.0 Cases for 15 to 19 year-olds in DE-BW'), barmode = 'group')
+```
 
 ## Appendix 1
 
