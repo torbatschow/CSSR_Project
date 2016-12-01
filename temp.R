@@ -8,7 +8,7 @@ source("main.R")
 library(Zelig)
 
 # Simulation of model 1 
-Z1.2000 <- zelig(F100_p1000 ~ GDP_P_C + UR.LF + BTAX_P_C + PD, cite = FALSE,
+Z1.2000 <- zelig(F100_p1000 ~ GDP_P_C + UR.LF + PD, cite = FALSE,
             data = M1.2000, model = "normal")
 
 # Simulation of relationhip F10.0 diagnoses and GDP per capita
@@ -20,3 +20,17 @@ ci.plot(simZ.GDP.PP)
 setZ.UR.LF <- setx(Z1.2000, UR.LF = 5:21)
 simZ.UR.LF <- sim(Z1.2000, x = setZ.UR.LF)
 ci.plot(simZ.UR.LF)
+
+# Simulation of model 2 
+Z2.F100 <- zelig(F100.D ~ GDP.D + UR.LF.D -1, cite = FALSE,
+                 data = ungroup(M2), model = "normal")
+  
+# Simulation of relationhip F10.0 diagnoses and GDP per capita
+setZ2.GDP.D <- setx(Z2.F100, GDP.D = -4:4)
+simZ2.GDP.D <- sim(Z2.F100, x = setZ2.GDP.D)
+ci.plot(simZ2.GDP.D)
+
+# Simulation of relationhip F10.0 diagnoses and GDP per capita
+setZ2.UR.LF.D <- setx(Z2.F100, UR.LF.D = -3:4)
+simZ2.UR.LF.D <- sim(Z2.F100, x = setZ2.UR.LF.D)
+ci.plot(simZ2.UR.LF.D)

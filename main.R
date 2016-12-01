@@ -179,7 +179,7 @@ TOTAL$K70_p1000 <- TOTAL$K70_CASES/TOTAL$PP
 for (i in 2000:2014)
 {
   assign(paste("M1", i, sep = "."),
-         filter(select(TOTAL, YEAR, STATE, AGE, GENDER, F100_p1000, GDP_P_C, UR.LF, BTAX_P_C, PD),
+         filter(select(TOTAL, YEAR, STATE, AGE, GENDER, F100_p1000, GDP_P_C, UR.LF, PD),
                 AGE == "all", GENDER == "all", YEAR == i))
   }
 
@@ -192,41 +192,61 @@ for (i in 1:15)
   tmp <- as.data.frame(M1.list[i])
   colnames(tmp) <- substring(colnames(tmp),9)
   assign(paste("mod1", substring(names(M1.list[i]),4), sep = "."), 
-         lm(F100_p1000 ~ GDP_P_C + UR.LF + BTAX_P_C + PD, tmp))
+         lm(F100_p1000 ~ GDP_P_C + UR.LF + PD, tmp))
   rm(tmp)
  }
 mod1.list <- mget(ls(pattern = "mod1."))
 
-#compare the models (robustness check)
-#stargazer::stargazer(mod1.list[1:5], 
+# compare the models (robustness check)
+# mod1.modellist <- as.character(c(2000:2014))
+# stargazer::stargazer(mod1.list[1:5], 
 #                     title = 'Regression Model 1 2000 - 2004',
+#                     column.labels = mod1.modellist[1:5],
+#                     model.numbers  = FALSE,
+#                     dep.var.labels = "F10.0 Diagnoses per 1000 capita",
 #                     digits = 2, type = 'text')
-#stargazer::stargazer(mod1.list[6:10], 
+# stargazer::stargazer(mod1.list[6:10], 
 #                     title = 'Regression Model 1 2005 - 2009',
+#                     column.labels = mod1.modellist[6:10],
+#                     model.numbers  = FALSE,
+#                     dep.var.labels = "F10.0 Diagnoses per 1000 capita",
 #                     digits = 2, type = 'text')
-#stargazer::stargazer(mod1.list[11:15], 
+# stargazer::stargazer(mod1.list[11:15], 
 #                     title = 'Regression Model 1 2010 - 2014',
+#                     column.labels = mod1.modellist[11:15],
+#                     model.numbers  = FALSE,
+#                     dep.var.labels = "F10.0 Diagnoses per 1000 capita",
 #                     digits = 2, type = 'text')
 
 # Model two: Regression of differences ########################################
 
 # first differencing the data (the lag operator might not function correctly)
-M2 <- filter(TOTAL, GENDER == "all", AGE == "all")
+M2 <- filter(TOTAL, GENDER == "all", AGE == "all") %>% 
+            select(YEAR, STATE, AGE, GENDER, F100_p1000, F102_p1000, 
+                   K70_p1000, GDP_P_C, UR.LF, PD)
 M2 <- M2 %>% group_by(STATE) %>% mutate(F100.D = F100_p1000 - lag(F100_p1000))
 M2 <- M2 %>% group_by(STATE) %>% mutate(F102.D = F102_p1000 - lag(F102_p1000))
 M2 <- M2 %>% group_by(STATE) %>% mutate(K70.D = K70_p1000 - lag(K70_p1000))
 M2 <- M2 %>% group_by(STATE) %>% mutate(GDP.D = GDP_P_C - lag(GDP_P_C))
 M2 <- M2 %>% group_by(STATE) %>% mutate(UR.LF.D = UR.LF - lag(UR.LF))
-M2 <- M2 %>% group_by(STATE) %>% mutate(BTAX_P_C.D = BTAX_P_C - lag(BTAX_P_C))
 M2 <- M2 %>% group_by(STATE) %>% mutate(PD.D = PD - lag(PD))
 
 # dropping missing observations
 M2 <- M2 %>% filter(YEAR > 2000)
 
 # regression of equation 2
-mod2.F100 <- lm(F100.D ~ GDP.D + UR.LF.D + BTAX_P_C.D -1, M2)
-mod2.F102 <- lm(F102.D ~ GDP.D + UR.LF.D + BTAX_P_C.D -1, M2)
-mod2.K70 <- lm(K70.D ~ GDP.D + UR.LF.D + BTAX_P_C.D -1, M2)
+mod2.F100 <- lm(F100.D ~ GDP.D + UR.LF.D -1, M2)
+mod2.F102 <- lm(F102.D ~ GDP.D + UR.LF.D -1, M2)
+mod2.K70 <- lm(K70.D ~ GDP.D + UR.LF.D -1, M2)
+
+# results
+# stargazer::stargazer(mod2.F100, mod2.F102, mod2.K70,
+#                     column.labels = c("F10.0", "F10.2", "K70"),
+#                     covariate.labels = c("GDP Change", "Unemployment Change", "Beer Tax Change", "(Intercept)"),
+#                     model.numbers  = FALSE,
+#                     dep.var.labels = c("Change in F10.0","Change in F10.2","Change in K70"),
+#                     title = 'Regression results for Model 2 with first differenced data',
+#                     digits = 2, type = 'text', header = FALSE)
 
 # Model three ###############################################################
 
@@ -244,13 +264,30 @@ mod3.13 <- lm(F100_p1000 ~ dBW + dPOST + dBW:dPOST,
 #                     title = 'Model 3 Simple Diff-in-Diff',
 #                     digits = 2, type = 'text')
 
+MDD.15 <- TOTAL %>% filter(GENDER == "all", AGE == "15-19y") %>% 
+                    select(YEAR, STATE, AGE, GENDER, F100_p1000, GDP_P_C, YUR)
+
+MDD.15$dBW <- as.numeric(MDD$STATE == "DE-BW")
+MDD.15$dPOST <- as.numeric(MDD$YEAR >= 2010)
+MDD.15$dBAN <- MDD$dBW * MDD$dPOST
+
+mod3.age15.16 <- lm(F100_p1000 ~ dBW + dPOST + dBW:dPOST, MDD.15)
+mod3.age15.13 <- lm(F100_p1000 ~ dBW + dPOST + dBW:dPOST, 
+              filter(MDD.15, !(STATE %in% c("DE-HB", "DE-HH", "DE-BE"))))
+
+stargazer::stargazer(mod3.age15.16, mod3.age15.13, 
+                     title = 'Model 3 Simple Diff-in-Diff for 15-19 year old',
+                     digits = 2, type = 'text')
+
 # Model four ##################################################################
 
 mod4 <- lm(F100_p1000 ~ dBW*dPOST +  GDP_P_C + YUR, MDD)
 
-#stargazer::stargazer(mod4, 
-#                     title = 'Model 4 Simple Diff-in-Diff with controls',
-#                     digits = 2, type = 'text')
+mod4.age15 <- lm(F100_p1000 ~ dBW*dPOST +  GDP_P_C + YUR, MDD.15)
+
+stargazer::stargazer(mod4, mod4.age15,
+                     title = 'Model 4 Simple Diff-in-Diff with controls',
+                     digits = 2, type = 'text')
 
 # Robustness check: different composition of control group
 # idea 1: make regression to find trend for 2000-2010 -> 
@@ -264,9 +301,15 @@ mod4 <- lm(F100_p1000 ~ dBW*dPOST +  GDP_P_C + YUR, MDD)
 mod5 <- plm(F100_p1000 ~ dBAN + YUR + GDP_P_C, MDD, effect = "twoways",
             index = c("STATE", "YEAR"))
 
-#stargazer::stargazer(mod5, 
-#                     title = 'Model 5 Panel Diff-in-Diff',
-#                     digits = 2, type = 'text')
+mod5.age15.16 <- plm(F100_p1000 ~ dBAN + YUR + GDP_P_C, MDD.15, effect = "twoways",
+            index = c("STATE", "YEAR"))
+
+mod5.age15.13 <- plm(F100_p1000 ~ dBAN + YUR + GDP_P_C, 
+                     filter(MDD.15, !(STATE %in% c("DE-HB", "DE-HH", "DE-BE"))),
+                     effect = "twoways", index = c("STATE", "YEAR"))
+stargazer::stargazer(mod5, mod5.age15.16, mod5.age15.13,
+                     title = 'Model 5 Panel Diff-in-Diff',
+                     digits = 2, type = 'text')
 
 ###############################################
 # 4. Descriptive statistics
