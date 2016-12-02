@@ -125,7 +125,7 @@ As already mentioned, our analysis will be supplemented by data from other sourc
 We want to make a two stage analysis of short and long-term alcohol-related hospitalizations (ARH)[^ARH]. We will start with a multiple regression for a better understanding of factors correlated to high rates of hospitalizaton for alcohol-related reasons. This analysis shall show how socio-economic characteristics of states are correlated to the number of ARH. To keep it simple, the multiple regression model only includes observations of one year:
 
 \begin{equation}
-    ARH_s = \alpha_0 + \alpha_1 \cdot GDP_s + \alpha_2 \cdot UR_s + \alpha_3 \cdot B_s + \alpha_4 \cdot PD_s + \epsilon_s
+    ARH_s = \alpha_0 + \alpha_1 \cdot GDP_s + \alpha_2 \cdot UR_s + \alpha_3 \cdot PD_s + \epsilon_s
 \end{equation}
 
 where $GDP$ stands for the GDP level, $UR$ for the unemployment rate, $B$ for the beer consumption and $PD$ for the population density. All variables are recorded on the state level as indicated by the indices. The regression will be conducted for the aggregated number for all age groups and than only for young people (15-25) which are often of particular interest for policy makers. We will run this first regression separately for the years 2000, 2007, and 2014.
@@ -133,7 +133,7 @@ where $GDP$ stands for the GDP level, $UR$ for the unemployment rate, $B$ for th
 Based on the idea that individuals adapt to their circumstances and are more reactive to changes than to actual levels we will then analysis ARH difference over time:
 
 \begin{equation}
-   \Delta ARH_{s,t} = \beta_1 \cdot \Delta GDP_{s, t} + \beta_2 \cdot UR_{s, t} + \beta_3 \cdot \Delta B_{s, t} + \alpha_4 \cdot \Delta PD_s + \epsilon_{s,t}
+   \Delta ARH_{s,t} = \beta_1 \cdot \Delta GDP_{s, t} + \beta_2 \cdot UR_{s, t} + \epsilon_{s,t}
 \end{equation}
 
 In contrast to the multiple regression on levels, the difference approach highlights how *changes* in hospitalizations are correlated to *changes* in the socio-economic factors used as independend variables.
@@ -337,14 +337,22 @@ But these explanations are tentatively, at best. Therefore, it is advisable to t
 
 ```{r Model5, results = "asis", echo = FALSE} 
 
-stargazer::stargazer(mod5, 
-                     column.labels = c("All States"),
-                     covariate.labels = c("DE-BW ban dummy", "Youth unemployment rate", "GDP per capita"),
+stargazer::stargazer(mod5, mod5.age15.16, mod5.age15.13,
+                     column.labels = c("All age/states", "15-19y all states", "15-19y + non-city state"),
+                     covariate.labels = c("BW night sale ban", "Youth unemployment rate", "GDP per capita"),
                      model.numbers  = FALSE,
                      dep.var.labels = c("F10.0 cases per 1000 PP"),                           
                      title = 'Model 5: multi-period panel differences-in-differences',
                      digits = 2, type = 'latex', header = FALSE)
 ```
+
+
+
+# Conclusion
+
+
+
+# References
 
 [^ICD]: In contrast to @Marcus.2015 and @Wicki.2011 we do not include T51 (Intoxination due to alcohol) as its covers the consumption of pure ethanol and its number are relatively small. 
 [^FDZ]: In principle there is more fine-grained data available, even down to the individual level. However, the access to the data requires using the paid services by [forschungsdatenzentrum.de](http://www.forschungsdatenzentrum.de/) which is out of our students' budget.
