@@ -179,7 +179,9 @@ F100Plot <- plot_ly(data = filter(DS0, STATE == "DE-BW"),
                     #color = ~GROUP[1],
                     legendgroup = ~GROUP[1],
                     line = list(color = "red", width = 4)) %>%
-  layout(title = "", xaxis = list(title = "Year"), yaxis = list(title = "F10.0 cases per 1000 people"))
+  layout(title = "", xaxis = list(title = "Year", titlefont = list(size = 18)),
+         yaxis = list(title = "F10.0 cases per 1000 people", titlefont = list(size = 18)),
+         legend = list(font = list(size = 14)))
 
 # Non-City States
 for (i in 1:12){
@@ -224,7 +226,9 @@ F100Plot <- plot_ly(data = filter(DS0, STATE == "DE-BW"),
                     #color = ~GROUP[1],
                     legendgroup = ~GROUP[1],
                     line = list(color = "red", width = 4)) %>%
-  layout(title = "", xaxis = list(title = "Year"), yaxis = list(title = "F10.0 cases per 1000 people"))
+  layout(title = "", xaxis = list(title = "Year", titlefont = list(size = 18)),
+         yaxis = list(title = "F10.0 cases per 1000 people", titlefont = list(size = 18)),
+         legend = list(font = list(size = 14)))
 
 # Non-City States
 for (i in 1:12){
@@ -314,10 +318,11 @@ ci.plot(simZ2.UR.LF.D, ylab ="Expected conditional F10.0", xlab = "Unemployment 
 ```
 
 ## Result Night Sale Ban
-F10.0 Diagnoses for 15-19 year olds (control group: 13 non-city states)
+F10.0 Diagnoses for 15-19 year olds (control: 13 non-city states)
 ```{r Result Night Ban, results = "asis", echo = FALSE} 
 stargazer::stargazer(mod5.age15.13,
-                     covariate.labels = c("DE-BW ban dummy", "Youth unemployment rate", "GDP per capita"),
+                     covariate.labels = c("BW night sale ban",
+                                          "Youth unemployment rate", "GDP per capita"),
                      model.numbers  = FALSE,
                      dep.var.labels = c("F10.0 cases per 1000 PP"),                           
                      title = 'Model 5: multi-period panel differences-in-differences',
@@ -343,13 +348,38 @@ for (i in 2011:2014) {
 #         trunc(eval(parse(text = paste("f100.", i, ".wban + (filter.", i, "$PP * 0.06)", sep = "")))))
 bancomparison <- rbind(bancomparison, data.frame(YEAR = i,
                  WBAN = eval(parse(text = paste("filter.", i, "$F100_CASES", sep = ""))),
-                 WOBAN = trunc(eval(parse(text = paste("f100.", i, ".wban + (filter.", i, "$PP * 0.06)", sep = "")))),
-                 stringsAsFactors=FALSE))
+                 WOBAN = trunc(
+                   eval(parse(text = paste("f100.", i, ".wban + (filter.", i,
+                                           "$PP * 0.06)", sep = "")))),
+                                           stringsAsFactors=FALSE))
 }
+```
+
+Marcus and Sielder (2014) find about 7% decrease, we find about 20% decrease
+
+```{r echo = FALSE} 
 plot_ly(bancomparison, x = ~YEAR, y = ~WBAN, type = 'bar', name = 'With Ban') %>%
   add_trace(y = ~WOBAN, name = 'Without Ban') %>%
-  layout(xaxis = list(title = 'Year'), yaxis = list(title = 'F10.0 Cases for 15 to 19 year-olds in DE-BW'), barmode = 'group')
+  layout(xaxis = list(title = 'Year', titlefont = list(size = 18)), 
+         yaxis = list(title = 'F10.0 Cases for 15 to 19 year-olds in DE-BW',
+                      titlefont = list(size = 18)),
+         legend = list(x = 0.8, y = 1, font = list(size = 18)),
+         barmode = 'group')
 ```
+
+## Conclusion 2
+
+Problems of our research design:
+
+- Availability of data 
+    - without paying only annual and state-level data available
+    - 14 years x 16 states = 224 obs. 
+    - access to monthly and county level data would allow
+    - 168 months x 402 counties = 67536 obs.
+- limited amount of control variables
+    - few meaningful state level variables available
+    - but: less of a problem in Diff-in-Diff method
+
 
 ## Appendix 1
 
@@ -383,7 +413,7 @@ stargazer::stargazer(mod2.F100, mod2.F102, mod2.K70,
 ```{r Model3, results = "asis", echo = FALSE} 
 stargazer::stargazer(mod3.16, mod3.13, 
                      column.labels = c("All States", "All but City States"),
-                     covariate.labels = c("DE-BW dummy", "Post-treatment dummy", "Interaction", "(Intercept)"),
+                     covariate.labels = c("BW night sale ban", "Post-treatment dummy", "Interaction", "(Intercept)"),
                      model.numbers  = FALSE,
                      dep.var.labels = c("F10.0 cases per 1000 PP"),                    
                      title = 'Model 3: simple differences-in-differences',
@@ -396,13 +426,13 @@ stargazer::stargazer(mod3.16, mod3.13,
 
 ```{r Model4, results = "asis", echo = FALSE} 
 stargazer::stargazer(mod4, 
-                     column.labels = c("All States"),
-                     covariate.labels = c("DE-BW dummy", "Post-sales ban dummy", 
+#                     column.labels = c("All States"),
+                     covariate.labels = c("BW night sale ban", "Post-sales ban dummy", 
                                           "GDP per capita", "Youth unemployment rate", 
                                           "Interaction dummy", "(Intercept)"),
                      model.numbers  = FALSE,
-                     dep.var.labels = c("F10.0 cases per 1000 PP"),                           
-                     title = 'Model 4: simple differences-in-differences with controls',
+                     dep.var.labels = c("F10.0 cases per 1000"),                           
+                     title = 'Model 4: simple diff-in-diff with controls',
                      omit.stat = c("rsq", "f"),
                      digits = 2, type = 'html', header = FALSE)
 ```
@@ -413,7 +443,7 @@ stargazer::stargazer(mod4,
 
 stargazer::stargazer(mod5, mod5.age15.16, mod5.age15.13,
                      column.labels = c("All States", "15-19y", "15-19y + control: non-city"),
-                     covariate.labels = c("DE-BW ban dummy", "Youth unemployment rate", "GDP per capita"),
+                     covariate.labels = c("BW night sale ban", "Youth unemployment rate", "GDP per capita"),
                      model.numbers  = FALSE,
                      dep.var.labels = c("F10.0 cases per 1000 PP"),                           
                      title = 'Model 5: multi-period panel differences-in-differences',
