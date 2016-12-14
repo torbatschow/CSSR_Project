@@ -376,16 +376,23 @@ stargazer::stargazer(mod5, mod5.age15.16, mod5.age15.13,
 
 # control variable trend ################################################
 
-# DS1 <- TOTAL %>% filter(GENDER == "all", AGE=="all") %>% 
-#                 select(STATE, YEAR, GDP_P_C, UR.LF, YUR, BTAX_P_C, PP)
+ DS1 <- TOTAL %>% filter(GENDER == "all", AGE=="all", YEAR=="2014") %>% 
+                 select(STATE, YEAR, GDP_P_C, UR.LF, YUR, BTAX_P_C, PP, PD)
 # PP timeseries
-# ggplot(data=DS1, aes(x = YEAR, y = PP, group = STATE, colour = STATE)) +   
-#  geom_line() +                              # line plot
-#  theme_bw() +                               # bw background
-#  xlab("Years") +                            
-#  ylab("GDP per capita") +
-#  ggtitle("GDP in German States 2000-2014")
+ ggplot(data=DS1, aes(x = YEAR, y = PP, group = STATE, colour = STATE)) +   
+  geom_line() +                              # line plot
+  theme_bw() +                               # bw background
+  xlab("Years") +                            
+  ylab("POPULATION") +
+  ggtitle("PP in German States 2000-2014")
 
+ ggplot(data=DS1, aes(x = STATE, y = PD, colour = STATE)) +   
+   geom_bar(stat = "identity") +
+   theme_bw() +                               # bw background
+   xlab("Years") +                            
+   ylab("GDP per capita") +
+   ggtitle("PP in German States 2014") 
+ 
 # GDP timeseries
 # ggplot(data=DS1, aes(x = YEAR, y = GDP_P_C, group = STATE, colour = STATE)) +   
 #  geom_line() +                              # line plot

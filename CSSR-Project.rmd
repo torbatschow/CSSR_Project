@@ -1,14 +1,14 @@
 ---
 title: "Drink and Thrive? The economics of binge-drinking in Germany"
 subtitle: "CSSR Final Project"
-author: "Alex Sacharow & Torben Klausa"
+author: "Alexander Sacharow & Torben Klausa"
 header-includes:
     - \usepackage{fancyhdr}
     - \pagestyle{fancy}
     - \fancyhead[LO,LE]{Drink and Thrive? The economics of binge-drinking in Germany}
     - \fancyfoot[LO,LE]{CSSR Project}
     - \fancyfoot[RE,RO]{Torben Klausa and Alexander Sacharow}
-date: "November 11, 2016"
+date: "December 16, 2016"
 output: 
   pdf_document:
     toc: true
@@ -67,12 +67,15 @@ ToDo:
 1. Include Results
     Needs editing
 2. Add descritive stats and robustness test
-      Test common trend assumption
+    Test common trend assumption
 4. Rewrite literature review
+    [DONE] List of what needs to be included (as comment)
+    Rewrite the text -> who?
 5. label regression tables
-6. Bibliography before the appendix
-    Instruction: http://stackoverflow.com/questions/16427637/pandoc-insert-appendix-after-bibliography
     
+6. Bibliography before the appendix
+    [DONE] Appendix as a separate file
+    Is appendiy complete?
 -->
 
 # Introduction
@@ -93,12 +96,21 @@ Regarding the second topic of investigation, we find that the night sales ban re
 <!--
 NEEDS WORK
 include more related studies
+Structure:
+Literature relating to the first question
+Literature relating to the second question
 -->
-
-Our research proposal is inspired by the work of @Marcus.2015 who analysed *"The Effect of a Ban on Late-Night Off-premise Alcohol Sales on Alcohol-Related Hospital Stays in Germany."* They find that the introduction of the alcohol night sales ban reduces alcohol-related hospitalizations among adolescents and young adults by about seven percent. In our analysis, we will not only try to replicate their work with publicly available data sets. We are also going to build upon it -- by differenciating between short-term and longer-term effects. The focus on socio-economic explanatory factors like economic performance for the alcohol abuse as such is based upon research done by e.g. @Popovici.2013 and @Ettner.1997. Both analysed the effect that a change in employment status has on alcohol consumption of individuals. Focusing on the United States, the two studies found inconsistent results: While one sees "a positive and significant effect of unemployment on drinking behaviors and the findings are robust to numerous sensitivity tests" [@Popovici.2013] the other argues that "non-employment significantly reduces both alcohol consumption and dependence symptoms, probably due to an income effect." [@Ettner.1997] For the German case, Henkel has been tackling the challenge [@Henkel.2016; @Henkel.2015; @Henkel.2013; @Henkel.2011; @Henkel.2000] BLABLA.
+The focus on socio-economic explanatory factors like economic performance for the alcohol abuse as such is based upon research done by e.g. @Popovici.2013 and @Ettner.1997. Both analysed the effect that a change in employment status has on alcohol consumption of individuals. Focusing on the United States, the two studies found inconsistent results: While one sees "a positive and significant effect of unemployment on drinking behaviors and the findings are robust to numerous sensitivity tests" [@Popovici.2013] the other argues that "non-employment significantly reduces both alcohol consumption and dependence symptoms, probably due to an income effect." [@Ettner.1997] For the German case, Henkel has been tackling the challenge [@Henkel.2016; @Henkel.2015; @Henkel.2013; @Henkel.2011; @Henkel.2000] BLABLA.
 
 @Henkel.2015 finds a negative correlation between economic situation and alcohol and nicotine consumption.
 
+Our research proposal is inspired by the work of @Marcus.2015 who analysed *"The Effect of a Ban on Late-Night Off-premise Alcohol Sales on Alcohol-Related Hospital Stays in Germany."* They find that the introduction of the alcohol night sales ban reduces alcohol-related hospitalizations among adolescents and young adults by about seven percent. In our analysis, we will not only try to replicate their work with publicly available data sets. We are also going to build upon it -- by differenciating between short-term and longer-term effects. 
+<!--
+Include:
+@Green.2015
+@Wilkinson.2016
+Literature recited by Marcus and Sielder
+-->
 
 # Data
 
@@ -137,7 +149,7 @@ We want to make a two stage analysis of short and long-term alcohol-related hosp
     ARH_s = \alpha_0 + \alpha_1 \cdot GDP_s + \alpha_2 \cdot UR_s + \alpha_3 \cdot PD_s + \epsilon_s
 \end{equation}
 
-where $GDP$ stands for the GDP level, $UR$ for the unemployment rate, $B$ for the beer consumption and $PD$ for the population density. All variables are recorded on the state level as indicated by the indices. The regression will be conducted for the aggregated number for all age groups and than only for young people (15-25) which are often of particular interest for policy makers. We will run this first regression separately for the years 2000, 2007, and 2014.
+where $GDP$ stands for the GDP level, $UR$ for the unemployment rate  and $PD$ for the population density. All variables are recorded on the state level as indicated by the indices. The regression will be conducted for the aggregated number for all age groups. We will run this first regression separately for the years 2000, 2007, and 2014.
 
 Based on the idea that individuals adapt to their circumstances and are more reactive to changes than to actual levels we will then analysis ARH difference over time:
 
