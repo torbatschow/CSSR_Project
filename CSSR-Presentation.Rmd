@@ -280,11 +280,11 @@ Method: Difference-in-Difference
 Z1.2014 <- zelig(F100_p1000 ~ GDP_P_C + UR.LF + PD, cite = FALSE,
             data = M1.2014, model = "normal")
 
-# Simulation of relationhip F10.0 diagnoses and GDP per capita
+# Simulation of relationship F10.0 diagnoses and GDP per capita
 setZ.GDP.PP <- setx(Z1.2014, GDP_P_C = 15:46)
 simZ.GDP.PP <- sim(Z1.2014, x = setZ.GDP.PP)
 
-# Simulation of relationhip F10.0 diagnoses and unemployment rate
+# Simulation of relationship F10.0 diagnoses and unemployment rate
 setZ.UR.LF <- setx(Z1.2014, UR.LF = 5:21)
 simZ.UR.LF <- sim(Z1.2014, x = setZ.UR.LF)
 
@@ -335,27 +335,6 @@ stargazer::stargazer(mod5.age15.13,
 
 
 ## Conclusion
-```{r echo = FALSE} 
-# Generate variables for "What if no ban had happened?"
-bancomparison <- data.frame(YEAR = integer(),
-                 WBAN = integer(),
-                 WOBAN = integer(),
-                 stringsAsFactors=FALSE)
-for (i in 2011:2014) {
-  assign(paste("filter.", i, sep = ""), 
-         filter(TOTAL, GENDER == "all", AGE == "15-19y", STATE == "DE-BW", YEAR == i))
-  assign(paste("f100.", i, ".wban", sep = ""), 
-         eval(parse(text = paste("filter.", i, "$F100_CASES", sep = ""))))
-#  assign(paste("f100.", i, ".woban", sep = ""), 
-#         trunc(eval(parse(text = paste("f100.", i, ".wban + (filter.", i, "$PP * 0.06)", sep = "")))))
-bancomparison <- rbind(bancomparison, data.frame(YEAR = i,
-                 WBAN = eval(parse(text = paste("filter.", i, "$F100_CASES", sep = ""))),
-                 WOBAN = trunc(
-                   eval(parse(text = paste("f100.", i, ".wban + (filter.", i,
-                                           "$PP * 0.06)", sep = "")))),
-                                           stringsAsFactors=FALSE))
-}
-```
 
 Marcus and Sielder (2014) find about 7% decrease, we find about 20% decrease
 

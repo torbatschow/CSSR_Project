@@ -281,11 +281,17 @@ stargazer::stargazer(mod3.age15.16, mod3.age15.13,
 
 # Model four ##################################################################
 
+# diff-in-diff with control variables for all ages
 mod4 <- lm(F100_p1000 ~ dBW*dPOST +  GDP_P_C + YUR, MDD)
 
+# Diff-in-diff with control variables for 15-19year olds
 mod4.age15 <- lm(F100_p1000 ~ dBW*dPOST +  GDP_P_C + YUR, MDD.15)
 
-stargazer::stargazer(mod4, mod4.age15,
+# non-city control group
+mod4.age15.13 <- lm(F100_p1000 ~ dBW*dPOST +  GDP_P_C + YUR,
+                    filter(MDD.15, !(STATE %in% c("DE-HB", "DE-HH", "DE-BE"))))
+
+stargazer::stargazer(mod4, mod4.age15, mod4.age15.13, 
                      title = 'Model 4 Simple Diff-in-Diff with controls',
                      digits = 2, type = 'text')
 
@@ -379,19 +385,19 @@ stargazer::stargazer(mod5, mod5.age15.16, mod5.age15.13,
  DS1 <- TOTAL %>% filter(GENDER == "all", AGE=="all", YEAR=="2014") %>% 
                  select(STATE, YEAR, GDP_P_C, UR.LF, YUR, BTAX_P_C, PP, PD)
 # PP timeseries
- ggplot(data=DS1, aes(x = YEAR, y = PP, group = STATE, colour = STATE)) +   
-  geom_line() +                              # line plot
-  theme_bw() +                               # bw background
-  xlab("Years") +                            
-  ylab("POPULATION") +
-  ggtitle("PP in German States 2000-2014")
+# ggplot(data=DS1, aes(x = YEAR, y = PP, group = STATE, colour = STATE)) +   
+#  geom_line() +                              # line plot
+#  theme_bw() +                               # bw background
+#  xlab("Years") +                            
+#  ylab("POPULATION") +
+#  ggtitle("PP in German States 2000-2014")
 
- ggplot(data=DS1, aes(x = STATE, y = PD, colour = STATE)) +   
-   geom_bar(stat = "identity") +
-   theme_bw() +                               # bw background
-   xlab("Years") +                            
-   ylab("GDP per capita") +
-   ggtitle("PP in German States 2014") 
+# ggplot(data=DS1, aes(x = STATE, y = PD, colour = STATE)) +   
+#   geom_bar(stat = "identity") +
+#   theme_bw() +                               # bw background
+#   xlab("Years") +                            
+#   ylab("GDP per capita") +
+#   ggtitle("PP in German States 2014") 
  
 # GDP timeseries
 # ggplot(data=DS1, aes(x = YEAR, y = GDP_P_C, group = STATE, colour = STATE)) +   
@@ -507,9 +513,45 @@ map.Germany.2014.F100_p1000 <- map.Germany.2014
 map.Germany.2014.F100_p1000$value <- STATES.2014$F100_p1000
 # Choose plotting color pattern
 # remark: I combined two color sequences and changed the order of one of them
-colors <- c('#04152f','#052047','#08306b','#08519c','#2171b5','#4292c6', '#6baed6', '#9ecae1', '#c6dbef', '#deebf7', '#f7fbff',
-            '#fff5f0','#fee0d2','#fcbba1','#fc9272','#fb6a4a','#ef3b2c','#cb181d','#a50f15','#67000d','#330007', '#1a0003')
+colors <- c('#04152f','#052047','#08306b','#08519c','#2171b5','#4292c6', 
+            '#6baed6', '#9ecae1', '#c6dbef', '#deebf7', '#f7fbff',
+            '#fff5f0','#fee0d2','#fcbba1','#fc9272','#fb6a4a','#ef3b2c',
+            '#cb181d','#a50f15','#67000d','#330007', '#1a0003')
 # PLot it!
-spplot(map.Germany.2014.F100_p1000, zcol = "value", col.regions = colors)
+# spplot(map.Germany.2014.F100_p1000, zcol = "value", col.regions = colors)
 
+################################################################################
+# Counter-factual case: without ban
+################################################################################
 
+# Generate variables for "What if no ban had happened?"
+bancomparison <- data.frame(YEAR = integer(),
+                            WBAN = integer(),
+                            WOBAN = integer(),
+                            stringsAsFactors=FALSE)
+for (i in 2011:2014) {
+  assign(paste("filter.", i, sep = ""), 
+         filter(TOTAL, GENDER == "all", AGE == "15-19y", STATE == "DE-BW", YEAR == i))
+  assign(paste("f100.", i, ".wban", sep = ""), 
+         eval(parse(text = paste("filter.", i, "$F100_CASES", sep = ""))))
+  #  assign(paste("f100.", i, ".woban", sep = ""), 
+  #         trunc(eval(parse(text = paste("f100.", i, ".wban + (filter.", i, "$PP * 0.06)", sep = "")))))
+  bancomparison <- rbind(bancomparison, data.frame(YEAR = i,
+                                                   WBAN = eval(parse(text = paste("filter.", i, "$F100_CASES", sep = ""))),
+                                                   WOBAN = trunc(
+                                                     eval(parse(text = paste("f100.", i, ".wban + (filter.", i,
+                                                                             "$PP * 0.06)", sep = "")))),
+                                                   stringsAsFactors=FALSE))
+}
+
+# bar plot contrasting with and without ban
+# ggplot(data=melt(bancomparison, id.vars = "YEAR"), 
+#       aes(x = YEAR, y = value, fill = variable)) +
+#       geom_bar(stat = "identity", position=position_dodge()) +
+#       theme_bw() +
+#       xlab("Year") +
+#       ylab("F10.0 diagnoses among 15-19 year olds in BW") +
+#       ggtitle("F10.0 cases in BW \n per 1000") +
+#       guides(fill=FALSE) +
+#       theme(axis.text.x  = element_text(angle=90, vjust=0.5),
+#       axis.title.y=element_text(margin=margin(10,10,0,10)))
