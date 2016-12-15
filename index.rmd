@@ -206,7 +206,7 @@ for (i in 1:3){
                         line = list(color = colorRampPalette(brewer.pal(5, "Blues"))(5)[i+2], width = 2),
                         name = paste("City State", substr(statelist_cities[i], 4, 5)))
 }
-F100Plot
+#F100Plot
 ```
 
 ## Data Visuals - F10.0 Increase - 15-19 y/o
@@ -220,7 +220,7 @@ DS0$GROUP[DS0$STATE == "DE-BW"] <- "Treatment"
 DS0$GROUP[DS0$STATE == "DE-BE" | DS0$STATE == "DE-HB" | DS0$STATE == "DE-HH"] <- "City"
 
 # Start with Treatment
-F100Plot <- plot_ly(data = filter(DS0, STATE == "DE-BW"),
+  F100Plot.age15 <- plot_ly(data = filter(DS0, STATE == "DE-BW"),
                     x = ~YEAR,
                     y = ~F100_p1000,
                     type = "scatter",
@@ -235,7 +235,7 @@ F100Plot <- plot_ly(data = filter(DS0, STATE == "DE-BW"),
 
 # Non-City States
 for (i in 1:12){
-  F100Plot <- add_trace(F100Plot, 
+F100Plot.age15 <- add_trace(F100Plot, 
                         data = filter(DS0, STATE == statelist_other_wo_treatment[i]), 
                         text = ~STATE[1], 
                         legendgroup = ~GROUP[1], 
@@ -245,7 +245,7 @@ for (i in 1:12){
 }
 # City States
 for (i in 1:3){
-  F100Plot <- add_trace(F100Plot, 
+  F100Plot.age15 <- add_trace(F100Plot, 
                         data = filter(DS0, STATE == statelist_cities[i]), 
                         #text = ~STATE[1], 
                         #legendgroup = ~GROUP[1], 
@@ -253,7 +253,7 @@ for (i in 1:3){
                         line = list(color = colorRampPalette(brewer.pal(5, "Blues"))(5)[i+2], width = 2),
                         name = paste("City State", substr(statelist_cities[i], 4, 5)))
 }
-F100Plot
+#F100Plot.age15
 ```
 
 
@@ -340,13 +340,13 @@ stargazer::stargazer(mod5.age15.13,
 Marcus and Sielder (2014) find about 7% decrease, we find about 20% decrease
 
 ```{r echo = FALSE} 
-plot_ly(bancomparison, x = ~YEAR, y = ~WBAN, type = 'bar', name = 'With Ban') %>%
-  add_trace(y = ~WOBAN, name = 'Without Ban') %>%
-  layout(xaxis = list(title = 'Year', titlefont = list(size = 18)), 
-         yaxis = list(title = 'F10.0 Cases for 15 to 19 year-olds in DE-BW',
-                      titlefont = list(size = 18)),
-         legend = list(x = 0.8, y = 1, font = list(size = 18)),
-         barmode = 'group')
+# plot_ly(bancomparison, x = ~YEAR, y = ~WBAN, type = 'bar', name = 'With Ban') %>%
+#  add_trace(y = ~WOBAN, name = 'Without Ban') %>%
+#  layout(xaxis = list(title = 'Year', titlefont = list(size = 18)), 
+#         yaxis = list(title = 'F10.0 Cases for 15 to 19 year-olds in DE-BW',
+#                      titlefont = list(size = 18)),
+#         legend = list(x = 0.8, y = 1, font = list(size = 18)),
+#         barmode = 'group')
 ```
 
 ## Conclusion 2
