@@ -209,12 +209,12 @@ The development in German states from the beginning of the present dataset to th
 ```{r echo = FALSE, out.width=c('280px', '280px')} 
 spplot(map.Germany.2000.F100_p1000, 
        zcol = "value", 
-       col.regions = colors,
+       col.regions = colorRampPalette(rev(brewer.pal(9, "Spectral")))(22),
        main=list(label="2000: F10.0 diagnoses\nper 1000 pp all age groups"),
        at = seq(0, 2.2, by = 0.1))
 spplot(map.Germany.2014.F100_p1000, 
        zcol = "value", 
-       col.regions = colors,
+       col.regions = colorRampPalette(rev(brewer.pal(9, "Spectral")))(22),
        main=list(label="2014: F10.0 diagnoses\nper 1000 pp all age groups"),
        at = seq(0, 2.2, by = 0.1),
        colorkey=FALSE)
@@ -234,16 +234,17 @@ DS0 <- TOTAL %>% filter(GENDER == "all", AGE=="all") %>%
 # DS0$GROUP[DS0$STATE == "DE-BE" | DS0$STATE == "DE-HB" | DS0$STATE == "DE-HH"] <- "City"
 
 # font_import("cmr10")
-ggplot(data=filter(DS0, STATE == "DE-DE"), aes(x = YEAR)) +
+ggplot(data=filter(DS0, STATE == "DE-DE"), aes(x = YEAR, colour = Diagnoses)) +
   scale_x_continuous(breaks = c(2000, 2005, 2010, 2014), minor_breaks = c(2000:2014)) +
-  geom_line(aes(y = F100_p1000, colour = "red")) +
-  geom_line(aes(y = K70_p1000, colour = "black")) +                              # line plot
-  geom_line(aes(y = F102_p1000, colour = "blue")) +
+  geom_line(aes(y = F100_p1000, colour = "F10.0")) +
+  geom_line(aes(y = K70_p1000, colour = "K70", group = "cond1")) +                              # line plot
+  geom_line(aes(y = F102_p1000, colour = "F10.2", group = "cond2")) +
   theme_bw() +                               # bw background
   xlab("Years") +                            
-  ylab("diagnoses \nper 1000 people") +
+  ylab("Diagnoses \nper 1000 people") +
   ggtitle("F10.0, F10.2 and K70 diagnoses in Germany 2000-2014") +
-# scale_color_discrete(name  = "State", breaks = statelist_code, labels = statelist.code.short) +
+  scale_shape_discrete(name = "Payer") +
+ #scale_color_discrete(name  = "State", breaks = statelist_code, labels = statelist.code.short) +
   theme(legend.key = element_rect(size = 5, fill = 'white', colour = 'white'),
         legend.key.size = unit(2.0, 'lines'),
         axis.title.y=element_text(margin=margin(10,10,0,10)))
