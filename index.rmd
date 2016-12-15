@@ -90,7 +90,7 @@ ggplot(data=PL1, aes(x = AGE, y = K70_p1000, fill = AGE)) +
         axis.title.y=element_text(margin=margin(10,10,0,10)))
 ```
 
-## Binge Drinking amongst youngsters -- an increasing problem
+## Binge drinking -- an increasing problem
 
 In Germany, drinking excesses have increasingly become a problem. 
 The following maps compare the relative numbers of excessive alcohol consumption in the years 2000 and 2014:
