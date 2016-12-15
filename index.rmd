@@ -306,19 +306,19 @@ simZ2.UR.LF.D <- sim(Z2.F100, x = setZ2.UR.LF.D)
 
 
 ```{r R1GraphTop, echo = FALSE, fig.width=4, fig.height=2.8, out.extra='style="float:left"'}
-# ci.plot(simZ.GDP.PP, ylab ="Expected conditional F10.0", xlab = "GDP level",
-#        main = "Model 1: F10.0 Diagnoses 2014")
+ci.plot(simZ.GDP.PP, ylab ="Expected conditional F10.0", xlab = "GDP level",
+        main = "Model 1: F10.0 Diagnoses 2014")
 
-#ci.plot(simZ.UR.LF, ylab ="Expected conditional F10.0", xlab = "Unemployment level",
-#        main = "Model 1: F10.0 Diagnoses 2014")
+ci.plot(simZ.UR.LF, ylab ="Expected conditional F10.0", xlab = "Unemployment level",
+        main = "Model 1: F10.0 Diagnoses 2014")
 
 ```
 
 ```{r R1GraphBelow, echo = FALSE, fig.width=4, fig.height=2.8, out.extra='style="float:left"'}
-#ci.plot(simZ2.GDP.D, ylab ="Expected conditional F10.0", xlab = "GDP change",
-#        main = "Model 2: Changes F10.0 Diagnoses")
-#ci.plot(simZ2.UR.LF.D, ylab ="Expected conditional F10.0", xlab = "Unemployment change",
-#        main = "Model 2: Changes F10.0 Diagnoses")
+ci.plot(simZ2.GDP.D, ylab ="Expected conditional F10.0", xlab = "GDP change",
+        main = "Model 2: Changes F10.0 Diagnoses")
+ci.plot(simZ2.UR.LF.D, ylab ="Expected conditional F10.0", xlab = "Unemployment change",
+        main = "Model 2: Changes F10.0 Diagnoses")
 ```
 
 ## Result Night Sale Ban
