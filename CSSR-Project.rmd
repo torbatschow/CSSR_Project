@@ -33,8 +33,6 @@ source("main.R")
 
 # Collect packages/libraries we need:
 packages <- c("fontcm", "psych", "plotly")
-# can we add a short list so we have an overview for what we need the packages?
-# psych allows for summary statistics
 
 # install packages if not installed before
 for (p in packages) {
@@ -67,51 +65,6 @@ statelist_other_wo_treatment <- c("DE-BY", "DE-BB", "DE-HE", "DE-MV", "DE-NI",
                                   "DE-NW", "DE-RP", "DE-SL","DE-SN", "DE-ST", 
                                   "DE-SH", "DE-TH")
 ```
-
-<!--
-**************************
-*****   OVERVIEW:    *****
-**************************
-ToDo:
-1. Include Results
-    Needs editing
-        [major issues done]
-    Result of model 5 needs to be written
-        [done] First ideas 
-        [done] edit / extend
-    Final editing
-2. Add descritive stats and robustness test
-    Test common trend assumption
-        Question: Enough discussion of common trend assumption sofar?
-4. [DONE] Rewrite literature review
-      [DONE] List of what needs to be included (as comment)
-      [Done] Rewrite the text and include:
-        @Green.2015
-        @Wilkinson.2016
-        Literature recited by Marcus and Sielder
-5. Layout figures
-     Maps
-        Position of maps (could be different on Win and Linux)
-     F10.0/F10.2/K70 line chart: 
-        Correct legend
-        resize
-     F10.0 age distribution
-        resize
-        color
-     F10.0 time series 15.19y: 
-        Change colors
-        legend name 
-     bar chart hypothetical F10.0 cases: 
-        Label
-        colors 
-6. Bibliography before the appendix
-    [DONE] Appendix as a separate file
-    Is appendiy complete?
-7. Website
-    Transform presentation into website
-8. Conclusion
-    [Done] Write it
--->
 
 # Introduction
 
@@ -223,46 +176,17 @@ ggplot(data=filter(DS0, STATE == "DE-DE"), aes(x = YEAR, colour = Diagnoses)) +
   xlab("Years") +                            
   ylab("Diagnoses\nper 1000 pp") +
   ggtitle("F10.0, F10.2, and K70 diagnoses in Germany,\n2000-2014") +
- #scale_color_discrete(name  = "State", breaks = statelist_code, labels = statelist.code.short) +
-  theme(#legend.key = element_rect(size = 5, fill = 'white', colour = 'white'),
-        legend.key.size = unit(2.0, 'lines'),
+  theme(legend.key.size = unit(2.0, 'lines'),
         axis.title.y=element_text(margin=margin(10,10,0,10)))
-#  annotate("text", x = 0, y = 0.1, label = "Label", parse = TRUE, family = "cmr10")
-
-#ggplot(data=DS0, aes(x = YEAR, y = K70_p1000, group = STATE, colour = STATE)) +
-#  scale_x_continuous(breaks = c(2000, 2005, 2010, 2014), minor_breaks = c(2000:2014)) +
-#  geom_line() +                              # line plot
-#  theme_bw() +                               # bw background
-#  xlab("Years") +                            
-#  ylab("K70 diagnoses \nper 1000 inhabliants") +
-#  ggtitle("Alcohol-related liver diagnoses in German States 2000-2014") +
-#  scale_color_discrete(name  = "State", breaks = statelist_code, labels = statelist.code.short) +
-#  theme(legend.position = "bottom", 
-#        legend.key = element_rect(size = 5, fill = 'white', colour = 'white'),
-#        legend.key.size = unit(2.0, 'lines'),
-#        axis.title.y=element_text(margin=margin(10,10,0,10)))
 ```
 
 With regards to the different age groups, the distribution of cases is already somewhat revealing: long-term ARH numbers as an indicator for strong alcoholism show that it rather is a problem for best-agers than for younger people. The numbers begin to rise at the 35-39 years age group and start declining with the 65-69 years group -- probably due to a higher mortality (although the data does not offer such interpretation).
 
-```{r echo = FALSE} 
-# data frame for plot
-PL1 <- TOTAL %>% filter(GENDER == "all", AGE!="all", STATE=="DE-DE")
-
-# Bar diagram: K70 cases per 1000 per age group
-#ggplot(data=PL1, aes(x = AGE, y = K70_p1000, fill = AGE)) +
-#  geom_bar(stat="identity") +
-#  xlab("Age Group") +
-#  ylab("K70 cases per 1000 people") +
-#  ggtitle("K70 cases in Germany \n per 1000 per age group") +
-#  guides(fill=FALSE) +
-#  theme(axis.text.x  = element_text(angle=90, vjust=0.5),
-#        axis.title.y=element_text(margin=margin(10,10,0,10)))
-```
-
 In Germany, the two minimum legal drinking ages are 16 years (for beer and whine) and 18 years (for brandy). This helps with the interpretation of the short-term ARH bar plot with its two peaks: The first is a very strong one at the 15-19 years age group. It appears resonable to interpret this one as a sign of younsters making first experiences with alcoholic drinks -- and overdoing it. The second "mid-life crisis" peak corresponds with the peak of long-term alcohol abuse shown before.
 
 ```{r echo = FALSE} 
+# data frame for plot
+PL1 <- TOTAL %>% filter(GENDER == "all", AGE!="all", STATE=="DE-DE")
 # Bar diagram: F10.0 cases per 1000 per age group in DE-DE
 ggplot(data=PL1, aes(x=AGE, y=F100_p1000, fill = AGE)) +
   geom_bar(stat="identity", fill = cbbPalette[2]) +
@@ -297,7 +221,6 @@ ggplot(data=DS2, aes(x = YEAR, colour = GROUP)) +
   xlab("Years") +
   ylab("F10.0 diagnoses per 1000 pp\nfor 15-19-year-olds") +
   ggtitle("F10.0 diagnoses for 15-19-year-olds in German states,\n2000-2014") +
-#  scale_color_discrete(name  = "State", breaks = statelist_code, labels = statelist.code.short) +
   geom_vline(xintercept = 2010) +
   theme(legend.position = "bottom", 
         legend.key = element_rect(size = 5),
@@ -386,14 +309,6 @@ ggplot(data=melt(bancomparison, id.vars = "YEAR"),
        ggtitle("F10.0 cases with and without ban in BW") +
        scale_fill_manual("Sales ban", values = c(cbbPalette[2], cbbPalette[1]),
                          labels=c("With", "Without (simulation)"))
-
-#plot_ly(bancomparison, x = ~YEAR, y = ~WBAN, type = 'bar', name = 'With Ban') %>%
-#  add_trace(y = ~WOBAN, name = 'Without Ban') %>%
-#  layout(xaxis = list(title = 'Year', titlefont = list(size = 18)), 
-#         yaxis = list(title = 'F10.0 Cases for 15 to 19 year-olds in DE-BW',
-#                      titlefont = list(size = 18)),
-#         legend = list(x = 0.8, y = 1, font = list(size = 18)),
-#         barmode = 'group')
 ```
 
 But again the result should be treated with care. The calculations are based on 195 observations, which are due to reduced control group to territorial states. Moreover, the exact estimate is sensitive to adjustments in the control group. However, the general direction and the magnitude are meaningful and point in the same direction as @Marcus.2015.
