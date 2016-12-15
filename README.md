@@ -3,7 +3,7 @@
 
 This is the repository for the final project and the assignment leading to it in the [MPP-E1180: Introduction to Collaborative Social Science Data Analysis](https://github.com/HertieDataScience) course of the fall semester 2016. It is authored by [Alex](https://github.com/corrod3) and [Torben](https://github.com/torbatschow). Any feedback, comments, and ideas are highly appreciated. Please send them to <a href="mailto:t.klausa@mpp.hertie-school.org">Torben</a> or <a href="mailto:a.sacharow@mpp.hertie-school.org">Alex</a> or submit a pull request.
 
-The second assignment can be found [here](Pair_Assignment_2.rmd).
+The final project paper can be found [here](CSSR-Project.rmd), the website is available [here](https://torbatschow.github.io/CSSR_Project/).
 
 ## Idea
 
@@ -32,11 +32,11 @@ We collect and combine our independend variables via [getControl.R](control/getC
 ### Second Assignment
 The second pair assignment is a proposal for your Collaborative Research Project. It is an opportunity for you to layout your collaborative research paper question, justify why it is interesting, provide basic literature review (properly cited using BibTeX), and identify data sources/methodologies that you can access to help answer your question. You will also demonstrate your understanding of literate programming technologies. Deadline 28 October, 2,000 words maximum, 10% of final grade.
 
-### [Third Assignment](CSSR-Project.rmd)
+### Third Assignment
 
 In the third pair assignment you will gather web based data from at least two sources, merge the data sets, conduct basic inferential statistics on the data to address a relevant research question and briefly describe the results including with dynamically generated tables and figures. Students are encouraged to access data and perform statistical analyses with an eye to answering questions relevant for their Collaborative Research Project. Deadline: 11 November. The write up should be 1,500 words maximum and use literate programming, 10% of final grade.
 
-### Final collaborative Research Project
+### [Final collaborative Research Project](CSSR-Project.rmd)
 
 For the Collaborative Research Project you will pose an interesting social science question and attempt to answer it using standard academic practices including original data collection and statistical analysis. The project should be considered a 'dry run' for your thesis. The project has three presentation outputs designed to present your research to multiple audiences. The first is an oral presentation (10 minute maximum) given in the final class. The second is a standard academic paper (5,000 words maximum) that is fully reproducible and dynamically generated. The third is a website designed to present key aspects of your research in an engaging way to a general audience. The paper and website are due in the Final Exam Week. The presentation and website are each worth 10% of your final mark. The paper is worth 30%.
 
