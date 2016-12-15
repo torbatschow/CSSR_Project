@@ -1,5 +1,7 @@
 ---
-title: "Drink and Thrive? The economics of binge-drinking in Germany"
+title: |
+  | Drink and Thrive?
+  | The economics of binge-drinking in Germany
 subtitle: "CSSR Final Project"
 author: "Alexander Sacharow & Torben Klausa"
 header-includes:
