@@ -67,8 +67,9 @@ statelist_other_wo_treatment <- c("DE-BY", "DE-BB", "DE-HE", "DE-MV", "DE-NI", "
 
 ## Trend Sport of the 21st Century?
 
+<!--
 <img src="presentation_pictures/drunk.jpeg" width="90%" height="90%"/>
-
+-->
 
 ## Background
 
