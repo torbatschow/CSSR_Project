@@ -146,19 +146,19 @@ ggplot(data=PL1, aes(x = AGE, y = K70_p1000, fill = AGE)) +
 ## Data Visuals - F10.0 Cases in Germany
 
 ```{r echo = FALSE, fig.width=4, fig.height=5, out.extra='style="float:left"'} 
-spplot(map.Germany.2000.F100_p1000, 
-       zcol = "value", 
-       col.regions = colors,
-       main=list(label="2000: F10.0 diagnoses\nper 1000 pp all age groups"),
-       at = seq(0, 2.2, by = 0.1))
+# spplot(map.Germany.2000.F100_p1000, 
+#       zcol = "value", 
+#       col.regions = colors,
+#       main=list(label="2000: F10.0 diagnoses\nper 1000 pp all age groups"),
+#       at = seq(0, 2.2, by = 0.1))
 ```
 ```{r echo = FALSE, fig.width=4, fig.height=5, out.extra='style="float:right"'} 
-spplot(map.Germany.2014.F100_p1000, 
-       zcol = "value", 
-       col.regions = colors,
-       main=list(label="2014: F10.0 diagnoses\nper 1000 pp all age groups"),
-       at = seq(0, 2.2, by = 0.1),
-       colorkey=FALSE)
+# spplot(map.Germany.2014.F100_p1000, 
+#       zcol = "value", 
+#       col.regions = colors,
+#       main=list(label="2014: F10.0 diagnoses\nper 1000 pp all age groups"),
+#       at = seq(0, 2.2, by = 0.1),
+#       colorkey=FALSE)
 ```
 
 
