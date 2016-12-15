@@ -103,7 +103,7 @@ ToDo:
         colors 
 6. Bibliography before the appendix
     [DONE] Appendix as a separate file
-    Is appendix complete?
+    Is appendiy complete?
 7. Website
     Transform presentation into website
 8. Conclusion
@@ -366,7 +366,7 @@ stargazer::stargazer(mod2.F100, mod2.F102, mod2.K70,
 The difference show a correlation between GDP growth and short-term ARH. A superficial interpretation could be that individuals in years of strong growth tend to party more. But again, this should be seen with care. For short-term ARH the other variables are not significant.
 The effects of changes on long-term ARH are unsurprisingly inconclusive. In our case each coefficient is directed exactly in the opposite direction of our two long-term ARH indicators. But a clear result would again have been implausible, as long-term ARH result from excessive drinking behaviour over years. Short-term macro developments should not have any impact on this.
 
-The next step in refining our model (*Model 3*) takes us to analyzing a policy measure, namely the introductionof a ban on night sales of alcohol in the state of Baden-Wurttemberg. Contrary to the prior analysis, we now look at the age group of 15 to 19 year olds. The results are shown in *Table 3*. While we are introducing a dummy for the state in consideration, one for the post-treatment period, and the interaction term of both, the only significant variable is the post-treatment dummy. Even more counterintuitively, the post-treatment dummy has is *positively* correlated with short-term ARHs. This hints to the fact that we might whitness a common trend over time, increasing short-term ARHs, that is similar for all states and that is currently captured by the time dummy. That would explain why the time dummy (which essentially splits the whole set of observations into two consecutive phases) is highly significant but neither the state dummy nor the interaction term are of any significance.
+The next step in refining our model (*Model 3*) takes us to analyzing a policy measure, namely the introduction of a ban on night sales of alcohol in the state of Baden-Wuerttemberg. Contrary to the prior analysis, we now look at the age group of 15 to 19 year olds. The results are shown in *Table 3*. While we are introducing a dummy for the state in consideration, one for the post-treatment period, and the interaction term of both, the only significant variable is the post-treatment dummy. Even more counterintuitively, the post-treatment dummy has is *positively* correlated with short-term ARHs. This hints to the fact that we might whitness a common trend over time, increasing short-term ARHs, that is similar for all states and that is currently captured by the time dummy. That would explain why the time dummy (which essentially splits the whole set of observations into two consecutive phases) is highly significant but neither the state dummy nor the interaction term are of any significance.
 
 ```{r Model3, results = "asis", echo = FALSE} 
 stargazer::stargazer(mod3.age15.16, mod3.age15.13, mod4.age15, mod4.age15.13,
