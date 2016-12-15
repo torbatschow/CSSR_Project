@@ -424,22 +424,15 @@ ggplot(data=melt(bancomparison, id.vars = "YEAR"),
 #         barmode = 'group')
 ```
 
-But again the result should be treated with care. The calculations are based on 195 observations, which are due to reduced control group and the exact estimate is varying with the different control group compositions. 
+But again the result should be treated with care. The calculations are based on 195 observations, which are due to reduced control group to territorial states. Moreover, the exact estimate is sensitive to adjustments in the control group. However, the general direction and the magnitude are meaningful and point in the same direction as @Marcus.2015.
 
 # Conclusion
 
-Overall, our research supports the general conclusion of the literature on drinking and socio-economic factors. In particular, the most sophisticated approach (model 5) we used finds that higher youth unemployment is correlated with more alcohol-related diagnoses amoung young people and that the night sales ban on alcohol has a measurable negative effect on binge-drinking. But due to the limitations of our data this finding is not always consistent over the models we used. In case of a contradiction between our finding and the general view we attributed the short-coming to a short-coming of our model.
+Overall, our research supports the general conclusion of the literature on drinking and socio-economic factors. In particular, the most sophisticated approach (model 5) we used finds that higher youth unemployment is correlated with more alcohol-related diagnoses amoung young people and that the night sales ban on alcohol has a measurable negative effect on binge-drinking. But due to the limitations of our data this finding is not fully consistent over the models we used. However, this inconsistency should not be overevaluated as it mostlikely steams from the limitations of the used model and the limited data available.
 
-As our study reengenered @Marcus.2015 the confirmation of their general result deserves particular attention. 
+As our study reengenered @Marcus.2015 the confirmation of their general result deserves particular attention. While their study used more fain-grained data, our research included a longer treatment horizon. Hence, the effect @Marcus2015 find prevailed over the time horizon of their research according to our findings.
 
-Further improve the research by getting disaggregated data sets. @Marcus.2015 still lacks a relative short observation horizon and more thorough investigation of the mid-term effects would bring an added value.
-
-include more control variables
-many are not available as time-series or only cover certain years
-we had to exclude 
-
-Policy implications?
-
+The research could be further improved by using more diaggregated data, in particular by using monthly numbers and the county level. This would increase the number of observations tremendously and allow therefore for more substantial results. It would also allow the inclusion of more controls as in we only relied on a small number of socio-economic controls. Many more controls exist, but we did not include them as they are not available as a time-series and on the regional level. 
 
 # References
 
