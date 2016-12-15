@@ -204,9 +204,7 @@ spplot(map.Germany.2014.F100_p1000,
 
 The long-term ARH values also slightly increase, but this increase is a rather moderate one. This is a reasonable finding, as already the description "long-term" suggests that any change is very unlikely to happen in a short period of time like the one captchured by our sample.
 
-```{r echo = FALSE, out.width=c('400px')} 
-# TODO: Legend label are not correct!
-
+```{r echo = FALSE, out.width = "450px", out.height = "450px"}
 # data frame for plot
 DS0 <- TOTAL %>% filter(GENDER == "all", AGE=="all") %>% 
   select(STATE, YEAR, F100_p1000, F102_p1000, K70_p1000)
@@ -222,7 +220,7 @@ ggplot(data=filter(DS0, STATE == "DE-DE"), aes(x = YEAR, colour = Diagnoses)) +
   theme_bw() +                               # bw background
   xlab("Years") +                            
   ylab("Diagnoses\nper 1000 pp") +
-  ggtitle("F10.0, F10.2, and K70 diagnoses\nin Germany 2000-2014") +
+  ggtitle("F10.0, F10.2, and K70 diagnoses in Germany,\n2000-2014") +
  #scale_color_discrete(name  = "State", breaks = statelist_code, labels = statelist.code.short) +
   theme(#legend.key = element_rect(size = 5, fill = 'white', colour = 'white'),
         legend.key.size = unit(2.0, 'lines'),
@@ -269,7 +267,7 @@ ggplot(data=PL1, aes(x=AGE, y=F100_p1000, fill = AGE)) +
   theme_bw() +
   xlab("Age Group") +
   ylab("F10.0 cases per 1000 pp") +
-  ggtitle("F10.0 cases in Germany \n per 1000 per age group") +
+  ggtitle("F10.0 cases in Germany per age group") +
   guides(fill=FALSE) +
   theme(axis.text.x  = element_text(angle=90, vjust=0.5),
         axis.title.y=element_text(margin=margin(10,10,0,10)))
@@ -287,22 +285,6 @@ DS2$GROUP[DS2$STATE == "DE-BW"] <- "DE-BW (Treatment)"
 DS2$GROUP[DS2$STATE == "DE-BE" | DS2$STATE == "DE-HB" | DS2$STATE == "DE-HH"] <- "City"
 
 # F10.0 cases per 1000 per age group
-ggplot(data=DS2, aes(x = YEAR, y = F100_p1000, group = STATE, colour = GROUP)) +
-  scale_x_continuous(breaks = c(2000, 2005, 2010, 2014), minor_breaks = c(2000:2014)) +
-  geom_line(aes(group = STATE), size = 1) +        # line plot
-  theme_bw() +                               # bw background
-  scale_color_manual("State", values = c(cbbPalette[6], cbbPalette[1], cbbPalette[7])) +
-  xlab("Years") +
-  ylab("F10.0 diagnoses per 1000 inhabiants \nfor 15-19-year-olds") +
-  ggtitle("F10.0 diagnoses for 15-19-year-olds\nin German states 2000-2014") +
-#  scale_color_discrete(name  = "State", breaks = statelist_code, labels = statelist.code.short) +
-  geom_vline(xintercept = 2010) +
-  theme(legend.position = "bottom", 
-        legend.key = element_rect(size = 5),
-        legend.key.size = unit(2.0, 'lines'),
-        axis.title.y=element_text(margin=margin(10,10,0,10)))
-
-# F10.0 cases per 1000 per age group
 ggplot(data=DS2, aes(x = YEAR, colour = GROUP)) +
   scale_x_continuous(breaks = c(2000, 2005, 2010, 2014), minor_breaks = c(2000:2014)) +
   geom_line(data=filter(DS2, GROUP == "Non-City"), aes(y = F100_p1000, group = STATE), size = 1) +
@@ -311,15 +293,15 @@ ggplot(data=DS2, aes(x = YEAR, colour = GROUP)) +
   theme_bw() +
   scale_color_manual("State", values = c(cbbPalette[6], cbbPalette[7], cbbPalette[1])) +
   xlab("Years") +
-  ylab("F10.0 diagnoses per 1000 inhabiants \nfor 15-19-year-olds") +
-  ggtitle("F10.0 diagnoses for 15-19-year-olds\nin German states 2000-2014") +
+  ylab("F10.0 diagnoses per 1000 pp\nfor 15-19-year-olds") +
+  ggtitle("F10.0 diagnoses for 15-19-year-olds in German states,\n2000-2014") +
 #  scale_color_discrete(name  = "State", breaks = statelist_code, labels = statelist.code.short) +
   geom_vline(xintercept = 2010) +
   theme(legend.position = "bottom", 
         legend.key = element_rect(size = 5),
         legend.key.size = unit(2.0, 'lines'),
         axis.title.y=element_text(margin=margin(10,10,0,10)))
-
+ggsave("plot.png", width = 5, height = 2)
 ```
 
 # Results
@@ -392,7 +374,7 @@ Result of the final model
 -->
 The final regression indicate a negative impact of the ban on ARH related short-term hospitalizations. The estimated relation of introducing a night-sales ban is a decrease of 0.06 hospitalizations per 1000 inhabilitants, which makes roughly 600 cases less per year based on the population of Baden-Wuerttemberg. This would imply a decrease of 20%, which is more than @Marcus.2015 found (7%). To illustrate the result, we calculated the hypothetical number of hospitalizations without the ban:
 
-```{r echo = FALSE} 
+```{r echo = FALSE, out.width = "400px", out.height = "350px"} 
 # Bar diagram: With and without ban
 ggplot(data=melt(bancomparison, id.vars = "YEAR"), 
        aes(x = YEAR, y = value, fill = variable)) +
