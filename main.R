@@ -4,30 +4,23 @@
 ##################################################
 
 ##################################################
-## REMARKS
-##################################################
+# REMARKS
 # At the end of this script, we have a complete dataframe named TOTAL containing all
 # dependend and independend variables, including additionally calculated ones:
-# ******TO BE COMPLETED******
-# ToDo:
-# 1. Model 3-5 regression
-# 2. Robustness Check
-# 3. Heat Map Germany    
-# 
-#
 # 
 ##################################################
-## CONTENT
-##################################################
+# CONTENT
 # 0. Preparations
 # 1. Combine Data
 # 2. Calculate Missing Variables
 # 3. Calculate Models
 # 4. Descriptive Statistics
+# 5. Counter-factual case: without ban
+##################################################
 
-####################################################
+##################################################
 # 0. Preparations
-###################################################
+##################################################
 
 # Clear Global environment
 rm(list=ls())
@@ -114,18 +107,24 @@ HEALTH <- rbind(HEALTH, AGG)
 TOTAL <- merge(HEALTH, INDEP, by = c("STATE", "YEAR"))
 TOTAL <- TOTAL[order(TOTAL$STATE, TOTAL$YEAR, TOTAL$GENDER, TOTAL$AGE),]
 
+# clean environment
 rm(HEALTH, INDEP, AGG, AGG.A, AGG.G, AGG.A.G, ICD, i)
-
 
 ################################################
 # 2. Calculate Missing Variables
 ################################################
 
-# Generate variables for whole Germany
+# Generate variables for whole Germany ########
+
+# Heath cases
 Germany <- aggregate(F100_CASES ~ YEAR + GENDER + AGE, sum, data = TOTAL)
 Germany <- cbind(STATE = "DE-DE", Germany)
-Germany$F102_CASES <- aggregate(F102_CASES ~ YEAR + GENDER + AGE, sum, data = TOTAL)[,4]
-Germany$K70_CASES <- aggregate(K70_CASES ~ YEAR + GENDER + AGE, sum, data = TOTAL)[,4]
+Germany$F102_CASES <- aggregate(F102_CASES ~ YEAR + GENDER + AGE, sum,
+                                data = TOTAL)[,4]
+Germany$K70_CASES <- aggregate(K70_CASES ~ YEAR + GENDER + AGE, sum,
+                               data = TOTAL)[,4]
+
+# Control Variables
 Germany$PD <- NA
 Germany$UTOTAL <- aggregate(UTOTAL ~ YEAR + GENDER + AGE, sum, data = TOTAL)[,4]
 Germany$UR.LF <- NA
@@ -140,20 +139,20 @@ Germany$SA <- aggregate(SA ~ YEAR + GENDER + AGE, sum, data = TOTAL)[,4]
 Germany$GDP <- aggregate(GDP ~ YEAR + GENDER + AGE, sum, data = TOTAL)[,4]
 Germany$BTAX <- aggregate(BTAX ~ YEAR + GENDER + AGE, sum, data = TOTAL)[,4]
 Germany$YUR <- NA
-Germany$EDU_TOTAL <- aggregate(EDU_TOTAL ~ YEAR + GENDER + AGE, sum, data = TOTAL)[,4]
+Germany$EDU_TOTAL <- aggregate(EDU_TOTAL ~ YEAR + GENDER + AGE, sum,
+                               data = TOTAL)[,4]
 Germany$EDU_NO <- aggregate(EDU_NO ~ YEAR + GENDER + AGE, sum, data = TOTAL)[,4]
 Germany$EDU_HS <- aggregate(EDU_HS ~ YEAR + GENDER + AGE, sum, data = TOTAL)[,4]
 Germany$EDU_RS <- aggregate(EDU_RS ~ YEAR + GENDER + AGE, sum, data = TOTAL)[,4]
 Germany$EDU_FH <- aggregate(EDU_FH ~ YEAR + GENDER + AGE, sum, data = TOTAL)[,4]
 Germany$EDU_AH <- aggregate(EDU_AH ~ YEAR + GENDER + AGE, sum, data = TOTAL)[,4]
 Germany[,5:27] <- sapply(Germany[,5:27], as.numeric)
+
+# merge with other data
 TOTAL <- rbind(TOTAL, Germany)
 rm(Germany)
 
 # GDP per capita (in tousand per capita)
-# remark: just checked with data from 2014 and seems like our calculations are slightly higher.
-#         This could be because of differing reference dates to the Dresden data.
-# http://statistik-dresden.de/archives/11841
 TOTAL$GDP_P_C <- TOTAL$GDP/TOTAL$PP 
 
 # GDP per economic active
@@ -179,8 +178,8 @@ TOTAL$K70_p1000 <- TOTAL$K70_CASES/TOTAL$PP
 for (i in 2000:2014)
 {
   assign(paste("M1", i, sep = "."),
-         filter(select(TOTAL, YEAR, STATE, AGE, GENDER, F100_p1000, GDP_P_C, UR.LF, PD),
-                AGE == "all", GENDER == "all", YEAR == i))
+         filter(select(TOTAL, YEAR, STATE, AGE, GENDER, F100_p1000, GDP_P_C,
+                       UR.LF, PD), AGE == "all", GENDER == "all", YEAR == i))
   }
 
 # list of models
@@ -242,28 +241,30 @@ mod2.K70 <- lm(K70.D ~ GDP.D + UR.LF.D -1, M2)
 # results
 # stargazer::stargazer(mod2.F100, mod2.F102, mod2.K70,
 #                     column.labels = c("F10.0", "F10.2", "K70"),
-#                     covariate.labels = c("GDP Change", "Unemployment Change", "Beer Tax Change", "(Intercept)"),
+#                     covariate.labels = c("GDP Change", "Unemployment Change",
+#                                          "Beer Tax Change", "(Intercept)"),
 #                     model.numbers  = FALSE,
-#                     dep.var.labels = c("Change in F10.0","Change in F10.2","Change in K70"),
+#                     dep.var.labels = c("Change in F10.0","Change in F10.2",
+#                                        "Change in K70"),
 #                     title = 'Regression results for Model 2 with first differenced data',
 #                     digits = 2, type = 'text', header = FALSE)
 
 # Model three ###############################################################
 
-# remark: what age group do we select here? 15-19, 20-24, aggregate both or all?
+# Select relevant data and create dummies (all ages)
 MDD <- TOTAL %>% filter(GENDER == "all", AGE == "all")
+
 MDD$dBW <- as.numeric(MDD$STATE == "DE-BW")
 MDD$dPOST <- as.numeric(MDD$YEAR >= 2010)
 MDD$dBAN <- MDD$dBW * MDD$dPOST
 
+# estimations of equation 3 for all ages with two different control groups
 mod3.16 <- lm(F100_p1000 ~ dBW + dPOST + dBW:dPOST, MDD)
 mod3.13 <- lm(F100_p1000 ~ dBW + dPOST + dBW:dPOST, 
               filter(MDD, !(STATE %in% c("DE-HB", "DE-HH", "DE-BE"))))
 
-#stargazer::stargazer(mod3.16, mod3.13, 
-#                     title = 'Model 3 Simple Diff-in-Diff',
-#                     digits = 2, type = 'text')
 
+# Select relevant data and create dummies (15-19 year olds)
 MDD.15 <- TOTAL %>% filter(GENDER == "all", AGE == "15-19y") %>% 
                     select(YEAR, STATE, AGE, GENDER, F100_p1000, GDP_P_C, YUR)
 
@@ -271,39 +272,40 @@ MDD.15$dBW <- as.numeric(MDD$STATE == "DE-BW")
 MDD.15$dPOST <- as.numeric(MDD$YEAR >= 2010)
 MDD.15$dBAN <- MDD$dBW * MDD$dPOST
 
+# estimations of equation 3 for 15-19 year olds with two different control groups
 mod3.age15.16 <- lm(F100_p1000 ~ dBW + dPOST + dBW:dPOST, MDD.15)
 mod3.age15.13 <- lm(F100_p1000 ~ dBW + dPOST + dBW:dPOST, 
               filter(MDD.15, !(STATE %in% c("DE-HB", "DE-HH", "DE-BE"))))
 
-stargazer::stargazer(mod3.age15.16, mod3.age15.13, 
-                     title = 'Model 3 Simple Diff-in-Diff for 15-19 year old',
-                     digits = 2, type = 'text')
+# Results Model 3
+# stargazer::stargazer(mod3.16, mod3.13, 
+#                     title = 'Model 3 Simple Diff-in-Diff',
+#                     digits = 2, type = 'text')
+# stargazer::stargazer(mod3.age15.16, mod3.age15.13, 
+#                     title = 'Model 3 Simple Diff-in-Diff for 15-19 year old',
+#                     digits = 2, type = 'text')
 
 # Model four ##################################################################
 
-# diff-in-diff with control variables for all ages
+# Equation 4: diff-in-diff with control variables for all ages
 mod4 <- lm(F100_p1000 ~ dBW*dPOST +  GDP_P_C + YUR, MDD)
 
-# Diff-in-diff with control variables for 15-19year olds
+# Equation 4: Diff-in-diff with control variables for 15-19year olds
 mod4.age15 <- lm(F100_p1000 ~ dBW*dPOST +  GDP_P_C + YUR, MDD.15)
 
 # non-city control group
 mod4.age15.13 <- lm(F100_p1000 ~ dBW*dPOST +  GDP_P_C + YUR,
                     filter(MDD.15, !(STATE %in% c("DE-HB", "DE-HH", "DE-BE"))))
 
-stargazer::stargazer(mod4, mod4.age15, mod4.age15.13, 
-                     title = 'Model 4 Simple Diff-in-Diff with controls',
-                     digits = 2, type = 'text')
-
-# Robustness check: different composition of control group
-# idea 1: make regression to find trend for 2000-2010 -> 
-# states with similar coefficient should be in the control group
-# idea 2: exclude city states  HB, HH, BE (mod.13)
+# Result model 4
+# stargazer::stargazer(mod4, mod4.age15, mod4.age15.13, 
+#                     title = 'Model 4 Simple Diff-in-Diff with controls',
+#                     digits = 2, type = 'text')
 
 # Model five ##################################################################
 
+# Estimation of equation 5
 # use plm package https://www.jstatsoft.org/article/view/v027i02/v27i02.pdf
-
 mod5 <- plm(F100_p1000 ~ dBAN + YUR + GDP_P_C, MDD, effect = "twoways",
             index = c("STATE", "YEAR"))
 
@@ -313,20 +315,15 @@ mod5.age15.16 <- plm(F100_p1000 ~ dBAN + YUR + GDP_P_C, MDD.15, effect = "twoway
 mod5.age15.13 <- plm(F100_p1000 ~ dBAN + YUR + GDP_P_C, 
                      filter(MDD.15, !(STATE %in% c("DE-HB", "DE-HH", "DE-BE"))),
                      effect = "twoways", index = c("STATE", "YEAR"))
-stargazer::stargazer(mod5, mod5.age15.16, mod5.age15.13,
-                     title = 'Model 5 Panel Diff-in-Diff',
-                     digits = 2, type = 'text')
+
+# Results
+# stargazer::stargazer(mod5, mod5.age15.16, mod5.age15.13,
+#                     title = 'Model 5 Panel Diff-in-Diff',
+#                     digits = 2, type = 'text')
 
 ###############################################
 # 4. Descriptive statistics
 ###############################################
-
-# Interesting cases: 
-# 1. common trend of F100 in BW and other states
-# 2. general trend of F100, F102 and K70
-# 3. trends of control variables
-# 4. Germany heat map
-#   http://stackoverflow.com/questions/34691798/heat-map-of-germany-using-spplot
 
 # Diagnoses data trends #######################################################
 
@@ -473,24 +470,32 @@ stargazer::stargazer(mod5, mod5.age15.16, mod5.age15.13,
 #  ggtitle("F10.0 diagnoses in German States 2000-2014 for 40-44 year olds")
 
 
-# Map of Germany
+# Map of Germany ##############################################################
 # Get map file
 # remark: The download doesn't work for me (the file cannot be opened after being downloaded, but if I it manually it works)
 # remark reply: have you set your WD above? O:-)
 if(class(try(readRDS("GermanyMap.rds")))=="try-error") {
-  download.file("http://biogeo.ucdavis.edu/data/gadm2.8/rds/DEU_adm1.rds", destfile = "GermanyMap.rds")
+  download.file("http://biogeo.ucdavis.edu/data/gadm2.8/rds/DEU_adm1.rds",
+                destfile = "GermanyMap.rds")
 }
 map.Germany <- readRDS("GermanyMap.rds")
 # Fix name issues
 map.Germany$HASC_1 <- sub("\\.", "-", as.character(map.Germany$HASC_1))
 map.Germany$HASC_1 <- sub("BR", "BB", as.character(map.Germany$HASC_1))
 # Choose data
-STATES.2000 <- TOTAL %>% filter(GENDER == "all", AGE == "all", STATE!="DE-DE", YEAR == 2000)
-STATES.2005 <- TOTAL %>% filter(GENDER == "all", AGE == "all", STATE!="DE-DE", YEAR == 2005)
-STATES.2006 <- TOTAL %>% filter(GENDER == "all", AGE == "all", STATE!="DE-DE", YEAR == 2006)
-STATES.2007 <- TOTAL %>% filter(GENDER == "all", AGE == "all", STATE!="DE-DE", YEAR == 2007)
-STATES.2010 <- TOTAL %>% filter(GENDER == "all", AGE == "all", STATE!="DE-DE", YEAR == 2010)
-STATES.2014 <- TOTAL %>% filter(GENDER == "all", AGE == "all", STATE!="DE-DE", YEAR == 2014)
+STATES.2000 <- TOTAL %>% 
+                filter(GENDER == "all", AGE == "all", STATE!="DE-DE", YEAR == 2000)
+STATES.2005 <- TOTAL %>% 
+                filter(GENDER == "all", AGE == "all", STATE!="DE-DE", YEAR == 2005)
+STATES.2006 <- TOTAL %>% 
+                filter(GENDER == "all", AGE == "all", STATE!="DE-DE", YEAR == 2006)
+STATES.2007 <- TOTAL %>% 
+                filter(GENDER == "all", AGE == "all", STATE!="DE-DE", YEAR == 2007)
+STATES.2010 <- TOTAL %>% 
+                filter(GENDER == "all", AGE == "all", STATE!="DE-DE", YEAR == 2010)
+STATES.2014 <- TOTAL %>% 
+                filter(GENDER == "all", AGE == "all", STATE!="DE-DE", YEAR == 2014)
+
 # Align order of states in map and data
 map.Germany.2000 <- map.Germany[match(STATES.2000$STATE, map.Germany$HASC_1),]
 map.Germany.2005 <- map.Germany[match(STATES.2005$STATE, map.Germany$HASC_1),]
@@ -498,6 +503,7 @@ map.Germany.2006 <- map.Germany[match(STATES.2006$STATE, map.Germany$HASC_1),]
 map.Germany.2007 <- map.Germany[match(STATES.2007$STATE, map.Germany$HASC_1),]
 map.Germany.2010 <- map.Germany[match(STATES.2010$STATE, map.Germany$HASC_1),]
 map.Germany.2014 <- map.Germany[match(STATES.2014$STATE, map.Germany$HASC_1),]
+
 # Choose variable to plot
 map.Germany.2000.F100_p1000 <- map.Germany.2000
 map.Germany.2000.F100_p1000$value <- STATES.2000$F100_p1000
@@ -511,6 +517,7 @@ map.Germany.2010.F100_p1000 <- map.Germany.2010
 map.Germany.2010.F100_p1000$value <- STATES.2010$F100_p1000
 map.Germany.2014.F100_p1000 <- map.Germany.2014
 map.Germany.2014.F100_p1000$value <- STATES.2014$F100_p1000
+
 # Choose plotting color pattern
 # remark: I combined two color sequences and changed the order of one of them
 colors <- c('#04152f','#052047','#08306b','#08519c','#2171b5','#4292c6', 
@@ -521,7 +528,7 @@ colors <- c('#04152f','#052047','#08306b','#08519c','#2171b5','#4292c6',
 # spplot(map.Germany.2014.F100_p1000, zcol = "value", col.regions = colors)
 
 ################################################################################
-# Counter-factual case: without ban
+# 5. Counter-factual case: without ban
 ################################################################################
 
 # Generate variables for "What if no ban had happened?"
@@ -531,17 +538,20 @@ bancomparison <- data.frame(YEAR = integer(),
                             stringsAsFactors=FALSE)
 for (i in 2011:2014) {
   assign(paste("filter.", i, sep = ""), 
-         filter(TOTAL, GENDER == "all", AGE == "15-19y", STATE == "DE-BW", YEAR == i))
+         filter(TOTAL, GENDER == "all", AGE == "15-19y", STATE == "DE-BW",
+                YEAR == i))
   assign(paste("f100.", i, ".wban", sep = ""), 
          eval(parse(text = paste("filter.", i, "$F100_CASES", sep = ""))))
   #  assign(paste("f100.", i, ".woban", sep = ""), 
   #         trunc(eval(parse(text = paste("f100.", i, ".wban + (filter.", i, "$PP * 0.06)", sep = "")))))
-  bancomparison <- rbind(bancomparison, data.frame(YEAR = i,
-                                                   WBAN = eval(parse(text = paste("filter.", i, "$F100_CASES", sep = ""))),
-                                                   WOBAN = trunc(
-                                                     eval(parse(text = paste("f100.", i, ".wban + (filter.", i,
-                                                                             "$PP * 0.06)", sep = "")))),
-                                                   stringsAsFactors=FALSE))
+  bancomparison <- rbind(bancomparison,
+                         data.frame(YEAR = i,
+                                    WBAN = eval(parse(text = paste("filter.",
+                                           i, "$F100_CASES", sep = ""))),
+                                    WOBAN = trunc(eval(parse(text = paste("f100.",
+                                            i, ".wban + (filter.", i, "$PP * 0.06)",
+                                            sep = "")))),
+                                    stringsAsFactors=FALSE))
 }
 
 # bar plot contrasting with and without ban
@@ -555,3 +565,4 @@ for (i in 2011:2014) {
 #       guides(fill=FALSE) +
 #       theme(axis.text.x  = element_text(angle=90, vjust=0.5),
 #       axis.title.y=element_text(margin=margin(10,10,0,10)))
+
