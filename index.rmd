@@ -154,18 +154,18 @@ for (i in 1:3){
 }
 ```
 
-```{r echo = FALSE}   
+```{r echo = FALSE, fig.width=8, fig.height=7}   
 F100Plot.age15
 ```
 
 Marcus and Sielder (2014) find about 7% decrease, we find about 20% decrease
 
-```{r echo = FALSE} 
-#plot_ly(bancomparison, x = ~YEAR, y = ~WBAN, type = 'bar', name = 'With Ban') %>%
-#  add_trace(y = ~WOBAN, name = 'Without Ban') %>%
-#  layout(xaxis = list(title = 'Year', titlefont = list(size = 18)), 
-#         yaxis = list(title = 'F10.0 Cases for 15 to 19 year-olds in DE-BW',
-#                      titlefont = list(size = 18)),
-#         legend = list(x = 0.8, y = 1, font = list(size = 18)),
-#         barmode = 'group')
+```{r echo = FALSE, out.width='500px', out.height='400px'}
+plot_ly(bancomparison, x = ~YEAR, y = ~WBAN, type = 'bar', name = 'With Ban') %>%
+  add_trace(y = ~WOBAN, name = 'Without Ban') %>%
+  layout(xaxis = list(title = 'Year', titlefont = list(size = 18)), 
+         yaxis = list(title = 'F10.0 Cases for 15 to 19 year-olds in DE-BW',
+                      titlefont = list(size = 18)),
+         legend = list(x = 0.8, y = 1, font = list(size = 18)),
+         barmode = 'group')
 ```
