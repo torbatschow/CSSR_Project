@@ -1,7 +1,14 @@
 ---
-title: "CSSR Assignment 3"
-author: "Alex Sacharow & Torben Klausa"
-date: "November 11, 2016"
+title: "Drink and Thrive? The economics of binge-drinking in Germany"
+subtitle: "CSSR Final Project"
+author: "Alexander Sacharow & Torben Klausa"
+header-includes:
+    - \usepackage{fancyhdr}
+    - \pagestyle{fancy}
+    - \fancyhead[LO,LE]{Drink and Thrive? The economics of binge-drinking in Germany}
+    - \fancyfoot[LO,LE]{CSSR Project}
+    - \fancyfoot[RE,RO]{Torben Klausa and Alexander Sacharow}
+date: "December 16, 2016"
 output: 
   pdf_document:
     toc: true
@@ -23,7 +30,7 @@ try(setwd("D:/Eigene Datein/Dokumente/Uni/Hertie/Materials/Collaborative Social 
 source("main.R")
 
 # Collect packages/libraries we need:
-packages <- c("fontcm", "psych")
+packages <- c("fontcm", "psych", "plotly")
 # can we add a short list so we have an overview for what we need the packages?
 # psych allows for summary statistics
 
@@ -50,6 +57,13 @@ statelist_name <- c("Baden-Württemberg", "Bayern", "Berlin", "Brandenburg",
                     "Saarland", "Sachsen", "Sachsen-Anhalt", 
                     "Schleswig-Holstein", "Thüringen")
 statelist.code.short <- substr(statelist_code, 4, 5)
+statelist_cities <- c("DE-BE", "DE-HB", "DE-HH")
+statelist_other <- c("DE-BW", "DE-BY", "DE-BB", "DE-HE", "DE-MV", "DE-NI", 
+                     "DE-NW", "DE-RP", "DE-SL", "DE-SN", "DE-ST", "DE-SH",
+                     "DE-TH")
+statelist_other_wo_treatment <- c("DE-BY", "DE-BB", "DE-HE", "DE-MV", "DE-NI",
+                                  "DE-NW", "DE-RP", "DE-SL","DE-SN", "DE-ST", 
+                                  "DE-SH", "DE-TH")
 ```
 
 <!--
@@ -59,29 +73,76 @@ statelist.code.short <- substr(statelist_code, 4, 5)
 ToDo:
 1. Include Results
     Needs editing
+        [major issues done]
+    Result of model 5 needs to be written
+        [done] First ideas 
+        edit / extend
 2. Add descritive stats and robustness test
-      Test common trend assumption
+    Test common trend assumption
+        Question: Enough discussion of common trend assumption sofar?
 4. Rewrite literature review
-5. label regression tables
+    [DONE] List of what needs to be included (as comment)
+    Rewrite the text and include:
+        @Green.2015
+        @Wilkinson.2016
+        Literature recited by Marcus and Sielder
+5. Layout figures
+     Maps
+        Position of maps (could be different on Win and Linux)
+     F10.0/F10.2/K70 line chart: 
+        Correct legend
+        resize
+     F10.0 age distribution
+        resize
+        color
+     F10.0 time series 15.19y: 
+        Change colors
+        legend name 
+     bar chart hypothetical F10.0 cases: 
+        Label
+        colors 
 6. Bibliography before the appendix
-    Instruction: http://stackoverflow.com/questions/16427637/pandoc-insert-appendix-after-bibliography
-    
+    [DONE] Appendix as a separate file
+    Is appendiy complete?
+7. Website
+    Transform presentation into website
+8. Conclusion
+    Write it
 -->
 
 # Introduction
 
-Alcohol has a history of causing both joy and pain. In our research we want to focus on the latter: Alcohol, if consumend in high amounts and/or regularly over a longer period of time, does severe damage to individuals' health [see e.g. @WHO.2014; @Miller.2007]. It is therefore a policy concern not only to identify reasons and motivation for excessive alcohol consumption but also to develop measures to tackle this problem.
+Alcohol has a history of causing both joy and pain. In our research we want to focus on the latter: Alcohol, if consumend in high amounts and/or regularly over a longer period of time, does severe damage to individuals' health [see e.g. @WHO.2014; @Miller.2007]. It is therefore a policy concern not only to identify reasons and motivation for excessive alcohol consumption but also to develop measures to reduce the public health costs associated to this problem.
 
-It is the aim of this paper is to identify factors interacting with alcohol related health problems and to assess alcohol policy interventions against it. Using the example of all German federal states and time series data for different age groups from 2000 to 2014, we will [1] analyse the possible connection between medical diagnoses of alcohol misuse and possibly explanatory socioeconomic factors like gender, age, unemployment rate, education level, and regional economic performance. For this, we will take both short-term and long-term medical consequences of alcohol misuse into account by examining hospital health records on acute alcohol intoxication as well as on alcoholic liver disease. Besides the socio-economic factors mentioned above, we will [2] test the effect of recent policy measures on the German state level on alcohol consumption, namely the ban on alcohol night sales introduced in 2010 in the state of Baden-Wuerttemberg.
+It is the aim of this paper is to identify factors interacting with alcohol related health problems and to assess alcohol policy interventions against it. Using the example of all German federal states and time series data for different age groups from 2000 to 2014, we will [1] analyse the possible connection between medical diagnoses of alcohol misuse and possibly explanatory socioeconomic factors like regional economic performance and unemployment rates. For this, we will take both short-term and long-term medical consequences of alcohol misuse into account by examining hospital health records on acute alcohol intoxication as well as on alcoholic liver disease. Besides the socio-economic factors mentioned above, we will [2] test the effect of recent policy measures on the German state level on alcohol consumption, namely the ban on alcohol night sales introduced in 2010 in the state of Baden-Wuerttemberg.
+
+<!--
+Here a short paragraph on our findings. I typed a first draft.
+-->
+
+We find no conclusive relationship between alcohol-related hospitalizations and socio-economic indicators. However, the reason for this is not necessarily that the relationship does not exist. It is also possible that the small number of observations and the limited availability of relevant indicators prevents our data from generating sufficient insights into the matter. 
+Regarding the second topic of investigation, we find that the night sales ban reduces the number of excessive alcohol drinking diagnoses among German youth by about 20%. This finding confirms a prior study by @Marcus.2015 who found a decrease of about 7%. While their study used more detailed data, it focused only on the short-term effects until 2011. Our study in contrast looked at a longer time-horizon, but used more aggregated data.
 
 # Related Literature
 
 <!--
 NEEDS WORK
+include more related studies
+Structure:
+Literature relating to the first question
+Literature relating to the second question
 -->
+The focus on socio-economic explanatory factors like economic performance for the alcohol abuse as such is based upon research done by e.g. @Popovici.2013 and @Ettner.1997. Both analysed the effect that a change in employment status has on alcohol consumption of individuals. Focusing on the United States, the two studies found inconsistent results: While one sees "a positive and significant effect of unemployment on drinking behaviors and the findings are robust to numerous sensitivity tests" [@Popovici.2013] the other argues that "non-employment significantly reduces both alcohol consumption and dependence symptoms, probably due to an income effect." [@Ettner.1997] For the German case, Henkel has been tackling the challenge [@Henkel.2016; @Henkel.2015; @Henkel.2013; @Henkel.2011; @Henkel.2000] BLABLA.
 
-Our research proposal is inspired by the work of @Marcus.2015 who analysed *"The Effect of a Ban on Late-Night Off-premise Alcohol Sales on Alcohol-Related Hospital Stays in Germany."* They find that the introduction of the alcohol night sales ban reduces alcohol-related hospitalizations among adolescents and young adults by about seven percent. In our analysis, we will not only try to replicate their work with publicly available data sets. We are also going to build upon it -- by differenciate between short-term and longer-term effects. The focus on socio-economic explanatory factors like economic performance for the alcohol abuse as such is based upon research done by e.g. @Popovici.2013 and @Ettner.1997. Focusing on the United States, the two studies found inconsistent results: While one sees "a positive and significant effect of unemployment on drinking behaviors and the findings are robust to numerous sensitivity tests" [@Popovici.2013] the other argues that "non-employment significantly reduces both alcohol consumption and dependence symptoms, probably due to an income effect." [@Ettner.1997] For the German case, @Henkel.2000 finds a negative correlation between economic situation and alcohol and nicotine consumption.
+@Henkel.2015 finds a negative correlation between economic situation and alcohol and nicotine consumption.
 
+Our research proposal is inspired by the work of @Marcus.2015 who analysed *"The Effect of a Ban on Late-Night Off-premise Alcohol Sales on Alcohol-Related Hospital Stays in Germany."* They find that the introduction of the alcohol night sales ban reduces alcohol-related hospitalizations among adolescents and young adults by about seven percent. In our analysis, we will not only try to replicate their work with publicly available data sets. We are also going to build upon it -- by differenciating between short-term and longer-term effects. 
+<!--
+Include:
+@Green.2015
+@Wilkinson.2016
+Literature recited by Marcus and Sielder
+-->
 
 # Data
 
@@ -103,33 +164,32 @@ Our research health data origins from the German [hospital diagnosis statistics]
 The data is gathered via the online-interface of the [GBE](http://www.gbe-bund.de/). Unfortunately, the data provider neither provides an API nor a web-scrappable interface. Therefore we download the base tables manually by searching for the respective ICD-10 code, using the malleable tables to gather as much information in a single table as possible and then export them.
 
 To identify alcohol-related health problems we use the diagnose category *F10* (Mental and behavioural disorders due to use of alcohol), more specificly: its subdivision *F10.0* (Acute intoxication) and *F10.2* (Dependence syndrome), and *K70* (Alcoholic liver disease). The diagnoses category *F10.0* essentially captures short term effects of excessive drinking, and can be used as an indicator for binge drinking.[^ICD] The categories *F10.2* and *K70* capture long-term effects of drinking as these diagnoses are consequences of regular drinking.
-The used data has been downloaded on 01 November 2016 and, due to the data platform's table size limitations, consists of three csv files, one for each diagnose category, containing
-the German states, the former area of Western Germany as well as Eastern Germany as columns and
-years (2000-2014), gender (male/female/unknown), and age groups (less than 1 year; 1 to less than 100 years in 5-year groups; older than 100 years).
 
-The advantages of this data is that they reflect a complete survey of all civilian hospitals in Germany for the time-frame of our investigation. Furthermore, the data is not self-reported by patients in interviews but instead consists of the professional diagnoses by a third party, i.e. doctors, which eliminates any problems of possible self-reporting biases. For the case study of Baden-Wuerttemberg's night sale prohibition we do also benefit from the availability of a longer time series as compared to the prior work on the issue by @Marcus.2015. Finally, the state-year aggregation level does allows us to supplement to our analysis a wide variety of other freely available data, e.g. the level of alcohol sales, unemployment rates etc..
+The used data has been downloaded on 01 November 2016 and, due to the data platform's table size limitations, consists of three csv files, one for each diagnose category, containing the German states, the former area of Western Germany as well as Eastern Germany as columns and years (2000-2014), gender (male/female/unknown), and age groups (less than 1 year; 1 to less than 100 years in 5-year groups; older than 100 years).
+
+The advantages of this data is that they reflect a complete survey of all civilian hospitals in Germany for the time-frame of our investigation. Furthermore, the data is not self-reported by patients in interviews but instead consists of the professional diagnoses by a third party, i.e. doctors, which eliminates any problems of possible self-reporting biases. For the case study of Baden-Wuerttemberg's night sale prohibition we do also benefit from the availability of a longer time series as compared to the prior work on the issue by @Marcus.2015. Finally, the state-year aggregation level does allows us to supplement to our analysis a wide variety of other freely available data, e.g. unemployment rates etc..
 
 However, there are several serious limitations to the data we are using. First of all, the data set can only be exploited in limits with more sophisticated methods like panel data analysis. We only have access to data which is reported annually and on the state level.[^FDZ] Hence, for a panel data analysis our scope is limited to 14 years and 16 states, which makes a total of 224 data points for each combination of diagnoses, age group and gender. We still think it is meaningfull to work with the data at hand: On the one hand we can employ simpler but still insightful methods like multiple linear regression. On the other hand, our approach can easily be extended to more fine-grained data if such data becomes available to us. A second shortcoming is the lack of further information on the patients beyond their age and gender, e.g. socio-economic characteristics. Factors like available income and medical history will matter for alcohol-related health problems, but for good reasons (data protection) they are not recorded in the respective statistics.
 
-As already mentioned, our analysis will be supplemented by data from other sources. We are using indicators for the state level. They include the respecitve population, population density, unemployment rates of different age groups, the state GDP and beer sales by state. We are aware of the fact that other alcoholic beverages besides beer probably play a role in the cases under scrutiny. However, with these numbers not available, the beer consumption serves as a proxy for general alcohol consumption in the state. We are collecting the supplementary data from different statistics provided by *Destatis*.
+As already mentioned, our analysis will be supplemented by data from other sources. We are using state level indicators. They include the respective population, population density, unemployment rates of different age groups, the state GDP, and beer sales by state. We are aware of the fact that other alcoholic beverages besides beer probably play a role in the cases under scrutiny. However, with these numbers not available, the beer consumption serves as a proxy for general alcohol consumption in the state. We are collecting the supplementary data from different statistics provided by *Destatis*.
 
 # Empirical Strategy
 
-We want to make a two stage analysis of short and long-term alcohol-related hospitalizations (ARH)[^ARH]. We will start with a multiple regression for a better understanding of factors correlated to high rates of hospitalizaton for alcohol-related reasons. This analysis shall show how socio-economic characteristics of states are correlated to the number of ARH. To keep it simple, the multiple regression model only includes observations of one year:
+We want to make a two stage analysis of short and long-term alcohol-related hospitalizations (ARH)[^ARH]. We will start with a multiple regression for a better understanding of factors correlated to high rates of hospitalizaton for alcohol-related reasons. This analysis shall show how socio-economic characteristics of states are correlated to the number of ARH. To keep it simple, the first multiple regression model only includes observations of one year:
 
 \begin{equation}
-    ARH_s = \alpha_0 + \alpha_1 \cdot GDP_s + \alpha_2 \cdot UR_s + \alpha_3 \cdot B_s + \alpha_4 \cdot PD_s + \epsilon_s
+    ARH_s = \alpha_0 + \alpha_1 \cdot GDP_s + \alpha_2 \cdot UR_s + \alpha_3 \cdot PD_s + \epsilon_s
 \end{equation}
 
-where $GDP$ stands for the GDP level, $UR$ for the unemployment rate, $B$ for the beer consumption and $PD$ for the population density. All variables are recorded on the state level as indicated by the indices. The regression will be conducted for the aggregated number for all age groups and than only for young people (15-25) which are often of particular interest for policy makers. We will run this first regression separately for the years 2000, 2007, and 2014.
+where $GDP$ stands for the GDP level, $UR$ for the unemployment rate  and $PD$ for the population density. All variables are recorded on the state level as indicated by the indices. The regression will be conducted for the aggregated number for all age groups. We will run this first regression separately for the years 2000, 2007, and 2014.[^ROB]
 
 Based on the idea that individuals adapt to their circumstances and are more reactive to changes than to actual levels we will then analysis ARH difference over time:
 
 \begin{equation}
-   \Delta ARH_{s,t} = \beta_1 \cdot \Delta GDP_{s, t} + \beta_2 \cdot UR_{s, t} + \beta_3 \cdot \Delta B_{s, t} + \alpha_4 \cdot \Delta PD_s + \epsilon_{s,t}
+   \Delta ARH_{s,t} = \beta_1 \cdot \Delta GDP_{s, t} + \beta_2 \cdot UR_{s, t} + \epsilon_{s,t}
 \end{equation}
 
-In contrast to the multiple regression on levels, the difference approach highlights how *changes* in hospitalizations are correlated to *changes* in the socio-economic factors used as independend variables.
+In contrast to the multiple regression on levels, the difference approach highlights how *changes* in hospitalizations are correlated to *changes* in the socio-economic factors used as independend variables. We eliminated the population density because its changes are not fine-grained recorded and the Zensus 2011 led to a jump due to measurement adjustments in the data series. To check for further robustness of the results, we are comparing short-term ARH (F10.0), which should be affected by short-term changes and long-term ARH (K70/F10.2), which should not be affected.
 
 In the second step of our analysis, we are looking at the effect of the night sales ban on alcohol in Baden-Wuerttemberg. To measure the effect of the ban we use the difference-in-difference (DD) approach. As the ban was only introduced in Baden-Wuerttemberg, this state will be the treatment group. All other states are in the control group. This distinction can be justified by the fact that most alcohol regulation is done on the federal level with the exception of sales hour regulation and campaigns.[^TCG] The ban was introduced in 2010, which is captured by the treatment dummy. We further assume there are no dynamic effects, which is reasonable as patients are registered when their treatment begins:[^REG] 
 
@@ -137,7 +197,7 @@ In the second step of our analysis, we are looking at the effect of the night sa
    ARH_{s,t} = \gamma_0 + \gamma_1 \cdot dBW_{s} + \gamma_2 \cdot dPOST_t + \gamma_4 \cdot dBAN_{s,t} + \epsilon_{s,t}
 \end{equation}
 
-where $dBW$ is a dummy variable to indicate the treatmeant group (here the state of Baden-Wuerttemberg), $dPOST$ a time dummy indicating the post-treatment period and $dBAN$ a dummy for the night-sale-prohibition ($= 1$ for Baden-Wuerttemberg from 2010 on). Since were are re-engineering @Marcus.2015 here, we will limit the DD application to ARH by young people (15-25). To check for further robustness of the results, we are comparing short-term ARH (F10.0), which should show an effect according to @Marcus.2015, and long-term ARH (K70/F10.2), which should not be affected in the short term by the treatment.
+where $dBW$ is a dummy variable to indicate the treatmeant group (here the state of Baden-Wuerttemberg), $dPOST$ a time dummy indicating the post-treatment period and $dBAN$ a dummy for the night-sale-prohibition ($= 1$ for Baden-Wuerttemberg from 2010 on). Since were are re-engineering @Marcus.2015 here, we will limit the DD application to ARH by young people (15-25). To check for further robustness of the results, we use different control group compositions: All states but Baden-Wuerttemberg and all territorial states, exclulding the city states Berlin, Bremen and Hamburg.[^CITY] 
 
 As the DD approach crucially depends on the common trend assumption, it is advisable to include control variables to capture possible trends affecting treatment and control group differently. We control for youth unemployment ($YUR$)  and $GDP$ as a proxy variable for the economic situation.
 
@@ -145,7 +205,7 @@ As the DD approach crucially depends on the common trend assumption, it is advis
   ARH_{s,t} = \delta_0 + \delta_1 \cdot dBW_{s} + \delta_2 \cdot dPOST_t + \delta_3 \cdot dBAN_{s,t} + \delta_4 \cdot YUR_{s,t} + \delta_4 \cdot GDP_{s,t} + \epsilon_{s,t}
 \end{equation}
 
-Finally, we are refining our DD approach further by turning it into a panel and splitting up the control group. This is the final version of the model, but we expect it to generate less insightful results as we (with all states seperately) have comparably few data points (due to comparably little money to invest in data...).
+Finally, we are refining our DD approach further by turning it into a panel and allowing for heterogenity in the control group. This is the final version of the model, but we expect it to generate less insightful results as we (with all states seperately) have comparably few data points (due to comparably little money to invest in data...).
 
 \begin{equation}
   ARH_{s,t} = \theta_0 + \theta_1 \cdot dBAN_{s,t} + \theta_2 \cdot YUR_{s,t} + \theta_3 \cdot GDP_{s,t} + c_s + z_t + \epsilon_{s,t}
@@ -155,48 +215,53 @@ where $c_s$ now is capturing unobservable and time-invariant heterogeneity of st
 
 # Data Overview
 
-Looking at the dependend variables, especially the short-term alcohol related hospitalizations (ST-ARH) show a clear upward trend over time. The numbers of acute intoxication per 1000 people only moderately increase in city states like Berlin (BE), Bremen (HB), and Hamburg (HH). Schleswig-Holstein and other states, on the contrary, double their rates in the time span from 2000 to 2014.
+Looking at the dependend variables, especially the short-term alcohol related hospitalizations (ARH-ST) show a clear upward trend over time. The numbers of acute intoxication per 1000 people only moderately increase in city states like Berlin (BE), Bremen (HB), and Hamburg (HH). Schleswig-Holstein and other states, on the contrary, double their rates in the time span from 2000 to 2014.
 
 The development in German states from the beginning of the present dataset to the end (2000 - 2014) shows that apparently only the big city states have been able to retain their relatively low level of short-term ARH. 
 
-```{r echo = FALSE} 
+```{r echo = FALSE, out.width=c('280px', '280px')} 
 spplot(map.Germany.2000.F100_p1000, 
        zcol = "value", 
        col.regions = colors,
-       main=list(label="F10.0 diagnoses per 1000 PP\n year 2000, all age groups"),
+       main=list(label="2000: F10.0 diagnoses\nper 1000 pp all age groups"),
        at = seq(0, 2.2, by = 0.1))
 spplot(map.Germany.2014.F100_p1000, 
        zcol = "value", 
        col.regions = colors,
-       main=list(label="F10.0 diagnoses per 1000 PP\n year 2014, all age groups"),
+       main=list(label="2014: F10.0 diagnoses\nper 1000 pp all age groups"),
        at = seq(0, 2.2, by = 0.1),
        colorkey=FALSE)
 ```
 
-```{r echo = FALSE} 
-# data frame for plot
-#DS0 <- TOTAL %>% filter(GENDER == "all", AGE=="all") %>% 
-#  select(STATE, YEAR, F100_p1000, F102_p1000, K70_p1000)
-
-#font_import("cmr10")
-#ggplot(data=DS0, aes(x = YEAR, y = F100_p1000, group = STATE, colour = STATE, label = STATE)) +
-#  scale_x_continuous(breaks = c(2000, 2005, 2010, 2014), minor_breaks = c(2000:2014)) +
-#  geom_line() +                              # line plot
-#  theme_bw() +                               # bw background
-#  xlab("Years") +                            
-#  ylab("F10.0 diagnoses \nper 1000 people") +
-#  ggtitle("F10.0 diagnoses in German States 2000-2014") +
-#  scale_color_discrete(name  = "State", breaks = statelist_code, labels = statelist.code.short) +
-#  theme(legend.position = "bottom", 
-#        legend.key = element_rect(size = 5, fill = 'white', colour = 'white'),
-#        legend.key.size = unit(2.0, 'lines'),
-#        axis.title.y=element_text(margin=margin(10,10,0,10)))
-  #annotate("text", x = 0, y = 0.1, label = "Label", parse = TRUE, family = "cmr10")
-```
-
 The long-term ARH values also slightly increase, but this increase is a rather moderate one. This is a reasonable finding, as already the description "long-term" suggests that any change is very unlikely to happen in a short period of time like the one captchured by our sample.
 
-```{r echo = FALSE} 
+```{r echo = FALSE, out.width=c('400px')} 
+# TODO: Legend label are not correct!
+
+# data frame for plot
+DS0 <- TOTAL %>% filter(GENDER == "all", AGE=="all") %>% 
+  select(STATE, YEAR, F100_p1000, F102_p1000, K70_p1000)
+
+# DS0$GROUP <- "Non-City States"
+# DS0$GROUP[DS0$STATE == "DE-BW"] <- "Treatment"
+# DS0$GROUP[DS0$STATE == "DE-BE" | DS0$STATE == "DE-HB" | DS0$STATE == "DE-HH"] <- "City"
+
+# font_import("cmr10")
+ggplot(data=filter(DS0, STATE == "DE-DE"), aes(x = YEAR)) +
+  scale_x_continuous(breaks = c(2000, 2005, 2010, 2014), minor_breaks = c(2000:2014)) +
+  geom_line(aes(y = F100_p1000, colour = "red")) +
+  geom_line(aes(y = K70_p1000, colour = "black")) +                              # line plot
+  geom_line(aes(y = F102_p1000, colour = "blue")) +
+  theme_bw() +                               # bw background
+  xlab("Years") +                            
+  ylab("diagnoses \nper 1000 people") +
+  ggtitle("F10.0, F10.2 and K70 diagnoses in Germany 2000-2014") +
+# scale_color_discrete(name  = "State", breaks = statelist_code, labels = statelist.code.short) +
+  theme(legend.key = element_rect(size = 5, fill = 'white', colour = 'white'),
+        legend.key.size = unit(2.0, 'lines'),
+        axis.title.y=element_text(margin=margin(10,10,0,10)))
+#  annotate("text", x = 0, y = 0.1, label = "Label", parse = TRUE, family = "cmr10")
+
 #ggplot(data=DS0, aes(x = YEAR, y = K70_p1000, group = STATE, colour = STATE)) +
 #  scale_x_continuous(breaks = c(2000, 2005, 2010, 2014), minor_breaks = c(2000:2014)) +
 #  geom_line() +                              # line plot
@@ -233,7 +298,8 @@ In Germany, the two age-thresholds for buying alcoholic beverages are 16 years (
 ```{r echo = FALSE} 
 # Bar diagram: F10.0 cases per 1000 per age group in DE-DE
 ggplot(data=PL1, aes(x=AGE, y=F100_p1000, fill = AGE)) +
-  geom_bar(stat="identity") +
+  geom_bar(stat="identity", fill="blue") +
+  theme_bw() +
   xlab("Age Group") +
   ylab("F10.0 cases per 1000 people") +
   ggtitle("F10.0 cases in Germany \n per 1000 per age group") +
@@ -242,37 +308,39 @@ ggplot(data=PL1, aes(x=AGE, y=F100_p1000, fill = AGE)) +
         axis.title.y=element_text(margin=margin(10,10,0,10)))
 ```
 
-An alarming development is illustrated by the high increase in 15-19-year-olds admitted to hospitals with acute alcohol intoxication. From 2000 to 2011, Bavaria more than tripled its quota in this regard.
+An alarming development is illustrated by the high increase in 15-19-year-olds admitted to hospitals with acute alcohol intoxication. From 2000 to 2011, Bavaria more than tripled its quota in this regard. The vertical line is indicating the year of the night sale introduction in Baden-Wuerttemberg.
 
 ```{r echo = FALSE} 
 # data frame for plot
 DS2 <- TOTAL %>% filter(GENDER == "all", AGE=="15-19y", STATE!="DE-DE") %>% 
    select(STATE, YEAR, F100_p1000, F102_p1000, K70_p1000)
 
+DS2$GROUP <- "Non-City States"
+DS2$GROUP[DS2$STATE == "DE-BW"] <- "Treatment"
+DS2$GROUP[DS2$STATE == "DE-BE" | DS2$STATE == "DE-HB" | DS2$STATE == "DE-HH"] <- "City"
+
 # F10.0 cases per 1000 per age group
-ggplot(data=DS2, aes(x = YEAR, y = F100_p1000, group = STATE, colour = STATE)) +
+ggplot(data=DS2, aes(x = YEAR, y = F100_p1000, group = STATE, colour = GROUP)) +
   scale_x_continuous(breaks = c(2000, 2005, 2010, 2014), minor_breaks = c(2000:2014)) +
   geom_line() +                              # line plot
   theme_bw() +                               # bw background
   xlab("Years") +                            
   ylab("F10.0 diagnoses per 1000 inhabliants \nfor 15-19-year-olds") +
   ggtitle("F10.0 diagnoses in German States 2000-2014 \nfor 15-19-year-olds") +
-  scale_color_discrete(name  = "State", breaks = statelist_code, labels = statelist.code.short) +
+#  scale_color_discrete(name  = "State", breaks = statelist_code, labels = statelist.code.short) +
+  geom_vline(xintercept = 2010) +
   theme(legend.position = "bottom", 
         legend.key = element_rect(size = 5, fill = 'white', colour = 'white'),
         legend.key.size = unit(2.0, 'lines'),
         axis.title.y=element_text(margin=margin(10,10,0,10)))
-
 ```
 
-
-
-# First Results
-The first model shown in *Table 1* is simple and its results are indicative, at most. It does reveal to which state charateristics short-term alcohol related hospitalizations (ST-ARH) are correlated. We find that ST-ARH are higher in states with a lower GDP. This captures the basic intuition that binge dringing is more common in regions that are economically less well-off. But this view is not confirmed by our second indicator for economic well-being: the unemployment rate. To the contrary, states with higher unemployment rates have less cases of binge drinking. Finally, we find correlation between beer consumption (approximated by the beer tax revenue) and ST-ARH. These results are robust over all years of our investgation. But this is not surprising as the variables we are considering are not strongly fluctuating during the period under investigation. Most of them follow more or less the same trend. As the contradicting interpretation already hints at, we are most likey not seeing what is happing below the aggregated surface.
+# Results
+The first model shown in *Table 1* is simple and its results are indicative, at most. It does reveal to which state charateristics short-term alcohol related hospitalizations (ARH-ST) are correlated.  We find that ARH-ST are higher in states with a lower GDP. This captures the basic intuition that binge dringing is more common in regions that are economically less well-off. But this view is not confirmed by our second indicator for economic well-being: the unemployment rate. To the contrary, states with higher unemployment rates have less cases of binge drinking. These results are robust over all years of our investgation. But this is not surprising as the variables we are considering are not strongly fluctuating during the period under investigation. Most of them follow more or less the same trend. As the contradicting interpretation already hints at, we are most likey not seeing what is happing below the aggregated surface.
 
 ```{r Model1, results = "asis", echo = FALSE}
 
-mod1.labels <- c("GDP per capita", "Unemployment rate", "Beer tax", "Population density", "(Intercept)")
+mod1.labels <- c("GDP per capita", "Unemployment rate", "Population density", "(Intercept)")
 stargazer::stargazer(mod1.2000, mod1.2007, mod1.2014,
                      covariate.labels = mod1.labels,
                      column.labels = c("2000", "2007", "2014"),
@@ -297,52 +365,94 @@ stargazer::stargazer(mod2.F100, mod2.F102, mod2.K70,
 
 The difference show a correlation between GDP growth and short-term ARH. A superficial interpretation could be that individuals in years of strong growth tend to party more. But again, this should be seen with care. For short-term ARH the other variables are not significant.
 The effects of changes on long-term ARH are unsurprisingly inconclusive. In our case each coefficient is directed exactly in the opposite direction of our two long-term ARH indicators. But a clear result would again have been implausible, as long-term ARH result from excessive drinking behaviour over years. Short-term macro developments should not have any impact on this.
-The next step in refining our model (*Model 3*) takes us to analyzing a policy measure, namely the introductionof a ban on night sales of alcohol in the state of Baden-Wurttemberg. The results are shown in *Table 3*. While we are introducing a dummy for the state in consideration, one for the post-treatment period, and the interaction term of both, the only significant variable is the post-treatment dummy. Even more counterintuetively, the post-treatment dummy has is *positively* correlated with short-term ARHs. This hints to the fact that we might whitness a common trend over time, increasing short-term ARHs, that is similar for all states and that is currently captured by the time dummy. That would explain why the time dummy (which essentially splits the whole set of observations into two consecutive phases) is highly significant but neither the state dummy nor the interaction term are of any significance.
+
+The next step in refining our model (*Model 3*) takes us to analyzing a policy measure, namely the introductionof a ban on night sales of alcohol in the state of Baden-Wurttemberg. Contrary to the prior analysis, we now look at the age group of 15 to 19 year olds. The results are shown in *Table 3*. While we are introducing a dummy for the state in consideration, one for the post-treatment period, and the interaction term of both, the only significant variable is the post-treatment dummy. Even more counterintuitively, the post-treatment dummy has is *positively* correlated with short-term ARHs. This hints to the fact that we might whitness a common trend over time, increasing short-term ARHs, that is similar for all states and that is currently captured by the time dummy. That would explain why the time dummy (which essentially splits the whole set of observations into two consecutive phases) is highly significant but neither the state dummy nor the interaction term are of any significance.
 
 ```{r Model3, results = "asis", echo = FALSE} 
-stargazer::stargazer(mod3.16, mod3.13, 
-                     column.labels = c("All States", "All but City States"),
-                     covariate.labels = c("DE-BW dummy", "Post-treatment dummy", "Interaction", "(Intercept)"),
-                     model.numbers  = FALSE,
-                     dep.var.labels = c("F10.0 cases per 1000 PP"),                    
-                     title = 'Regression results for Model 3, simple diff-in-diff',
-                     digits = 2, type = 'latex', header = FALSE)
-
-```
-
-In case such a common trend is an economic on, we can capture it and take it out of the diff-in-diff model by including two more control variables that not only allow for development over time but which also capture varying developments among states. *Model 3* therefore includes state GDP per capita and the youth employment rate on state level (*Table 3*).
-
-```{r Model4, results = "asis", echo = FALSE} 
-stargazer::stargazer(mod4, 
-                     column.labels = c("All States"),
-                     covariate.labels = c("DE-BW dummy", "Post-sales ban dummy", 
-                                          "GDP per capita", "Youth uneployment rate", 
+stargazer::stargazer(mod3.age15.16, mod3.age15.13, mod4.age15, mod4.age15.13,
+                     column.labels = c("(3) All States", "(3) Excl. City state",
+                                       "(4) All States", "(5) Excl. City state"),
+                     covariate.labels = c("BW night sale ban", "Post-sales ban dummy", 
+                                          "GDP per capita", "Youth unemployment", 
                                           "Interaction dummy", "(Intercept)"),
                      model.numbers  = FALSE,
-                     dep.var.labels = c("F10.0 cases per 1000 PP"),                           
-                     title = 'Regression results for Model 3, simple diff-in-diff with controls',
-                     digits = 2, type = 'latex', header = FALSE)
+                     dep.var.labels = c("F10.0 cases per 1000 PP"),                    
+                     title = 'Model 3 and 4: simple differences-in-differences without and with controls',
+                     digits = 2, type = 'latex', header = FALSE,
+                     omit.stat = c("f"))
+
 ```
 
-The results do not have any effect on the significance of treatment-related dummy variables. Also, the "wrong" direction of the post-treatment dummy's effect stays. However, the two newly introduced control variables are not only highly significant. In the case of GDP per capita, the effect at first sight is also pointing into a plausible direction: Increasing GDP per capita correlates with decreasing short-term ARHs. The reasonging behind this might be that in times of economic prosperity, alcohol as remedy for despair is not needed. But the youth unemployment rate points into the opposite direction, with increasing youth unemployment rates being correlated with decreasing ARHs. An explanation for this effect might be that for young people unemployment comes with more severe financial constraints than it comes for older members of the workforce, therefore quicker closing the tap for younger people. 
+In case such a common trend is an economic on, we can capture it and take it out of the diff-in-diff model by including two more control variables that not only allow for development over time but which also capture varying developments among states. *Model 4* therefore includes state GDP per capita and the youth employment rate on state level (*Table 3*).
+
+```{r Model4, results = "asis", echo = FALSE} 
+# stargazer::stargazer(mod4.age15, mod4.age15.13,  
+#                     column.labels = c("All States", "Excl. City state"),
+#                     covariate.labels = c("DE-BW dummy", "Post-sales ban dummy", 
+#                                          "GDP per capita", "Youth unemployment rate", 
+#                                          "Interaction dummy", "(Intercept)"),
+#                     model.numbers  = FALSE,
+#                     dep.var.labels = c("F10.0 cases per 1000 PP"),                           
+#                     title = 'Model 4: simple differences-in-differences with controls',
+#                     digits = 2, type = 'latex', header = FALSE)
+```
+
+The results do not have any effect on the significance of treatment-related dummy variables. Also, the "wrong" direction of the post-treatment dummy's effect stays. However, the two newly introduced control variables are not only highly significant. In the case of GDP per capita, the effect at first sight is also pointing into a plausible direction: Increasing GDP per capita correlates with decreasing short-term ARHs. The reasoning behind this might be that in times of economic prosperity, alcohol as remedy for despair is not needed. But the youth unemployment rate points into the opposite direction, with increasing youth unemployment rates being correlated with decreasing ARHs. An explanation for this effect might be that for young people unemployment comes with more severe financial constraints than it comes for older members of the workforce, therefore quicker closing the tap for younger people. 
 
 But these explanations are tentatively, at best. Therefore, it is advisable to take the final step in refining the model by introducing a panel data approach which best fits the fact that we are analysing 15 years of the very same sample of German states.
 
 ```{r Model5, results = "asis", echo = FALSE} 
 
-stargazer::stargazer(mod5, 
-                     column.labels = c("All States"),
-                     covariate.labels = c("DE-BW ban dummy", "Youth uneployment rate", "GDP per capita"),
+stargazer::stargazer(mod5, mod5.age15.16, mod5.age15.13,
+                     column.labels = c("All age/states", "15-19y all states", "15-19y + non-city state"),
+                     covariate.labels = c("BW night sale ban", "Youth unemployment rate", "GDP per capita"),
                      model.numbers  = FALSE,
                      dep.var.labels = c("F10.0 cases per 1000 PP"),                           
-                     title = 'Regression results for Model 5, panel diff-in-diff',
+                     title = 'Model 5: multi-period panel differences-in-differences',
                      digits = 2, type = 'latex', header = FALSE)
 ```
 
+<!--
+Result of the final model
+-->
+The final regression indicate a negative impact of the ban on ARH related short-term hospitalizations. The estimated relation is a decrease of 0.06 hospitalizations per 1000 inhabilitants, which makes roughly 600 cases less per year based on the population of Baden-Wuerttemberg. This would imply a decrease of 20%, which is more than @Marcus.2015 found (7%). To illustrate the result, we calculated the hypothetical number of hospitalizations without the ban:
+
+```{r echo = FALSE} 
+# Bar diagram: With and without ban
+ggplot(data=melt(bancomparison, id.vars = "YEAR"), 
+       aes(x = YEAR, y = value, fill = variable)) +
+       geom_bar(stat = "identity", position=position_dodge()) +
+       theme_bw() +
+       xlab("Year") +
+       ylab("F10.0 diagnoses among 15-19 year olds in BW \n per 1000") +
+       ggtitle("F10.0 cases with and without ban in BW")
+
+#plot_ly(bancomparison, x = ~YEAR, y = ~WBAN, type = 'bar', name = 'With Ban') %>%
+#  add_trace(y = ~WOBAN, name = 'Without Ban') %>%
+#  layout(xaxis = list(title = 'Year', titlefont = list(size = 18)), 
+#         yaxis = list(title = 'F10.0 Cases for 15 to 19 year-olds in DE-BW',
+#                      titlefont = list(size = 18)),
+#         legend = list(x = 0.8, y = 1, font = list(size = 18)),
+#         barmode = 'group')
+```
+
+But again the result should be treated with care. The calculations are based on 195 observations, which are due to reduced control group and the exact estimate is varying with the different control group compositions. 
+
+# Conclusion
+
+Overall, confirm the result by @Marcus.2015.
+
+Further improve the research by getting disaggregated data sets. @Marcus.2015 still lacks a relative short observation horizon and more thorough investigation of the mid-term effects would bring an added value.
+
+Policy implications?
+
+
+# References
+
 [^ICD]: In contrast to @Marcus.2015 and @Wicki.2011 we do not include T51 (Intoxination due to alcohol) as its covers the consumption of pure ethanol and its number are relatively small. 
-[^FDZ]: In principle there is more fine-grained data available, even down to the individual level. However, the access to the data requires using the paid services by [forschungsdatenzentrum.de](http://www.forschungsdatenzentrum.de/) which is out of our students' budget.
+[^FDZ]: In principle, there is more fine-grained data available, even down to the individual level. However, the access to the data requires using the paid services by [forschungsdatenzentrum.de](http://www.forschungsdatenzentrum.de/) which is out of our students' budget.
 [^ARH]: ARH is normalized by the state population and denoted in hospitalizations per 100,000 inhabitants.
 [^TCG]: The night-sale ban in Baden-Wuerttemberg has been the most prominent alcohol policy in 2010. There have also been general changes to opening hours as during this time the competency was transfered to the states and media campaigns. As we only have annual data we are not fully able to distinguish between these treatments, but we assume that they are outweigthed by the night-sales ban.
 [^REG]: Even if they were registered in consecutive reporting periods, the stay of patients for short-term ARH (*F10.0*) would be in average 2,1 days and for long-term ARH 10,7 days (*K70*) and 11,4 days (*F10.2*) in 2014, making the dynamic effect insignificantly small.
-
-
+[^ROB]: We also computed all other years to check robustness. The results can be found in the appendix. 
+[^CITY]: The hospitalization statistics has revealed that city states followed a slighlty different trend than the territorial states, see section data overview. 
