@@ -287,7 +287,7 @@ DS2$GROUP[DS2$STATE == "DE-BE" | DS2$STATE == "DE-HB" | DS2$STATE == "DE-HH"] <-
 # F10.0 cases per 1000 per age group
 ggplot(data=DS2, aes(x = YEAR, colour = GROUP)) +
   scale_x_continuous(breaks = c(2000, 2005, 2010, 2014), minor_breaks = c(2000:2014)) +
-  geom_line(data=filter(DS2, GROUP == "Non-City"), aes(y = F100_p1000, group = STATE), size = 1) +
+  geom_line(data=filter(DS2, GROUP == "Non-City"), aes(y = F100_p1000, group = STATE), size = .5) +
   geom_line(data=filter(DS2, GROUP == "City"), aes(y = F100_p1000, group = STATE), size = 1) +
   geom_line(data=filter(DS2, GROUP == "DE-BW (Treatment)"), aes(y = F100_p1000, group = STATE), size = 1) +
   theme_bw() +
@@ -301,7 +301,6 @@ ggplot(data=DS2, aes(x = YEAR, colour = GROUP)) +
         legend.key = element_rect(size = 5),
         legend.key.size = unit(2.0, 'lines'),
         axis.title.y=element_text(margin=margin(10,10,0,10)))
-ggsave("plot.png", width = 5, height = 2)
 ```
 
 # Results
