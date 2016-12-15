@@ -53,20 +53,11 @@ statelist_other_wo_treatment <- c("DE-BY", "DE-BB", "DE-HE", "DE-MV", "DE-NI", "
                     "DE-SN", "DE-ST", "DE-SH", "DE-TH")
 ```
 
-Narrative:
-
-
-
-
 ## Introduction
 
-Alcohol has a history of causing both joy and pain. In our research we want to focus on the latter: Alcohol, if consumend in high amounts and/or regularly over a longer period of time, does severe damage to individuals' health [see e.g. @WHO.2014; @Miller.2007]. It is therefore a policy concern not only to identify reasons and motivation for excessive alcohol consumption but also to develop measures to reduce the public health costs associated to this problem.
+People like to drink alcohol for pleasure -- and there is nothing wrong with that. But if you drink alcohol in high amounts, this does not only endanger your health but instead can also lead to violent behaviour, as many scientific studies have shown.
 
-It is the aim of this paper is to identify factors interacting with alcohol related health problems and to assess alcohol policy interventions against it. Using the example of all German federal states and time series data for different age groups from 2000 to 2014, we will [1] analyse the possible connection between medical diagnoses of alcohol misuse and possibly explanatory socioeconomic factors like regional economic performance and unemployment rates. For this, we will take both short-term and long-term medical consequences of alcohol misuse into account by examining hospital health records on acute alcohol intoxication as well as on alcoholic liver disease. Besides the socio-economic factors mentioned above, we will [2] test the effect of recent policy measures on the German state level on alcohol consumption, namely the ban on alcohol night sales introduced in 2010 in the state of Baden-Wuerttemberg.
-
-We find no conclusive relationship between alcohol-related hospitalizations and socio-economic indicators. However, the reason for this is not necessarily that the relationship does not exist. It is also possible that the small number of observations and the limited availability of relevant indicators prevents our data from generating sufficient insights into the matter. 
-Regarding the second topic of investigation, we find that the night sales ban reduces the number of excessive alcohol drinking diagnoses among German youth by about 20%. This finding confirms a prior study by @Marcus.2015 who found a decrease of about 7%. While their study used more detailed data, it focused only on the short-term effects until 2011. Our study in contrast looked at a longer time-horizon, but used more aggregated data.
-
+Consuming high amounts of alcohol is predominantly a problem for youger people, as the following diagram makes clear. It shows the number of people, split into age groups, who got hospitalized while they were drunk:
 
 ```{r echo = FALSE, fig.width=8, fig.height=5} 
 # Bar diagram: F10.0 cases per 1000 per age group in DE-DE
@@ -83,6 +74,7 @@ ggplot(data=PL1, aes(x=AGE, y=F100_p1000)) +
         axis.title.y=element_text(margin=margin(10,10,0,10)))
 ```
 
+But drinking alcohol does not only have short-term implications like being drunk and hurting yourself or somebody else. Drinking alcohol regularly and in high amounts for example also hurts your liver. Such consequences can only be seen in the long term, as the following graph indicates. It shows the number and age of people who got hospitalized with alcohol-related liver disease:
 
 ```{r echo = FALSE, fig.width=8, fig.height=5} 
 # Bar diagram: K70 cases per 1000 per age group
@@ -98,6 +90,11 @@ ggplot(data=PL1, aes(x = AGE, y = K70_p1000, fill = AGE)) +
         axis.title.y=element_text(margin=margin(10,10,0,10)))
 ```
 
+## Binge Drinking amongst youngsters -- an increasing problem
+
+In Germany, drinking excesses have increasingly become a problem. 
+The following maps compare the relative numbers of excessive alcohol consumption in the years 2000 and 2014:
+
 ```{r echo = FALSE, fig.width=4, fig.height=5, out.width=c('350px', '350px')} 
 spplot(map.Germany.2000.F100_p1000, 
        zcol = "value", 
@@ -111,6 +108,10 @@ spplot(map.Germany.2014.F100_p1000,
        at = seq(0, 2.2, by = 0.1),
        colorkey=FALSE)
 ```
+
+## Policy Response
+
+Politicians have reacted to the challenge, and the German state of Baden-Wuerttemberg was the first one to introduce a night sales ban on alcoholic beverages in 2010. But has it worked? The following graph gives an overview of all German states from 2000 to 2014. Baden-Wuerttemberg is marked in red, and the three German city states (Bremen, Berlin, and Hamburg) are marked in blue, as their levels of alcohol intoxications have remained comparably low over time.
 
 
 ```{r echo = FALSE} 
@@ -154,13 +155,16 @@ for (i in 1:3){
 }
 ```
 
-```{r echo = FALSE, fig.width=8, fig.height=7}   
+```{r echo = FALSE}   
 F100Plot.age15
 ```
 
-Marcus and Sielder (2014) find about 7% decrease, we find about 20% decrease
+## Has the ban worked?
 
-```{r echo = FALSE, out.width='500px', out.height='400px'}
+The question for our research was: Has the ban worked? 
+In our paper, which is accessible in extenso [here](https://github.com/torbatschow/CSSR_Project/blob/master/CSSR-Project.pdf), we were able to show that for young people it has, indeed. We conducted a statistical simulation which showed that the current numbers of alcohol intoxications are around 20 percent lower than they would be if the ban had not been introduced:
+
+```{r echo = FALSE} 
 plot_ly(bancomparison, x = ~YEAR, y = ~WBAN, type = 'bar', name = 'With Ban') %>%
   add_trace(y = ~WOBAN, name = 'Without Ban') %>%
   layout(xaxis = list(title = 'Year', titlefont = list(size = 18)), 
@@ -169,3 +173,5 @@ plot_ly(bancomparison, x = ~YEAR, y = ~WBAN, type = 'bar', name = 'With Ban') %>
          legend = list(x = 0.8, y = 1, font = list(size = 18)),
          barmode = 'group')
 ```
+
+### This ain't magic. It's reproducible research made possible by [Christopher Gandrud and the Hertie School](https://github.com/HertieDataScience).
