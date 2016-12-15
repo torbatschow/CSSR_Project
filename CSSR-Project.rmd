@@ -103,7 +103,7 @@ ToDo:
         colors 
 6. Bibliography before the appendix
     [DONE] Appendix as a separate file
-    Is appendiy complete?
+    Is appendix complete?
 7. Website
     Transform presentation into website
 8. Conclusion
