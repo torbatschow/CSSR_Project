@@ -209,12 +209,12 @@ The development in German states from the beginning of the present dataset to th
 ```{r echo = FALSE, out.width=c('280px', '280px')} 
 spplot(map.Germany.2000.F100_p1000, 
        zcol = "value", 
-       col.regions = colorRampPalette(rev(brewer.pal(9, "Spectral")))(22),
+       col.regions = colorRampPalette(rev(brewer.pal(9, "RdBu")))(22),
        main=list(label="2000: F10.0 diagnoses\nper 1000 pp all age groups"),
        at = seq(0, 2.2, by = 0.1))
 spplot(map.Germany.2014.F100_p1000, 
        zcol = "value", 
-       col.regions = colorRampPalette(rev(brewer.pal(9, "Spectral")))(22),
+       col.regions = colorRampPalette(rev(brewer.pal(9, "RdBu")))(22),
        main=list(label="2014: F10.0 diagnoses\nper 1000 pp all age groups"),
        at = seq(0, 2.2, by = 0.1),
        colorkey=FALSE)
@@ -229,23 +229,20 @@ The long-term ARH values also slightly increase, but this increase is a rather m
 DS0 <- TOTAL %>% filter(GENDER == "all", AGE=="all") %>% 
   select(STATE, YEAR, F100_p1000, F102_p1000, K70_p1000)
 
-# DS0$GROUP <- "Non-City States"
-# DS0$GROUP[DS0$STATE == "DE-BW"] <- "Treatment"
-# DS0$GROUP[DS0$STATE == "DE-BE" | DS0$STATE == "DE-HB" | DS0$STATE == "DE-HH"] <- "City"
-
-# font_import("cmr10")
+# Color Blind Palette
+cbbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 ggplot(data=filter(DS0, STATE == "DE-DE"), aes(x = YEAR, colour = Diagnoses)) +
   scale_x_continuous(breaks = c(2000, 2005, 2010, 2014), minor_breaks = c(2000:2014)) +
-  geom_line(aes(y = F100_p1000, colour = "F10.0")) +
-  geom_line(aes(y = K70_p1000, colour = "K70", group = "cond1")) +                              # line plot
-  geom_line(aes(y = F102_p1000, colour = "F10.2", group = "cond2")) +
+  geom_line(aes(y = F100_p1000, colour = "F10.0"), size = 1) +
+  geom_line(aes(y = K70_p1000, colour = "K70"), size = 1) +                              # line plot
+  geom_line(aes(y = F102_p1000, colour = "F10.2"), size = 1) +
+  scale_color_manual(values = cbbPalette) +
   theme_bw() +                               # bw background
   xlab("Years") +                            
-  ylab("Diagnoses \nper 1000 people") +
-  ggtitle("F10.0, F10.2 and K70 diagnoses in Germany 2000-2014") +
-  scale_shape_discrete(name = "Payer") +
+  ylab("Diagnoses\nper 1000 pp") +
+  ggtitle("F10.0, F10.2, and K70 diagnoses\nin Germany 2000-2014") +
  #scale_color_discrete(name  = "State", breaks = statelist_code, labels = statelist.code.short) +
-  theme(legend.key = element_rect(size = 5, fill = 'white', colour = 'white'),
+  theme(#legend.key = element_rect(size = 5, fill = 'white', colour = 'white'),
         legend.key.size = unit(2.0, 'lines'),
         axis.title.y=element_text(margin=margin(10,10,0,10)))
 #  annotate("text", x = 0, y = 0.1, label = "Label", parse = TRUE, family = "cmr10")
@@ -286,10 +283,10 @@ In Germany, the two age-thresholds for buying alcoholic beverages are 16 years (
 ```{r echo = FALSE} 
 # Bar diagram: F10.0 cases per 1000 per age group in DE-DE
 ggplot(data=PL1, aes(x=AGE, y=F100_p1000, fill = AGE)) +
-  geom_bar(stat="identity", fill="blue") +
+  geom_bar(stat="identity", fill = cbbPalette[2]) +
   theme_bw() +
   xlab("Age Group") +
-  ylab("F10.0 cases per 1000 people") +
+  ylab("F10.0 cases per 1000 pp") +
   ggtitle("F10.0 cases in Germany \n per 1000 per age group") +
   guides(fill=FALSE) +
   theme(axis.text.x  = element_text(angle=90, vjust=0.5),
@@ -303,24 +300,44 @@ An alarming development is illustrated by the high increase in 15-19-year-olds a
 DS2 <- TOTAL %>% filter(GENDER == "all", AGE=="15-19y", STATE!="DE-DE") %>% 
    select(STATE, YEAR, F100_p1000, F102_p1000, K70_p1000)
 
-DS2$GROUP <- "Non-City States"
-DS2$GROUP[DS2$STATE == "DE-BW"] <- "Treatment"
+DS2$GROUP <- "Non-City"
+DS2$GROUP[DS2$STATE == "DE-BW"] <- "DE-BW (Treatment)"
 DS2$GROUP[DS2$STATE == "DE-BE" | DS2$STATE == "DE-HB" | DS2$STATE == "DE-HH"] <- "City"
 
 # F10.0 cases per 1000 per age group
 ggplot(data=DS2, aes(x = YEAR, y = F100_p1000, group = STATE, colour = GROUP)) +
   scale_x_continuous(breaks = c(2000, 2005, 2010, 2014), minor_breaks = c(2000:2014)) +
-  geom_line() +                              # line plot
+  geom_line(aes(group = STATE), size = 1) +        # line plot
   theme_bw() +                               # bw background
-  xlab("Years") +                            
-  ylab("F10.0 diagnoses per 1000 inhabliants \nfor 15-19-year-olds") +
-  ggtitle("F10.0 diagnoses in German States 2000-2014 \nfor 15-19-year-olds") +
+  scale_color_manual("State", values = c(cbbPalette[6], cbbPalette[1], cbbPalette[7])) +
+  xlab("Years") +
+  ylab("F10.0 diagnoses per 1000 inhabiants \nfor 15-19-year-olds") +
+  ggtitle("F10.0 diagnoses for 15-19-year-olds\nin German states 2000-2014") +
 #  scale_color_discrete(name  = "State", breaks = statelist_code, labels = statelist.code.short) +
   geom_vline(xintercept = 2010) +
   theme(legend.position = "bottom", 
-        legend.key = element_rect(size = 5, fill = 'white', colour = 'white'),
+        legend.key = element_rect(size = 5),
         legend.key.size = unit(2.0, 'lines'),
         axis.title.y=element_text(margin=margin(10,10,0,10)))
+
+# F10.0 cases per 1000 per age group
+ggplot(data=DS2, aes(x = YEAR, colour = GROUP)) +
+  scale_x_continuous(breaks = c(2000, 2005, 2010, 2014), minor_breaks = c(2000:2014)) +
+  geom_line(data=filter(DS2, GROUP == "Non-City"), aes(y = F100_p1000, group = STATE), size = 1) +
+  geom_line(data=filter(DS2, GROUP == "City"), aes(y = F100_p1000, group = STATE), size = 1) +
+  geom_line(data=filter(DS2, GROUP == "DE-BW (Treatment)"), aes(y = F100_p1000, group = STATE), size = 1) +
+  theme_bw() +
+  scale_color_manual("State", values = c(cbbPalette[6], cbbPalette[7], cbbPalette[1])) +
+  xlab("Years") +
+  ylab("F10.0 diagnoses per 1000 inhabiants \nfor 15-19-year-olds") +
+  ggtitle("F10.0 diagnoses for 15-19-year-olds\nin German states 2000-2014") +
+#  scale_color_discrete(name  = "State", breaks = statelist_code, labels = statelist.code.short) +
+  geom_vline(xintercept = 2010) +
+  theme(legend.position = "bottom", 
+        legend.key = element_rect(size = 5),
+        legend.key.size = unit(2.0, 'lines'),
+        axis.title.y=element_text(margin=margin(10,10,0,10)))
+
 ```
 
 # Results
@@ -412,8 +429,10 @@ ggplot(data=melt(bancomparison, id.vars = "YEAR"),
        geom_bar(stat = "identity", position=position_dodge()) +
        theme_bw() +
        xlab("Year") +
-       ylab("F10.0 diagnoses among 15-19 year olds in BW \n per 1000") +
-       ggtitle("F10.0 cases with and without ban in BW")
+       ylab("F10.0 diagnoses per 1000 inhabiants\nin BW for 15-19-year-olds") +
+       ggtitle("F10.0 cases with and without ban in BW") +
+       scale_fill_manual("Sales ban", values = c(cbbPalette[2], cbbPalette[1]),
+                         labels=c("With", "Without (simulation)"))
 
 #plot_ly(bancomparison, x = ~YEAR, y = ~WBAN, type = 'bar', name = 'With Ban') %>%
 #  add_trace(y = ~WOBAN, name = 'Without Ban') %>%
