@@ -75,8 +75,8 @@ ggplot(data=PL1, aes(x=AGE, y=F100_p1000)) +
   geom_bar(stat="identity", fill = "#1E90FF") +
   xlab("Age Group") +
   ylab("F10.0 cases per 1000 people") +
-  ggtitle("") +
-  theme_bw() +           # do we want it to be bw or grey?
+  ggtitle("Hospitalization due to excessive alcohol consumption") +
+  theme_bw() +           
   guides(fill=FALSE) +
   theme(text  = element_text(colour = "#797979"),
         axis.text.x  = element_text(angle=90, vjust=0.5),
@@ -90,7 +90,7 @@ ggplot(data=PL1, aes(x = AGE, y = K70_p1000, fill = AGE)) +
   geom_bar(stat="identity", fill = "#1E90FF") +
   xlab("Age Group") +
   ylab("K70 cases per 1000 people") +
-  ggtitle("") +
+  ggtitle("Alcohol-related liver problems") +
   guides(fill=FALSE) +
   theme_bw() +
   theme(text  = element_text(colour = "#797979"),
