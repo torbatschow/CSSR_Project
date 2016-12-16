@@ -55,9 +55,9 @@ statelist_other_wo_treatment <- c("DE-BY", "DE-BB", "DE-HE", "DE-MV", "DE-NI", "
 
 ## Introduction
 
-People like to drink alcohol for pleasure -- and there is nothing wrong with that. But if you drink alcohol in high amounts, this does not only endanger your health but instead can also lead to violent behaviour, as many scientific studies have shown.
+People like to drink alcohol for pleasure -- and there is nothing wrong with that. But if you drink alcohol in high amounts, this does not only endanger your health but can also lead to violent behaviour, as many scientific studies have shown.
 
-Consuming high amounts of alcohol is predominantly a problem for youger people, as the following diagram makes clear. It shows the number of people, split into age groups, who got hospitalized while they were drunk:
+Consuming high amounts of alcohol is predominantly a problem for younger people, as the following diagram makes clear. It shows the number of people, split into age groups, who got hospitalized because they were drunk:
 
 ```{r echo = FALSE, fig.width=8, fig.height=5} 
 # Bar diagram: F10.0 cases per 1000 per age group in DE-DE
@@ -74,7 +74,7 @@ ggplot(data=PL1, aes(x=AGE, y=F100_p1000)) +
         axis.title.y=element_text(margin=margin(10,10,0,10)))
 ```
 
-But drinking alcohol does not only have short-term implications like being drunk and hurting yourself or somebody else. Drinking alcohol regularly and in high amounts for example also hurts your liver. Such consequences can only be seen in the long term, as the following graph indicates. It shows the number and age of people who got hospitalized with alcohol-related liver disease:
+But drinking alcohol does not only have short-term implications like being drunk and hurting yourself or somebody else. Drinking alcohol regularly and in high amounts for example also hurts your liver. Such consequences can only be seen in the long term, as the following graph illustrates. It shows the number and age of people who got hospitalized with alcohol-related liver problems:
 
 ```{r echo = FALSE, fig.width=8, fig.height=5} 
 # Bar diagram: K70 cases per 1000 per age group
@@ -92,8 +92,7 @@ ggplot(data=PL1, aes(x = AGE, y = K70_p1000, fill = AGE)) +
 
 ## Binge drinking -- an increasing problem
 
-In Germany, drinking excesses have increasingly become a problem. 
-The following maps compare the relative numbers of excessive alcohol consumption in the years 2000 and 2014:
+While drinking has been part of the German way of life for centuries, excessive drinking has been a more recent phenomena: Since 2000 there has been a dramatic increase. The following maps compare the relative numbers of excessive alcohol consumption in the years 2000 and 2014:
 
 ```{r echo = FALSE, fig.width=4, fig.height=5, out.width=c('350px', '350px')} 
 spplot(map.Germany.2000.F100_p1000, 
@@ -111,7 +110,7 @@ spplot(map.Germany.2014.F100_p1000,
 
 ## Policy Response
 
-Politicians have reacted to the challenge, and the German state of Baden-Wuerttemberg was the first one to introduce a night sales ban on alcoholic beverages in 2010. But has it worked? The following graph gives an overview of all German states from 2000 to 2014. Baden-Wuerttemberg is marked in red, and the three German city states (Bremen, Berlin, and Hamburg) are marked in blue, as their levels of alcohol intoxications have remained comparably low over time.
+Politician in Baden Wuerttemberg reacted to the challenge and introduced a night sales ban on alcoholic beverages in 2010. They wanted in particular reduce binge-drinking amoung young people. But has it worked? The following graph gives an overview of all German states from 2000 to 2014. Baden-Wuerttemberg is marked in red, and the three German city states (Bremen, Berlin, and Hamburg) are marked in blue, as their levels of alcohol intoxications have remained comparably low over time.
 
 
 ```{r echo = FALSE} 
@@ -174,4 +173,4 @@ plot_ly(bancomparison, x = ~YEAR, y = ~WBAN, type = 'bar', name = 'With Ban') %>
          barmode = 'group')
 ```
 
-### This ain't magic. It's reproducible research made possible by [Christopher Gandrud and the Hertie School](https://github.com/HertieDataScience).
+#### This ain't magic. It's reproducible research made possible by [Christopher Gandrud and the Hertie School](https://github.com/HertieDataScience).
