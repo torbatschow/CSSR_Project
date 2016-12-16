@@ -264,7 +264,7 @@ The next step in refining our model (*Model 3*) takes us to analyzing a policy m
 ```{r Model3and4, results = "asis", echo = FALSE} 
 stargazer::stargazer(mod3.age15.16, mod3.age15.13, mod4.age15, mod4.age15.13,
                      column.labels = c("(3) All states", "(3) non-city states",
-                                       "(4) All states", "(5) non-city states"),
+                                       "(4) All states", "(4) non-city states"),
                      covariate.labels = c("BW night sale ban", "Post-ban dummy", 
                                           "GDP per capita", "Youth unemployment", 
                                           "Interaction dummy", "(Intercept)"),

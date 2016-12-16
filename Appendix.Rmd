@@ -17,52 +17,50 @@ source("main.R")
 #Appendix
 
 
-## Descriptive Statistics
 ```{r descriptive, echo=FALSE}
 # select diagnoses data for state comparison
 DS.A <- TOTAL %>% filter(GENDER == "all", AGE=="all") %>% 
   select(STATE, YEAR, F100_p1000, F102_p1000, K70_p1000, GDP_P_C, UR.LF, YUR, BTAX_P_C, PP)
 
 # Youth unemployment rate
-ggplot(data=DS.A, aes(x = YEAR, y = YUR, group = STATE, colour = STATE)) +   
-  geom_line() +                              # line plot
-  theme_bw() +                               # bw background
-  xlab("Years") +                            
-  ylab("Youth unemployment rate") +
-  ggtitle("Youth unemployment in German states 2000-2014")
+#ggplot(data=DS.A, aes(x = YEAR, y = YUR, group = STATE, colour = STATE)) +   
+#  geom_line() +                              # line plot
+#  theme_bw() +                               # bw background
+#  xlab("Years") +                            
+#  ylab("Youth unemployment rate") +
+#  ggtitle("Youth unemployment in German states 2000-2014")
 
 # Beer Tax
 # REMARK: Beer TAX might be a bad proxy for beer consumption. 
 # According to this statistic Bremen is the largest consumer, but it probably just hints at Becks
-ggplot(data=DS.A, aes(x = YEAR, y = BTAX_P_C, group = STATE, colour = STATE)) +   
-  geom_line() +                              # line plot
-  theme_bw() +                               # bw background
-  xlab("Years") +                            
-  ylab("Beer tax revenue per capita") +
-  ggtitle("Beer tax in German states 2000-2014")
+#ggplot(data=DS.A, aes(x = YEAR, y = BTAX_P_C, group = STATE, colour = STATE)) +   
+#  geom_line() +                              # line plot
+#  theme_bw() +                               # bw background
+#  xlab("Years") +                            
+#  ylab("Beer tax revenue per capita") +
+#  ggtitle("Beer tax in German states 2000-2014")
 
 # German wide beer tax revenue
-BTAX.G <- TOTAL %>% filter(GENDER == "all", AGE == "all") %>%
-                    select(YEAR, STATE, BTAX)
-BTAX.G <- aggregate(as.numeric(BTAX.G$BTAX), by = list(BTAX.G$YEAR),
-          FUN = sum)
-colnames(BTAX.G) <- c("YEAR","BTAX")
+#BTAX.G <- TOTAL %>% filter(GENDER == "all", AGE == "all") %>%
+#                    select(YEAR, STATE, BTAX)
+#BTAX.G <- aggregate(as.numeric(BTAX.G$BTAX), by = list(BTAX.G$YEAR),
+#          FUN = sum)
+#colnames(BTAX.G) <- c("YEAR","BTAX")
 
 # Beer tax revenue in Germany 2000-2014
-ggplot(data=BTAX.G, aes(x = YEAR, y = BTAX)) +   
-  geom_line(colour="blue", size=1.5) +       # line plot
-  theme_bw() +                               # bw background
-  xlab("Years") +                            
-  ylab("Beer Tax Revenue in Tsd. Euro") +
-  ggtitle("Beer Tax Revenue 2000-2014")
+#ggplot(data=BTAX.G, aes(x = YEAR, y = BTAX)) +   
+#  geom_line(colour="blue", size=1.5) +       # line plot
+#  theme_bw() +                               # bw background
+#  xlab("Years") +                            
+#  ylab("Beer Tax Revenue in Tsd. Euro") +
+#  ggtitle("Beer Tax Revenue 2000-2014")
 ```
 
 ## Robustness Tests
 
 
 ```{r robustness, results="asis", echo=FALSE}
-
-mod1.labels <- c("GDP per capita", "Unemployment rate", "Beer tax", "Population density", "(Intercept)")
+mod1.labels <- c("GDP per capita", "Unemployment rate", "Population density", "(Intercept)")
 mod1.modellist <- as.character(c(2000:2014))
 stargazer::stargazer(mod1.list[1:5], 
                      covariate.labels = mod1.labels,
@@ -86,4 +84,47 @@ stargazer::stargazer(mod1.list[11:15],
                      title = 'Robustness test model 1 for the years 2010-2014',
                      digits = 2, type = 'latex', header = FALSE)
 ```
+
+```{r, results="asis", echo=FALSE}
+stargazer::stargazer(mod2.F100, mod2.F102, mod2.K70,
+                     column.labels = c("F10.0", "F10.2", "K70"),
+                     covariate.labels = c("GDP Change", "Unemployment Change",
+                                          "Beer Tax Change", "(Intercept)"),
+                     model.numbers  = FALSE,
+                     dep.var.labels = c("Change in F10.0","Change in F10.2",
+                                        "Change in K70"),
+                     title = 'Regression results for Model 2 with first differenced data',
+                     digits = 2, type = 'latex', header = FALSE)
+# Results Model 3
+stargazer::stargazer(mod3.16, mod3.13, 
+                     column.labels = c("(3) All states + ages", "(3) non-city states + all ages"),
+                     covariate.labels = c("BW night sale ban", "Post-ban dummy", 
+                                          "Interaction dummy", "(Intercept)"),
+                     model.numbers  = FALSE,
+                     dep.var.labels = c("F10.0 cases per 1000 PP (all ages)"),  
+                     title = 'Model 3 Simple Diff-in-Diff',
+                     digits = 2, type = 'latex', header = FALSE)
+stargazer::stargazer(mod3.age15.16, mod3.age15.13, 
+                     column.labels = c("(3) All states + 15-19y", "(3) non-city states + 15-19y"),
+                     covariate.labels = c("BW night sale ban", "Post-ban dummy", 
+                                          "Interaction dummy", "(Intercept)"),
+                     model.numbers  = FALSE,
+                     dep.var.labels = c("F10.0 cases per 1000 PP among 15-19 year olds"),  
+                     title = 'Model 3 Simple Diff-in-Diff for 15-19 year old',
+                     digits = 2, type = 'latex', header = FALSE)
+```
+
+```{r, results="asis", echo=FALSE}
+stargazer::stargazer(mod4, mod4.age15, mod4.age15.13, 
+                     column.labels = c("(4) All states + ages","(4) All states + 15-19y", 
+                                       "(4) non-city states + 15-19y"),
+                     covariate.labels = c("BW night sale ban", "Post-ban dummy", 
+                                          "GDP per capita", "Youth unemployment", 
+                                          "Interaction dummy", "(Intercept)"),
+                     model.numbers  = FALSE,
+                     dep.var.labels = c("F10.0 cases per 1000 PP (different age groups)"),  
+                     title = 'Model 4 Simple Diff-in-Diff with controls',
+                     digits = 2, type = 'latex', header = FALSE)
+```
+
 

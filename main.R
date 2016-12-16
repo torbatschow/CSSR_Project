@@ -423,7 +423,7 @@ mod5.age15.13 <- plm(F100_p1000 ~ dBAN + YUR + GDP_P_C,
 # Beer Tax
 # REMARK: Beer TAX might be a bad proxy for beer consumption. 
 # According to this statistic Bremen is the largest consumer, but it probably just hints at Becks
-#ggplot(data=DS1, aes(x = YEAR, y = BTAX_P_C, group = STATE, colour = STATE)) +   
+# ggplot(data=DS1, aes(x = YEAR, y = BTAX_P_C, group = STATE, colour = STATE)) +   
 #  geom_line() +                              # line plot
 #  theme_bw() +                               # bw background
 #  xlab("Years") +                            
